@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Trenes</title>
+	<link href="css/pure-min.css" type="text/css" rel="stylesheet" />
+	<link href="css/estilos.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+	<script src="dist/ctc.js"></script>
+	<!--
+
+		Una cosa curiosa de cómo se estila programar las aplicaciones es que el 
+		archivo HMTL en general no contiene nada.  Todo se genera en el cliente.
+
+		Otra cosas que va en contra de lo que acostumbra aparecer en los tutoriales
+		es que los tags <script> no van el el <head> sino al final del <body>.
+		Resulta ser que es mucho más eficiente poner las hojas de estilo en el <head>
+		y los scripts al final del <body>, después de todo el HTML, si lo hubiera,
+		que en este caso no lo hay pues se genera dinámicamente.
+
+	-->
+	<!--
+		Lodash es una librería de funciones complementarias de JavaScript.
+		Por ejemplo, JavaScript tiene varias formas de enumerar arrays, 
+		pero no ofrece las mismas facilidades para otras colecciones.  
+		Lodash suple estas faltas y agrega otras cosas piolas.
+  		Es rápida y pequeñita, así que no cuesta nada incluirla.
+
+		Su nombre deriva de la primera de tales librerías llamada Underscore
+		pues usaba como nombre de base el símbolo '_' cosa que es in identificador 
+		perfectamente válido en muchísimos lenguajes.   Una cosa tan simple como 
+		un buen nombre, breve y fácil de reconocer, hace que una librería pueda
+		tener más éxito que otra.  
+
+		De Underscore, salió lo-dash (guión bajo) que tiene la misma funcionalidad
+		pero es mucho más eficiente.
+
+		En los fuentes podrás ver algunas llamadas a _.map o _.forEach . 
+		Todas esas que comienzan con _ son llamadas a lodash.
+	- - >
+	<script src="lib/lodash.js"></script>
+	
+	<!- -
+		Esta es la librería que me permite manejar la pantalla.  Es lo que se llama un
+		'Framework' o sea, un esquema de trabajo.  Hay muchísimos en JavaScript así que 
+		esta es una de cientos de opciones.  Aunque discrepo en algunas cosas, este
+		framework me pareció bastante bueno.  Pero la decisión es bastante caprichosa,
+		cada quien tiene su favorito.
+	- - >
+	<script src="lib/mithril.js"></script>
+	
+	<!- - este es mi programa - - >
+	<script src="js/mimico.js"></script>
+	<script src="js/sector.js"></script>
+	<script>m.module(document.body, Mimico);</script>
+-->
+</body>
+
+</html>

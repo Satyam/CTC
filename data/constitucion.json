@@ -1,0 +1,188 @@
+{
+	"descr":"Constitución",
+	"ancho":16,
+	"alto":7,
+	"celdas": {
+		"5,0": {
+			"tipo":"linea",
+			"desde":"N",
+			"hacia":"S"
+		},
+		"6,0": {
+			"tipo":"linea",
+			"desde":"N",
+			"hacia":"S"
+		},
+		
+		"5,1": {
+			"tipo":"linea",
+			"desde":"N",
+			"hacia":"SW"
+		},
+		"6,1": {
+			"tipo":"linea",
+			"desde":"N",
+			"hacia":"SE"
+		},
+		
+		"4,2": {
+			"tipo":"linea",
+			"desde":"NE",
+			"hacia":"SW"
+		},
+		"7,2": {
+			"tipo":"linea",
+			"desde":"NW",
+			"hacia":"SE"
+		},
+		
+		"3,3": {
+			"tipo": "linea",
+			"desde":"NE",
+			"hacia":"SW"
+		},
+		"4,3": {
+			"tipo":"linea",
+			"desde":"SW",
+			"hacia": "E"
+		},
+		"5,3": {
+			"tipo":"linea",
+			"desde":"W",
+			"hacia":"E"
+		},
+		"6,3": {
+			"tipo":"linea",
+			"desde":"W",
+			"hacia":"E"
+		},
+		"7,3": {
+			"tipo":"linea",
+			"desde":"W",
+			"hacia":"E"
+		},
+		"8,3": {
+			"tipo":"desvio",
+			"punta":"SE",
+			"normal":"NW",
+			"invertido":"W"
+		},
+		
+		"0,4": {
+			"tipo":"paragolpe",
+			"desde":"E"
+		},
+		"1,4":  {
+			"tipo":"linea",
+			"desde":"W",
+			"hacia":"E"
+		},
+		"2,4": {
+			"tipo":"triple",
+			"punta":"W",
+			"normal":"E",
+			"izq":"NE",
+			"der":"SE"
+		},
+		"3,4": {
+			"tipo":"cruce",
+			"l1": {
+				"desde":"SW",
+				"hacia":"NE"
+			},
+			"l2": {
+				"desde":"W",
+				"hacia":"E"
+			}
+		},
+		"4,4": {
+			"tipo":"desvio",
+			"punta":"W",
+			"normal":"E",
+			"invertido":"SE"
+		},
+		"5,4": {
+			"tipo":"desvio",
+			"punta":"E",
+			"normal":"W",
+			"invertido":"SW"
+		},
+		"6,4": {
+			"tipo":"linea",
+			"desde":"W",
+			"hacia":"SE"
+		},
+		"9,4": {
+			"tipo":"linea",
+			"desde":"NW",
+			"hacia":"SE"
+		},
+		"0,5": {
+			"tipo": "paragolpe",
+			"desde": "E"
+		},
+		"1,5": {
+			"tipo": "linea",
+			"desde": "W",
+			"hacia": "E"
+		},
+		"2,5": {
+			"tipo": "desvio",
+			"punta": "W",
+			"normal": "E",
+			"invertido": "NE"
+		},
+		"3,5": {
+			"tipo":"cruce",
+			"l1": {
+				"desde":"NW",
+				"hacia":"SE"
+			},
+			"l2": {
+				"desde":"W",
+				"hacia":"E"
+			}
+		},
+		"4,5": {
+			"tipo":"desvio",
+			"punta":"W",
+			"normal":"E",
+			"invertido": "NE"
+		},
+		"5,5": {
+			"tipo":"desvio",
+			"punta":"E",
+			"normal":"W",
+			"invertido": "NW"
+		},
+		"6,5": {
+			"tipo":"linea",
+			"desde":"W",
+			"hacia":"SE"
+		},
+		"7,5": {
+			"tipo":"linea",
+			"desde":"NW",
+			"hacia":"SE"
+		},
+		"10,5": {
+			"tipo":"linea",
+			"desde":"NW",
+			"hacia":"SE"
+		}
+			
+			
+	},
+	"enclavamientos": [
+		{
+			"tipo": "desvios",
+			"celdas": [
+				"4,4",
+				"4,5",
+				"5,4",
+				"5,5"
+			]
+		}
+	]
+		
+}

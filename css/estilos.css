@@ -30,15 +30,19 @@ div.estado {
 	font-size: .7em;
 }
 
-div.teletipo {
+.teletipo {
 	border: thin solid gray;
+	padding:3px;
+}
+.teletipo li {
+	list-style-type: none;
 }
 
-div.teletipo li.even {
+.teletipo li.even {
 	background-color: #e0e0e0;
 }
 
-div.teletipo li.odd {
+.teletipo li.odd {
 	background-color: white;
 }
 

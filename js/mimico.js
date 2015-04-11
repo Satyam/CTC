@@ -6,6 +6,7 @@ var vdom = require('./component/virtual-dom.js');
 
 import Parcel from './component/parcel.js';
 import Sector from './sector.js';
+import Teletipo from './teletipo.js';
 
 class Mimico extends Parcel {
 	constructor(config) {
@@ -13,19 +14,16 @@ class Mimico extends Parcel {
 		this.solapas = [ 
 			new Sector({sector: 'constitucion'})
 		];
-		this.errores = ['a','b','c'];
+		Mimico.teletipo = Mimico.teletipo || new Teletipo();
 	}
 	view(v) {
 		return [
 			v('div.solapas', this.solapas),
-			v('div.teletipo', v('ul', this.errores.map(function (err, index) {
-				return v('li', {
-					class: (index & 1 ? 'odd' : 'even')
-				}, err);
-			})))		
+			Mimico.teletipo
 		];
 	}
 
 }
 
+global.Mimico = Mimico;
 vdom.rootApp(Mimico);

@@ -1,6 +1,6 @@
 /* jshint node:true , esnext:true*/
+/* global Mimico:true */
 "use strict";
-
 
 var enclavamientos;
 
@@ -13,7 +13,7 @@ var Enclavamientos = {
 			if ((c.desviado || false) == desviado) return; // nothing to do
 			
 			if (c.manual) {
-				//Mimico.errores.push('Desvio automático propagado a celda en manual: ' + coord);
+				Mimico.teletipo.agregar('Constitución', coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
 				return;
 			}
 

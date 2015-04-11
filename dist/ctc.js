@@ -16,7 +16,7 @@ module.exports = function (config, cb) {
 	});
 };
 
-},{"./virtual-dom.js":5,"xhr":12}],2:[function(require,module,exports){
+},{"./virtual-dom.js":5,"xhr":13}],2:[function(require,module,exports){
 'use strict';
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
@@ -206,7 +206,7 @@ var Parcel = (function () {
 exports['default'] = Parcel;
 module.exports = exports['default'];
 
-},{"lodash":11}],3:[function(require,module,exports){
+},{"lodash":12}],3:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -318,7 +318,7 @@ var ParcelEv = (function (_Parcel) {
 exports['default'] = ParcelEv;
 module.exports = exports['default'];
 
-},{"./parcel.js":2,"./virtual-dom.js":5,"events":10,"lodash":11}],4:[function(require,module,exports){
+},{"./parcel.js":2,"./virtual-dom.js":5,"events":11,"lodash":12}],4:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1247,14 +1247,15 @@ to compare whether the parcel contents has changed
 @static
 */
 
-},{"lodash":11}],6:[function(require,module,exports){
-"use strict";
+},{"lodash":12}],6:[function(require,module,exports){
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
 	value: true
 });
 /* jshint node:true , esnext:true*/
-"use strict";
+/* global Mimico:true */
+'use strict';
 
 var enclavamientos;
 
@@ -1267,7 +1268,7 @@ var Enclavamientos = {
 			if ((c.desviado || false) == desviado) return; // nothing to do
 
 			if (c.manual) {
-				//Mimico.errores.push('Desvio automático propagado a celda en manual: ' + coord);
+				Mimico.teletipo.agregar('Constitución', coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
 				return;
 			}
 
@@ -1286,8 +1287,8 @@ enclavamientos = function (celda, celdas, fromEnclavamiento) {
 	});
 };
 
-exports["default"] = enclavamientos;
-module.exports = exports["default"];
+exports['default'] = enclavamientos;
+module.exports = exports['default'];
 
 },{}],7:[function(require,module,exports){
 'use strict';
@@ -1319,10 +1320,8 @@ var _Radios = require('./component/radio.js');
 var _Radios2 = _interopRequireWildcard(_Radios);
 
 /* jshint node:true , esnext:true*/
-/* global CTC:false*/
-'use strict';
 
-var v;
+'use strict';
 
 var Estado = (function (_Parcel) {
 	function Estado(celdas, celda) {
@@ -1337,8 +1336,7 @@ var Estado = (function (_Parcel) {
 
 	_createClass(Estado, [{
 		key: 'view',
-		value: function view(vNode) {
-			v = vNode;
+		value: function view(v) {
 			return v('pre', JSON.stringify(this.celda, null, 2));
 		}
 	}]);
@@ -1472,6 +1470,7 @@ exports['default'] = {
 module.exports = exports['default'];
 
 },{"./component/parcel.js":2,"./component/radio.js":4,"./enclavamientos.js":6}],8:[function(require,module,exports){
+(function (global){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1492,6 +1491,10 @@ var _Sector = require('./sector.js');
 
 var _Sector2 = _interopRequireWildcard(_Sector);
 
+var _Teletipo = require('./teletipo.js');
+
+var _Teletipo2 = _interopRequireWildcard(_Teletipo);
+
 /* jshint node:true, esnext:true */
 /* global window:false */
 
@@ -1503,7 +1506,7 @@ var Mimico = (function (_Parcel) {
 
 		_get(Object.getPrototypeOf(Mimico.prototype), 'constructor', this).call(this, config);
 		this.solapas = [new _Sector2['default']({ sector: 'constitucion' })];
-		this.errores = ['a', 'b', 'c'];
+		Mimico.teletipo = Mimico.teletipo || new _Teletipo2['default']();
 	}
 
 	_inherits(Mimico, _Parcel);
@@ -1511,20 +1514,18 @@ var Mimico = (function (_Parcel) {
 	_createClass(Mimico, [{
 		key: 'view',
 		value: function view(v) {
-			return [v('div.solapas', this.solapas), v('div.teletipo', v('ul', this.errores.map(function (err, index) {
-				return v('li', {
-					'class': index & 1 ? 'odd' : 'even'
-				}, err);
-			})))];
+			return [v('div.solapas', this.solapas), Mimico.teletipo];
 		}
 	}]);
 
 	return Mimico;
 })(_Parcel3['default']);
 
+global.Mimico = Mimico;
 vdom.rootApp(Mimico);
 
-},{"./component/parcel.js":2,"./component/virtual-dom.js":5,"./sector.js":9}],9:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./component/parcel.js":2,"./component/virtual-dom.js":5,"./sector.js":9,"./teletipo.js":10}],9:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1725,7 +1726,71 @@ var Sector = (function (_ParcelEv) {
 exports['default'] = Sector;
 module.exports = exports['default'];
 
-},{"./component/http.js":1,"./component/parcelEv.js":3,"./estado.js":7,"lodash":11}],10:[function(require,module,exports){
+},{"./component/http.js":1,"./component/parcelEv.js":3,"./estado.js":7,"lodash":12}],10:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _Parcel2 = require('./component/parcel.js');
+
+var _Parcel3 = _interopRequireWildcard(_Parcel2);
+
+/* jshint node:true , esnext:true*/
+
+'use strict';
+
+var Teletipo = (function (_Parcel) {
+	function Teletipo() {
+		_classCallCheck(this, Teletipo);
+
+		_get(Object.getPrototypeOf(Teletipo.prototype), 'constructor', this).call(this);
+		this.lista = [];
+		this.containerType = 'ul';
+		this.className = 'teletipo';
+	}
+
+	_inherits(Teletipo, _Parcel);
+
+	_createClass(Teletipo, [{
+		key: 'agregar',
+		value: function agregar(sector, idCelda, mensaje) {
+			this.lista.push({
+				sector: sector,
+				idCelda: idCelda,
+				mensaje: mensaje,
+				timestamp: new Date()
+			});
+		}
+	}, {
+		key: 'view',
+		value: function view(v) {
+			return this.lista.map(function (item, index) {
+				return v('li', {
+					'class': index & 1 ? 'odd' : 'even'
+				}, '[' + item.timestamp.toLocaleTimeString() + '] ' + item.sector + ':' + item.idCelda + ':  ' + item.mensaje);
+			});
+		}
+	}]);
+
+	return Teletipo;
+})(_Parcel3['default']);
+
+exports['default'] = Teletipo;
+module.exports = exports['default'];
+
+},{"./component/parcel.js":2}],11:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2028,7 +2093,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -13835,7 +13900,7 @@ function isUndefined(arg) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -14007,7 +14072,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":13,"once":14,"parse-headers":18}],13:[function(require,module,exports){
+},{"global/window":14,"once":15,"parse-headers":19}],14:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -14020,7 +14085,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -14041,7 +14106,7 @@ function once (fn) {
   }
 }
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -14089,7 +14154,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":16}],16:[function(require,module,exports){
+},{"is-function":17}],17:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -14106,7 +14171,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -14122,7 +14187,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -14154,4 +14219,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":15,"trim":17}]},{},[8]);
+},{"for-each":16,"trim":18}]},{},[8]);

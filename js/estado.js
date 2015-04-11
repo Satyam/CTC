@@ -1,11 +1,9 @@
 /* jshint node:true , esnext:true*/
-/* global CTC:false*/
+
 "use strict";
 import Parcel from './component/parcel.js';
 import enclavamientos from './enclavamientos.js';
 import Radios from './component/radio.js';
-
-var v;
 
 class Estado extends Parcel {
 	constructor(celdas, celda) {
@@ -13,8 +11,7 @@ class Estado extends Parcel {
 		this.celdas = celdas;
 		this.celda = celda;
 	}
-	view(vNode) {
-		v = vNode;
+	view(v) {
 		return v('pre', JSON.stringify(this.celda, null, 2));
 	}
 }

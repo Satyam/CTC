@@ -1472,74 +1472,58 @@ exports['default'] = {
 module.exports = exports['default'];
 
 },{"./component/parcel.js":2,"./component/radio.js":4,"./enclavamientos.js":6}],8:[function(require,module,exports){
-(function (global){
-"use strict";
+'use strict';
 
-var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { "default": obj }; };
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
-var _Parcel2 = require("./component/parcel.js");
+var _Parcel2 = require('./component/parcel.js');
 
 var _Parcel3 = _interopRequireWildcard(_Parcel2);
 
-var _Sector = require("./sector.js");
+var _Sector = require('./sector.js');
 
 var _Sector2 = _interopRequireWildcard(_Sector);
 
 /* jshint node:true, esnext:true */
 /* global window:false */
 
-var vdom = require("./component/virtual-dom.js");
-
-var pendingRedraws = 0;
-
-global.CTC = {
-	redrawPending: function redrawPending() {
-		"use strict";
-		pendingRedraws = pendingRedraws++;
-	},
-	redrawReady: function redrawReady() {
-		"use strict";
-		pendingRedraws = Math.max(pendingRedraws - 1, 0);
-		if (pendingRedraws === 0) vdom.render();
-	}
-};
+var vdom = require('./component/virtual-dom.js');
 
 var Mimico = (function (_Parcel) {
 	function Mimico(config) {
 		_classCallCheck(this, Mimico);
 
-		_get(Object.getPrototypeOf(Mimico.prototype), "constructor", this).call(this, config);
-		this.solapas = [new _Sector2["default"]({ sector: "constitucion" })];
-		this.errores = ["a", "b", "c"];
+		_get(Object.getPrototypeOf(Mimico.prototype), 'constructor', this).call(this, config);
+		this.solapas = [new _Sector2['default']({ sector: 'constitucion' })];
+		this.errores = ['a', 'b', 'c'];
 	}
 
 	_inherits(Mimico, _Parcel);
 
 	_createClass(Mimico, [{
-		key: "view",
+		key: 'view',
 		value: function view(v) {
-			return [v("div.solapas", this.solapas), v("div.teletipo", v("ul", this.errores.map(function (err, index) {
-				return v("li", {
-					"class": index & 1 ? "odd" : "even"
+			return [v('div.solapas', this.solapas), v('div.teletipo', v('ul', this.errores.map(function (err, index) {
+				return v('li', {
+					'class': index & 1 ? 'odd' : 'even'
 				}, err);
 			})))];
 		}
 	}]);
 
 	return Mimico;
-})(_Parcel3["default"]);
+})(_Parcel3['default']);
 
 vdom.rootApp(Mimico);
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./component/parcel.js":2,"./component/virtual-dom.js":5,"./sector.js":9}],9:[function(require,module,exports){
 'use strict';
 
@@ -1557,16 +1541,16 @@ Object.defineProperty(exports, '__esModule', {
 	value: true
 });
 
-var _Parcel2 = require('./component/parcel.js');
+var _ParcelEv2 = require('./component/parcelEv.js');
 
-var _Parcel3 = _interopRequireWildcard(_Parcel2);
+var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
 
 var _Estados = require('./estado.js');
 
 var _Estados2 = _interopRequireWildcard(_Estados);
 
 /* jshint node:true, esnext:true */
-/* global CTC:false */
+
 'use strict';
 
 var _ = require('lodash'),
@@ -1647,11 +1631,17 @@ var Views = {
 	}
 };
 
-var Sector = (function (_Parcel) {
+var Sector = (function (_ParcelEv) {
 	function Sector(config) {
 		_classCallCheck(this, Sector);
 
-		_get(Object.getPrototypeOf(Sector.prototype), 'constructor', this).call(this);
+		_get(Object.getPrototypeOf(Sector.prototype), 'constructor', this).call(this, {
+			EVENTS: {
+				click: {
+					'g *': this.clickCelda
+				}
+			}
+		});
 		var _this = this;
 
 		this.ancho = 1;
@@ -1681,18 +1671,27 @@ var Sector = (function (_Parcel) {
 		});
 	}
 
-	_inherits(Sector, _Parcel);
+	_inherits(Sector, _ParcelEv);
 
 	_createClass(Sector, [{
 		key: 'clickCelda',
-		value: function clickCelda(celda, ev) {
-			CTC.redrawPending();
-			this.seleccionada = celda;
-			if (this.estado.destructor) {
-				this.estado.destructor();
+		value: function clickCelda(ev) {
+			var target = ev.target;
+			while (target && target.tagName != 'g') {
+				target = target.parentElement;
 			}
-			this.estado = new _Estados2['default'][celda.tipo](this.celdas, celda);
-			CTC.redrawReady();
+			if (!target) {
+				return;
+			}var celda = this.celdas[target.id];
+			this.seleccionada = celda;
+			if (this.estado.celda && this.estado.celda.tipo == celda.tipo) {
+				this.estado.celda = celda;
+			} else {
+				if (this.estado.destructor) {
+					this.estado.destructor();
+				}
+				this.estado = new _Estados2['default'][celda.tipo](this.celdas, celda);
+			}
 		}
 	}, {
 		key: 'view',
@@ -1711,22 +1710,22 @@ var Sector = (function (_Parcel) {
 				width: ANCHO_CELDA,
 				height: ANCHO_CELDA,
 				'class': sel ? 'seleccionada' : 'oculta'
-			})].concat(_.map(_this.celdas, function (celda) {
+			})].concat(_.map(_this.celdas, function (celda, id) {
 				return v('g', {
 					transform: 'translate(' + celda.x * ANCHO_CELDA + ',' + celda.y * ANCHO_CELDA + ')',
-					onclick: _this.clickCelda.bind(_this, celda)
+					id: id
 				}, Views[celda.tipo](celda));
 			})))), v('div.pure-u-1-4', v('div.estado', this.estado))]);
 		}
 	}]);
 
 	return Sector;
-})(_Parcel3['default']);
+})(_ParcelEv3['default']);
 
 exports['default'] = Sector;
 module.exports = exports['default'];
 
-},{"./component/http.js":1,"./component/parcel.js":2,"./estado.js":7,"lodash":11}],10:[function(require,module,exports){
+},{"./component/http.js":1,"./component/parcelEv.js":3,"./estado.js":7,"lodash":11}],10:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a

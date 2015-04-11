@@ -1,8 +1,8 @@
 /* jshint node:true, esnext:true */
-/* global CTC:false */
+
 "use strict";
 
-import Parcel from './component/parcel.js';
+import ParcelEv from './component/parcelEv.js';
 import Estados from './estado.js';
 
 var _ = require('lodash'),
@@ -102,9 +102,15 @@ var Views = {
 };
 
 
-export default class Sector extends Parcel {
+export default class Sector extends ParcelEv {
 	constructor (config) {
-		super();
+		super({
+			EVENTS: {
+				click: {
+					'g *': this.clickCelda
+				}
+			}
+		});
 		var _this = this;
 	
 		this.ancho = 1;
@@ -137,14 +143,22 @@ export default class Sector extends Parcel {
 		);
 	}
 	
-	clickCelda (celda, ev) {
-		CTC.redrawPending();
-		this.seleccionada = celda;
-		if (this.estado.destructor) {
-			this.estado.destructor();
+	clickCelda (ev) {
+		var target = ev.target;
+		while (target && target.tagName != 'g') {
+			target = target.parentElement;
 		}
-		this.estado = new Estados[celda.tipo](this.celdas, celda);
-		CTC.redrawReady();
+		if (!target) return;
+		var celda = this.celdas[target.id];
+		this.seleccionada = celda;
+		if (this.estado.celda && this.estado.celda.tipo == celda.tipo) {
+			this.estado.celda = celda;
+		} else {
+			if (this.estado.destructor) {
+				this.estado.destructor();
+			}
+			this.estado = new Estados[celda.tipo](this.celdas, celda);
+		}
 	}
 	
 	view (vNode) {
@@ -169,11 +183,11 @@ export default class Sector extends Parcel {
 							class: (sel? 'seleccionada':'oculta')
 						})
 					].concat(
-						_.map(_this.celdas, function (celda) {
+						_.map(_this.celdas, function (celda, id) {
 							return v(
 								'g', {
 									transform: 'translate(' + (celda.x * ANCHO_CELDA) + ',' + (celda.y * ANCHO_CELDA) + ')',
-									onclick: _this.clickCelda.bind(_this, celda)
+									id: id
 								},
 								Views[celda.tipo](celda)
 							);

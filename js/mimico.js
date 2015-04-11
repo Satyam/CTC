@@ -4,22 +4,6 @@
 
 var vdom = require('./component/virtual-dom.js');
 
-var pendingRedraws = 0;
-
-global.CTC = {
-	redrawPending: function () {
-		"use strict";
-		pendingRedraws = pendingRedraws++;
-	},
-	redrawReady: function () {
-		"use strict";
-		pendingRedraws = Math.max(pendingRedraws - 1, 0);
-		if (pendingRedraws === 0) vdom.render();
-	}
-};
-
-
-
 import Parcel from './component/parcel.js';
 import Sector from './sector.js';
 

@@ -29,7 +29,8 @@ export default class Radio extends ParcelEv {
 		this.title = config.title || null;
 		this.opts = config.opts.slice(0);
 		this.groupName = config.groupName || 'RadioComponent' + count++;
-
+		this.containerType = config.title?'fieldset':'form';
+		this.className = 'pure-form';
 	}
 	onClick (ev) {
 		this.emit('click', ev.target.value, ev);
@@ -52,11 +53,8 @@ export default class Radio extends ParcelEv {
 		});
 		return (
 			this.title?
-			v(
-				'fieldset.pure-form',
-				[v('legend', this.title)].concat(radios)
-			):
-			v('form.pure-form',	radios)
+			[v('legend', this.title)].concat(radios):
+			radios
 		);
 	}
 }

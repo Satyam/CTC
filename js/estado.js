@@ -26,7 +26,7 @@ export default {
 			super(celdas, celda);
 			this.desvio = new Radios({
 				title:'Desvío',
-				selected: celda.desviado?'desviad':'normal',
+				selected: celda.desviado?'desviado':'normal',
 				opts: [
 					{normal: 'Normal'},
 					{desviado: 'Desviado'}
@@ -64,56 +64,42 @@ export default {
 	},
 	paragolpe: class Paragolpe extends Estado {},
 
-	triple: function (celda, celdas) {
-		var cambiar = function (ev) {
-			CTC.redrawPending();
-			celda.posicion = parseInt(ev.target.value,10);
-			CTC.redrawReady();
-		};
-		return v('form.pure-form', [
-			v('label.pure-radio', [
-				v(
-					'input',
-					{
-						type:'radio',
-						name:'estadoDesvio',
-						checked: celda.posicion == -1,
-						onclick: cambiar,
-						value: -1
-					}
-				),
-				' Izquierda'
-			]),
-			v('label.pure-radio', [
-				v(
-					'input',
-					{
-						type:'radio',
-						name:'estadoDesvio',
-						checked: !celda.posicion,
-						onclick: cambiar,
-						value: 0
-					}
-				),
-				' Normal'
-			]),
-			v('label.pure-radio', [
-				v(
-					'input',
-					{
-						type:'radio',
-						name:'estadoDesvio',
-						checked: celda.posicion == 1,
-						onclick: cambiar,
-						value: 1
-					}
-				),
-				' Derecha'
-			]),
-		]);
+	triple: class Triple extends Estado {
+		constructor (celdas, celda) {
+			super(celdas, celda);
+			this.desvio = new Radios({
+				title:'Desvío',
+				selected: '' + (celda.posicion || 0),
+				opts: [
+					{'-1':'Izquierda'},
+					{'0': 'Normal'},
+					{'1': 'Derecha'}
+				]
+			}).on('click', this.cambiar.bind(this));
+			this.manual = new Radios({
+				title:'Manual',
+				selected: celda.manual?'manual':'automatico',
+				opts: [
+					{manual:'Manual'},
+					{automatico: 'Automático'}
+				]
+			}).on('click', this.cambiarManual.bind(this));
+		}
+		cambiar (value) {
+			this.celda.posicion = parseInt(value,10);
+		}
+		cambiarManual (value) {
+			this.celda.manual = value == 'manual';
+		}
+		view (v) {
+			return [
+				super.view(v),
+				this.desvio,
+				this.manual
+			];
+		}
 	},
-	cruce: function (celda, celdas) {
-	}
+	cruce: class Curce extends Estado {}
 };
 
 		

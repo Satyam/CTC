@@ -26,7 +26,7 @@ var _createClass = (function () { function defineProperties(target, props) { for
 Object.defineProperty(exports, '__esModule', {
 	value: true
 });
-/* jshint esnext:true */
+/* jshint node:true, esnext:true */
 'use strict';
 
 var _ = require('lodash');
@@ -369,6 +369,8 @@ var Radio = (function (_ParcelEv) {
 		this.title = config.title || null;
 		this.opts = config.opts.slice(0);
 		this.groupName = config.groupName || 'RadioComponent' + count++;
+		this.containerType = config.title ? 'fieldset' : 'form';
+		this.className = 'pure-form';
 	}
 
 	_inherits(Radio, _ParcelEv);
@@ -392,7 +394,7 @@ var Radio = (function (_ParcelEv) {
 					value: name
 				}), ' ' + button[name]]);
 			});
-			return this.title ? v('fieldset.pure-form', [v('legend', this.title)].concat(radios)) : v('form.pure-form', radios);
+			return this.title ? [v('legend', this.title)].concat(radios) : radios;
 		}
 	}]);
 
@@ -1365,7 +1367,7 @@ exports['default'] = {
 			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, celdas, celda);
 			this.desvio = new _Radios2['default']({
 				title: 'Desvío',
-				selected: celda.desviado ? 'desviad' : 'normal',
+				selected: celda.desviado ? 'desviado' : 'normal',
 				opts: [{ normal: 'Normal' }, { desviado: 'Desviado' }]
 			}).on('click', this.cambiar.bind(this));
 			this.manual = new _Radios2['default']({
@@ -1415,33 +1417,57 @@ exports['default'] = {
 		return Paragolpe;
 	})(Estado),
 
-	triple: function triple(celda, celdas) {
-		var cambiar = function cambiar(ev) {
-			CTC.redrawPending();
-			celda.posicion = parseInt(ev.target.value, 10);
-			CTC.redrawReady();
-		};
-		return v('form.pure-form', [v('label.pure-radio', [v('input', {
-			type: 'radio',
-			name: 'estadoDesvio',
-			checked: celda.posicion == -1,
-			onclick: cambiar,
-			value: -1
-		}), ' Izquierda']), v('label.pure-radio', [v('input', {
-			type: 'radio',
-			name: 'estadoDesvio',
-			checked: !celda.posicion,
-			onclick: cambiar,
-			value: 0
-		}), ' Normal']), v('label.pure-radio', [v('input', {
-			type: 'radio',
-			name: 'estadoDesvio',
-			checked: celda.posicion == 1,
-			onclick: cambiar,
-			value: 1
-		}), ' Derecha'])]);
-	},
-	cruce: function cruce(celda, celdas) {}
+	triple: (function (_Estado4) {
+		function Triple(celdas, celda) {
+			_classCallCheck(this, Triple);
+
+			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, celdas, celda);
+			this.desvio = new _Radios2['default']({
+				title: 'Desvío',
+				selected: '' + (celda.posicion || 0),
+				opts: [{ '-1': 'Izquierda' }, { '0': 'Normal' }, { '1': 'Derecha' }]
+			}).on('click', this.cambiar.bind(this));
+			this.manual = new _Radios2['default']({
+				title: 'Manual',
+				selected: celda.manual ? 'manual' : 'automatico',
+				opts: [{ manual: 'Manual' }, { automatico: 'Automático' }]
+			}).on('click', this.cambiarManual.bind(this));
+		}
+
+		_inherits(Triple, _Estado4);
+
+		_createClass(Triple, [{
+			key: 'cambiar',
+			value: function cambiar(value) {
+				this.celda.posicion = parseInt(value, 10);
+			}
+		}, {
+			key: 'cambiarManual',
+			value: function cambiarManual(value) {
+				this.celda.manual = value == 'manual';
+			}
+		}, {
+			key: 'view',
+			value: function view(v) {
+				return [_get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v), this.desvio, this.manual];
+			}
+		}]);
+
+		return Triple;
+	})(Estado),
+	cruce: (function (_Estado5) {
+		function Curce() {
+			_classCallCheck(this, Curce);
+
+			if (_Estado5 != null) {
+				_Estado5.apply(this, arguments);
+			}
+		}
+
+		_inherits(Curce, _Estado5);
+
+		return Curce;
+	})(Estado)
 };
 module.exports = exports['default'];
 

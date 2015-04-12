@@ -122,7 +122,7 @@ var lineaA = function lineaA(v, dest, estilo) {
 	});
 };
 
-exports['default'] = {
+var Celdas = {
 	linea: (function (_Celda) {
 		function Linea(config) {
 			_classCallCheck(this, Linea);
@@ -291,6 +291,14 @@ exports['default'] = {
 		return Cruce;
 	})(Celda)
 };
+
+var CeldaFactory = function CeldaFactory(celda) {
+	_classCallCheck(this, CeldaFactory);
+
+	return new Celdas[celda.tipo](celda);
+};
+
+exports['default'] = CeldaFactory;
 module.exports = exports['default'];
 
 },{"./component/parcelEv.js":4,"lodash":13}],2:[function(require,module,exports){
@@ -1638,7 +1646,7 @@ var Estado = (function (_Parcel) {
 	return Estado;
 })(_Parcel3['default']);
 
-exports['default'] = {
+var Estados = {
 	linea: (function (_Estado) {
 		function Linea() {
 			_classCallCheck(this, Linea);
@@ -1748,19 +1756,27 @@ exports['default'] = {
 		return Triple;
 	})(Estado),
 	cruce: (function (_Estado5) {
-		function Curce() {
-			_classCallCheck(this, Curce);
+		function Cruce() {
+			_classCallCheck(this, Cruce);
 
 			if (_Estado5 != null) {
 				_Estado5.apply(this, arguments);
 			}
 		}
 
-		_inherits(Curce, _Estado5);
+		_inherits(Cruce, _Estado5);
 
-		return Curce;
+		return Cruce;
 	})(Estado)
 };
+
+var EstadoFactory = function EstadoFactory(celdas, celda) {
+	_classCallCheck(this, EstadoFactory);
+
+	return new Estados[celda.tipo](celdas, celda);
+};
+
+exports['default'] = EstadoFactory;
 module.exports = exports['default'];
 
 },{"./component/parcel.js":3,"./component/radio.js":5,"./enclavamientos.js":7}],9:[function(require,module,exports){
@@ -1840,13 +1856,13 @@ var _Parcel2 = require('./component/parcel.js');
 
 var _Parcel3 = _interopRequireWildcard(_Parcel2);
 
-var _Estados = require('./estado.js');
+var _EstadoFactory = require('./estado.js');
 
-var _Estados2 = _interopRequireWildcard(_Estados);
+var _EstadoFactory2 = _interopRequireWildcard(_EstadoFactory);
 
-var _Celdas = require('./celda.js');
+var _CeldaFactory = require('./celda.js');
 
-var _Celdas2 = _interopRequireWildcard(_Celdas);
+var _CeldaFactory2 = _interopRequireWildcard(_CeldaFactory);
 
 /* jshint node:true, esnext:true */
 
@@ -1884,7 +1900,7 @@ var Sector = (function (_Parcel) {
 					var coord = coords.split(',');
 					celda.x = parseInt(coord[0], 10);
 					celda.y = parseInt(coord[1], 10);
-					_this.celdas[coords] = new _Celdas2['default'][celda.tipo](celda).on('click', _this.onClick.bind(_this));
+					_this.celdas[coords] = new _CeldaFactory2['default'](celda).on('click', _this.onClick.bind(_this));
 				});
 				body.enclavamientos.forEach(function (enclavamiento) {
 					enclavamiento.celdas.forEach(function (celda) {
@@ -1912,7 +1928,7 @@ var Sector = (function (_Parcel) {
 				if (this.estado.destructor) {
 					this.estado.destructor();
 				}
-				this.estado = new _Estados2['default'][celda.tipo](this.celdas, celda);
+				this.estado = new _EstadoFactory2['default'](this.celdas, celda);
 			}
 		}
 	}, {

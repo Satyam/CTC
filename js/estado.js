@@ -16,7 +16,7 @@ class Estado extends Parcel {
 	}
 }
 
-export default {
+var Estados = {
 	linea: class Linea extends Estado {},
 	desvio: class Desvio extends Estado {
 		constructor (celdas, celda) {
@@ -96,7 +96,12 @@ export default {
 			];
 		}
 	},
-	cruce: class Curce extends Estado {}
+	cruce: class Cruce extends Estado {}
 };
 
 		
+export default class EstadoFactory {
+	constructor (celdas, celda) {
+		return new Estados[celda.tipo](celdas, celda);
+	}
+}

@@ -87,7 +87,7 @@ var lineaA = function (v, dest, estilo) {
 	});
 };
 
-export default {
+var Celdas =  {
 	linea: class Linea extends Celda {
 		constructor(config) {
 			super(config);
@@ -216,3 +216,9 @@ export default {
 		}
 	}
 };
+
+export default class CeldaFactory {
+	constructor (celda) {
+		return new Celdas[celda.tipo](celda);
+	}
+}

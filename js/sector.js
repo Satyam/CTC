@@ -3,8 +3,8 @@
 "use strict";
 
 import Parcel from './component/parcel.js';
-import Estados from './estado.js';
-import Celdas from './celda.js';
+import EstadoFactory from './estado.js';
+import CeldaFactory from './celda.js';
 
 var _ = require('lodash'),
 	http = require('./component/http.js');
@@ -36,7 +36,7 @@ export default class Sector extends Parcel {
 						var coord = coords.split(',');
 						celda.x = parseInt(coord[0], 10);
 						celda.y = parseInt(coord[1], 10);
-						this.celdas[coords] = new Celdas[celda.tipo](celda).on('click', this.onClick.bind(this));
+						this.celdas[coords] = new CeldaFactory(celda).on('click', this.onClick.bind(this));
 
 					});
 					body.enclavamientos.forEach((enclavamiento) => {
@@ -61,7 +61,7 @@ export default class Sector extends Parcel {
 			if (this.estado.destructor) {
 				this.estado.destructor();
 			}
-			this.estado = new Estados[celda.tipo](this.celdas, celda);
+			this.estado = new EstadoFactory(this.celdas, celda);
 		}
 	}
 	

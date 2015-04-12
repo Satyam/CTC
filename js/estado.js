@@ -12,7 +12,7 @@ class Estado extends Parcel {
 		this.celda = celda;
 	}
 	view(v) {
-		return v('pre', JSON.stringify(this.celda, null, 2));
+		return v('pre', this.celda.toString());
 	}
 }
 

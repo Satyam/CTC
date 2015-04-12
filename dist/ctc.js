@@ -1,4 +1,299 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _ParcelEv2 = require('./component/parcelEv.js');
+
+var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
+
+/* jshint node:true , esnext:true*/
+
+'use strict';
+
+var _ = require('lodash');
+
+var ANCHO_CELDA = 100,
+    CENTRO_CELDA = ANCHO_CELDA / 2;
+
+var X = {
+	N: CENTRO_CELDA,
+	NE: ANCHO_CELDA,
+	E: ANCHO_CELDA,
+	SE: ANCHO_CELDA,
+	S: CENTRO_CELDA,
+	SW: 0,
+	W: 0,
+	NW: 0
+},
+    Y = {
+	N: 0,
+	NE: 0,
+	E: CENTRO_CELDA,
+	SE: ANCHO_CELDA,
+	S: ANCHO_CELDA,
+	SW: ANCHO_CELDA,
+	W: CENTRO_CELDA,
+	NW: 0
+};
+
+var Celda = (function (_ParcelEv) {
+	function Celda(config) {
+		var _this = this;
+
+		_classCallCheck(this, Celda);
+
+		_get(Object.getPrototypeOf(Celda.prototype), 'constructor', this).call(this, {
+			EVENTS: {
+				click: function click(ev) {
+					return _this.emit('click', _this);
+				}
+			}
+		});
+		this.enclavamientos = [];
+		this.containerType = 'g';
+		_.merge(this, config);
+		this.attributes = {
+			transform: 'translate(' + config.x * ANCHO_CELDA + ',' + config.y * ANCHO_CELDA + ')'
+		};
+	}
+
+	_inherits(Celda, _ParcelEv);
+
+	_createClass(Celda, [{
+		key: 'view',
+		value: function view(v, content) {
+			return [].concat(v('rect', {
+				x: 0,
+				y: 0,
+				width: ANCHO_CELDA,
+				height: ANCHO_CELDA,
+				'class': this.seleccionada ? 'seleccionada' : 'oculta'
+			}), content, v('text', {
+				x: CENTRO_CELDA,
+				y: CENTRO_CELDA
+			}, this.x + ' ' + this.y));
+		}
+	}, {
+		key: 'toJSON',
+		value: function toJSON() {
+			return {
+				coords: this.coords,
+				tipo: this.tipo,
+				x: this.x,
+				y: this.y,
+				enclavamientos: this.enclavamientos
+			};
+		}
+	}, {
+		key: 'toString',
+		value: function toString() {
+			return JSON.stringify(this.toJSON(), null, 2);
+		}
+	}, {
+		key: 'coords',
+		get: function () {
+			return this.x + ',' + this.y;
+		}
+	}]);
+
+	return Celda;
+})(_ParcelEv3['default']);
+
+var lineaA = function lineaA(v, dest, estilo) {
+	return v('line', {
+		x1: CENTRO_CELDA,
+		y1: CENTRO_CELDA,
+		x2: X[dest],
+		y2: Y[dest],
+		'class': estilo || ''
+	});
+};
+
+exports['default'] = {
+	linea: (function (_Celda) {
+		function Linea(config) {
+			_classCallCheck(this, Linea);
+
+			_get(Object.getPrototypeOf(Linea.prototype), 'constructor', this).call(this, config);
+		}
+
+		_inherits(Linea, _Celda);
+
+		_createClass(Linea, [{
+			key: 'view',
+			value: function view(v) {
+				return _get(Object.getPrototypeOf(Linea.prototype), 'view', this).call(this, v, [lineaA(v, this.desde), lineaA(v, this.hacia)]);
+			}
+		}, {
+			key: 'toJSON',
+			value: function toJSON() {
+				var s = _get(Object.getPrototypeOf(Linea.prototype), 'toJSON', this).call(this);
+				_.merge(s, {
+					geometria: {
+						desde: this.desde,
+						hacia: this.hacia
+					}
+				});
+				return s;
+			}
+		}]);
+
+		return Linea;
+	})(Celda),
+	desvio: (function (_Celda2) {
+		function Desvio(config) {
+			_classCallCheck(this, Desvio);
+
+			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, config);
+		}
+
+		_inherits(Desvio, _Celda2);
+
+		_createClass(Desvio, [{
+			key: 'view',
+			value: function view(v) {
+				return _get(Object.getPrototypeOf(Desvio.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this.desviado ? 'off' : null), lineaA(v, this.invertido, !this.desviado ? 'off' : null)]);
+			}
+		}, {
+			key: 'toJSON',
+			value: function toJSON() {
+				var s = _get(Object.getPrototypeOf(Desvio.prototype), 'toJSON', this).call(this);
+				_.merge(s, {
+					geometria: {
+						punta: this.punta,
+						normal: this.normal,
+						invertido: this.invertido
+					},
+					desviado: this.desviado,
+					manual: this.manual
+
+				});
+				return s;
+			}
+		}]);
+
+		return Desvio;
+	})(Celda),
+	paragolpe: (function (_Celda3) {
+		function Paragolpe(config) {
+			_classCallCheck(this, Paragolpe);
+
+			_get(Object.getPrototypeOf(Paragolpe.prototype), 'constructor', this).call(this, config);
+		}
+
+		_inherits(Paragolpe, _Celda3);
+
+		_createClass(Paragolpe, [{
+			key: 'view',
+			value: function view(v) {
+				return _get(Object.getPrototypeOf(Paragolpe.prototype), 'view', this).call(this, v, [lineaA(v, this.desde), v('circle', {
+					cx: CENTRO_CELDA,
+					cy: CENTRO_CELDA,
+					r: ANCHO_CELDA / 10
+				})]);
+			}
+		}, {
+			key: 'toJSON',
+			value: function toJSON() {
+				var s = _get(Object.getPrototypeOf(Paragolpe.prototype), 'toJSON', this).call(this);
+				_.merge(s, {
+					geometria: {
+						desde: this.desde
+					}
+				});
+				return s;
+			}
+		}]);
+
+		return Paragolpe;
+	})(Celda),
+	triple: (function (_Celda4) {
+		function Triple(config) {
+			_classCallCheck(this, Triple);
+
+			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, config);
+		}
+
+		_inherits(Triple, _Celda4);
+
+		_createClass(Triple, [{
+			key: 'view',
+			value: function view(v) {
+				return _get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this.posicion ? 'off' : null), lineaA(v, this.izq, this.posicion != -1 ? 'off' : null), lineaA(v, this.der, this.posicion != 1 ? 'off' : null)]);
+			}
+		}, {
+			key: 'toJSON',
+			value: function toJSON() {
+				var s = _get(Object.getPrototypeOf(Triple.prototype), 'toJSON', this).call(this);
+				_.merge(s, {
+					geometria: {
+						punta: this.punta,
+						normal: this.normal,
+						izquierda: this.izq,
+						derecha: this.der
+					},
+					posicion: this.posicion ? this.posicion == -1 ? 'izquierda' : 'derecha' : 'normal',
+					manual: this.manual
+				});
+				return s;
+			}
+		}]);
+
+		return Triple;
+	})(Celda),
+	cruce: (function (_Celda5) {
+		function Cruce(config) {
+			_classCallCheck(this, Cruce);
+
+			_get(Object.getPrototypeOf(Cruce.prototype), 'constructor', this).call(this, config);
+		}
+
+		_inherits(Cruce, _Celda5);
+
+		_createClass(Cruce, [{
+			key: 'view',
+			value: function view(v) {
+				return _get(Object.getPrototypeOf(Cruce.prototype), 'view', this).call(this, v, [lineaA(v, this.l1.desde), lineaA(v, this.l1.hacia), lineaA(v, this.l2.desde), lineaA(v, this.l2.hacia)]);
+			}
+		}, {
+			key: 'toJSON',
+			value: function toJSON() {
+				var s = _get(Object.getPrototypeOf(Cruce.prototype), 'toJSON', this).call(this);
+				_.merge(s, {
+					geometria: {
+						linea1: {
+							desde: this.l1.desde,
+							hacia: this.l1.hacia
+						},
+						linea2: {
+							desde: this.l2.desde,
+							hacia: this.l2.hacia
+						}
+					}
+				});
+				return s;
+			}
+		}]);
+
+		return Cruce;
+	})(Celda)
+};
+module.exports = exports['default'];
+
+},{"./component/parcelEv.js":4,"lodash":13}],2:[function(require,module,exports){
 /* jshint node:true */
 /* global window: false */
 
@@ -16,7 +311,7 @@ module.exports = function (config, cb) {
 	});
 };
 
-},{"./virtual-dom.js":5,"xhr":13}],2:[function(require,module,exports){
+},{"./virtual-dom.js":6,"xhr":14}],3:[function(require,module,exports){
 'use strict';
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
@@ -206,7 +501,7 @@ var Parcel = (function () {
 exports['default'] = Parcel;
 module.exports = exports['default'];
 
-},{"lodash":12}],3:[function(require,module,exports){
+},{"lodash":13}],4:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -318,7 +613,7 @@ var ParcelEv = (function (_Parcel) {
 exports['default'] = ParcelEv;
 module.exports = exports['default'];
 
-},{"./parcel.js":2,"./virtual-dom.js":5,"events":11,"lodash":12}],4:[function(require,module,exports){
+},{"./parcel.js":3,"./virtual-dom.js":6,"events":12,"lodash":13}],5:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -357,13 +652,17 @@ var count = 0;
 
 var Radio = (function (_ParcelEv) {
 	function Radio(config) {
+		var _this = this;
+
 		_classCallCheck(this, Radio);
 
 		_get(Object.getPrototypeOf(Radio.prototype), 'constructor', this).call(this, {
 			EVENTS: {
-				click: this.onClick
-				// or { 'input[type=radio]': this.onclick }
-			}
+				click: function click(ev) {
+					return _this.emit('click', ev.target.value, ev)
+					// or { 'input[type=radio]': this.onclick }
+					;
+				} }
 		});
 		this.sel = config.selected || null;
 		this.title = config.title || null;
@@ -376,21 +675,16 @@ var Radio = (function (_ParcelEv) {
 	_inherits(Radio, _ParcelEv);
 
 	_createClass(Radio, [{
-		key: 'onClick',
-		value: function onClick(ev) {
-			this.emit('click', ev.target.value, ev);
-		}
-	}, {
 		key: 'view',
 		value: function view(v) {
-			var _this = this;
+			var _this2 = this;
 
 			var radios = this.opts.map(function (button) {
 				var name = Object.keys(button)[0];
 				return v('label.pure-radio', [v('input', {
 					type: 'radio',
-					name: _this.groupName,
-					checked: name == _this.sel,
+					name: _this2.groupName,
+					checked: name == _this2.sel,
 					value: name
 				}), ' ' + button[name]]);
 			});
@@ -404,7 +698,7 @@ var Radio = (function (_ParcelEv) {
 exports['default'] = Radio;
 module.exports = exports['default'];
 
-},{"./parcelEv.js":3}],5:[function(require,module,exports){
+},{"./parcelEv.js":4}],6:[function(require,module,exports){
 /*jshint node:true*/
 /*globals window: true */
 "use strict";
@@ -1247,7 +1541,7 @@ to compare whether the parcel contents has changed
 @static
 */
 
-},{"lodash":12}],6:[function(require,module,exports){
+},{"lodash":13}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1290,7 +1584,7 @@ enclavamientos = function (celda, celdas, fromEnclavamiento) {
 exports['default'] = enclavamientos;
 module.exports = exports['default'];
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1337,7 +1631,7 @@ var Estado = (function (_Parcel) {
 	_createClass(Estado, [{
 		key: 'view',
 		value: function view(v) {
-			return v('pre', JSON.stringify(this.celda, null, 2));
+			return v('pre', this.celda.toString());
 		}
 	}]);
 
@@ -1469,7 +1763,7 @@ exports['default'] = {
 };
 module.exports = exports['default'];
 
-},{"./component/parcel.js":2,"./component/radio.js":4,"./enclavamientos.js":6}],8:[function(require,module,exports){
+},{"./component/parcel.js":3,"./component/radio.js":5,"./enclavamientos.js":7}],9:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1525,7 +1819,7 @@ global.Mimico = Mimico;
 vdom.rootApp(Mimico);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./component/parcel.js":2,"./component/virtual-dom.js":5,"./sector.js":9,"./teletipo.js":10}],9:[function(require,module,exports){
+},{"./component/parcel.js":3,"./component/virtual-dom.js":6,"./sector.js":10,"./teletipo.js":11}],10:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1542,13 +1836,17 @@ Object.defineProperty(exports, '__esModule', {
 	value: true
 });
 
-var _ParcelEv2 = require('./component/parcelEv.js');
+var _Parcel2 = require('./component/parcel.js');
 
-var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
+var _Parcel3 = _interopRequireWildcard(_Parcel2);
 
 var _Estados = require('./estado.js');
 
 var _Estados2 = _interopRequireWildcard(_Estados);
+
+var _Celdas = require('./celda.js');
+
+var _Celdas2 = _interopRequireWildcard(_Celdas);
 
 /* jshint node:true, esnext:true */
 
@@ -1557,98 +1855,21 @@ var _Estados2 = _interopRequireWildcard(_Estados);
 var _ = require('lodash'),
     http = require('./component/http.js');
 
-var v;
-
 var ANCHO_CELDA = 100,
     CENTRO_CELDA = ANCHO_CELDA / 2;
 
-var X = {
-	N: CENTRO_CELDA,
-	NE: ANCHO_CELDA,
-	E: ANCHO_CELDA,
-	SE: ANCHO_CELDA,
-	S: CENTRO_CELDA,
-	SW: 0,
-	W: 0,
-	NW: 0
-},
-    Y = {
-	N: 0,
-	NE: 0,
-	E: CENTRO_CELDA,
-	SE: ANCHO_CELDA,
-	S: ANCHO_CELDA,
-	SW: ANCHO_CELDA,
-	W: CENTRO_CELDA,
-	NW: 0
-};
-
-var lineaA = function lineaA(dest, estilo) {
-	return v('line', {
-		x1: CENTRO_CELDA,
-		y1: CENTRO_CELDA,
-		x2: X[dest],
-		y2: Y[dest],
-		'class': estilo || ''
-	});
-};
-
-var texto = (function (_texto) {
-	function texto(_x) {
-		return _texto.apply(this, arguments);
-	}
-
-	texto.toString = function () {
-		return _texto.toString();
-	};
-
-	return texto;
-})(function (texto) {
-	return v('text', {
-		x: CENTRO_CELDA,
-		y: CENTRO_CELDA
-	}, texto);
-});
-
-var Views = {
-	linea: function linea(celda) {
-		return [texto(celda.x + ' ' + celda.y), lineaA(celda.desde), lineaA(celda.hacia)];
-	},
-	desvio: function desvio(celda) {
-		return [texto(celda.x + ' ' + celda.y), lineaA(celda.punta), lineaA(celda.normal, celda.desviado ? 'off' : null), lineaA(celda.invertido, !celda.desviado ? 'off' : null)];
-	},
-	paragolpe: function paragolpe(celda) {
-		return [texto(celda.x + ' ' + celda.y), lineaA(celda.desde), v('circle', {
-			cx: CENTRO_CELDA,
-			cy: CENTRO_CELDA,
-			r: ANCHO_CELDA / 10
-		})];
-	},
-	triple: function triple(celda) {
-		return [texto(celda.x + ' ' + celda.y), lineaA(celda.punta), lineaA(celda.normal, celda.posicion ? 'off' : null), lineaA(celda.izq, celda.posicion != -1 ? 'off' : null), lineaA(celda.der, celda.posicion != 1 ? 'off' : null)];
-	},
-	cruce: function cruce(celda) {
-		return [texto(celda.x + ' ' + celda.y), lineaA(celda.l1.desde), lineaA(celda.l1.hacia), lineaA(celda.l2.desde), lineaA(celda.l2.hacia)];
-	}
-};
-
-var Sector = (function (_ParcelEv) {
+var Sector = (function (_Parcel) {
 	function Sector(config) {
+		var _this = this;
+
 		_classCallCheck(this, Sector);
 
-		_get(Object.getPrototypeOf(Sector.prototype), 'constructor', this).call(this, {
-			EVENTS: {
-				click: {
-					'g *': this.clickCelda
-				}
-			}
-		});
-		var _this = this;
+		_get(Object.getPrototypeOf(Sector.prototype), 'constructor', this).call(this);
 
 		this.ancho = 1;
 		this.alto = 1;
-		this.celdas = [];
-
+		this.celdas = {};
+		this.seleccionada;
 		this.estado = '';
 
 		http({
@@ -1656,14 +1877,16 @@ var Sector = (function (_ParcelEv) {
 			url: 'data/' + config.sector + '.json'
 		}, function (response, body) {
 			if (response.statusCode == 200) {
-				_.merge(_this, body);
-				_.forEach(_this.celdas, function (celda, coords) {
+				_this.alto = body.alto;
+				_this.ancho = body.ancho;
+				_this.descr = body.descr;
+				_.forEach(body.celdas, function (celda, coords) {
 					var coord = coords.split(',');
 					celda.x = parseInt(coord[0], 10);
 					celda.y = parseInt(coord[1], 10);
-					celda.enclavamientos = [];
+					_this.celdas[coords] = new _Celdas2['default'][celda.tipo](celda).on('click', _this.onClick.bind(_this));
 				});
-				_this.enclavamientos.forEach(function (enclavamiento) {
+				body.enclavamientos.forEach(function (enclavamiento) {
 					enclavamiento.celdas.forEach(function (celda) {
 						_this.celdas[celda].enclavamientos.push(enclavamiento);
 					});
@@ -1672,19 +1895,17 @@ var Sector = (function (_ParcelEv) {
 		});
 	}
 
-	_inherits(Sector, _ParcelEv);
+	_inherits(Sector, _Parcel);
 
 	_createClass(Sector, [{
-		key: 'clickCelda',
-		value: function clickCelda(ev) {
-			var target = ev.target;
-			while (target && target.tagName != 'g') {
-				target = target.parentElement;
+		key: 'onClick',
+		value: function onClick(celda) {
+			if (this.seleccionada) {
+				this.seleccionada.seleccionada = false;
 			}
-			if (!target) {
-				return;
-			}var celda = this.celdas[target.id];
 			this.seleccionada = celda;
+			celda.seleccionada = true;
+
 			if (this.estado.celda && this.estado.celda.tipo == celda.tipo) {
 				this.estado.celda = celda;
 			} else {
@@ -1696,37 +1917,22 @@ var Sector = (function (_ParcelEv) {
 		}
 	}, {
 		key: 'view',
-		value: function view(vNode) {
-			var _this = this,
-			    sel = _this.seleccionada;
-
-			v = vNode;
+		value: function view(v) {
 			return v('div.pure-g', [v('div.pure-u-3-4', v('svg.sector', {
-				viewBox: '0 0 ' + _this.ancho * ANCHO_CELDA + ' ' + _this.alto * ANCHO_CELDA,
+				viewBox: '0 0 ' + this.ancho * ANCHO_CELDA + ' ' + this.alto * ANCHO_CELDA,
 				xmlns: 'http://www.w3.org/2000/svg',
 				version: 1.1
-			}, [v('rect', {
-				x: (sel ? sel.x : 0) * ANCHO_CELDA,
-				y: (sel ? sel.y : 0) * ANCHO_CELDA,
-				width: ANCHO_CELDA,
-				height: ANCHO_CELDA,
-				'class': sel ? 'seleccionada' : 'oculta'
-			})].concat(_.map(_this.celdas, function (celda, id) {
-				return v('g', {
-					transform: 'translate(' + celda.x * ANCHO_CELDA + ',' + celda.y * ANCHO_CELDA + ')',
-					id: id
-				}, Views[celda.tipo](celda));
-			})))), v('div.pure-u-1-4', v('div.estado', this.estado))]);
+			}, _.values(this.celdas))), v('div.pure-u-1-4', v('div.estado', this.estado))]);
 		}
 	}]);
 
 	return Sector;
-})(_ParcelEv3['default']);
+})(_Parcel3['default']);
 
 exports['default'] = Sector;
 module.exports = exports['default'];
 
-},{"./component/http.js":1,"./component/parcelEv.js":3,"./estado.js":7,"lodash":12}],10:[function(require,module,exports){
+},{"./celda.js":1,"./component/http.js":2,"./component/parcel.js":3,"./estado.js":8,"lodash":13}],11:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1790,7 +1996,7 @@ var Teletipo = (function (_Parcel) {
 exports['default'] = Teletipo;
 module.exports = exports['default'];
 
-},{"./component/parcel.js":2}],11:[function(require,module,exports){
+},{"./component/parcel.js":3}],12:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2093,7 +2299,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -13900,7 +14106,7 @@ function isUndefined(arg) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -14072,7 +14278,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":14,"once":15,"parse-headers":19}],14:[function(require,module,exports){
+},{"global/window":15,"once":16,"parse-headers":20}],15:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -14085,7 +14291,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -14106,7 +14312,7 @@ function once (fn) {
   }
 }
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -14154,7 +14360,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":17}],17:[function(require,module,exports){
+},{"is-function":18}],18:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -14171,7 +14377,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -14187,7 +14393,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -14219,4 +14425,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":16,"trim":18}]},{},[8]);
+},{"for-each":17,"trim":19}]},{},[9]);

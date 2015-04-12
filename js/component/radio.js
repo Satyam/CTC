@@ -21,7 +21,7 @@ export default class Radio extends ParcelEv {
 	constructor (config) {
 		super({
 			EVENTS: {
-				click: this.onClick
+				click: (ev) => 	this.emit('click', ev.target.value, ev)
 				// or { 'input[type=radio]': this.onclick }
 			}
 		});
@@ -31,9 +31,6 @@ export default class Radio extends ParcelEv {
 		this.groupName = config.groupName || 'RadioComponent' + count++;
 		this.containerType = config.title?'fieldset':'form';
 		this.className = 'pure-form';
-	}
-	onClick (ev) {
-		this.emit('click', ev.target.value, ev);
 	}
 	view (v) {
 		var radios = this.opts.map(button => {

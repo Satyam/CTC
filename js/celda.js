@@ -2,32 +2,8 @@
 
 "use strict";
 import ParcelEv from './component/parcelEv.js';
-
 var _ = require('lodash');
-
-var ANCHO_CELDA = 100,
-	CENTRO_CELDA = ANCHO_CELDA / 2;
-
-var X = {
-		N: CENTRO_CELDA,
-		NE: ANCHO_CELDA,
-		E: ANCHO_CELDA,
-		SE: ANCHO_CELDA,
-		S: CENTRO_CELDA,
-		SW: 0,
-		W: 0,
-		NW: 0
-	},
-	Y = {
-		N: 0,
-		NE: 0,
-		E: CENTRO_CELDA,
-		SE: ANCHO_CELDA,
-		S: ANCHO_CELDA,
-		SW: ANCHO_CELDA,
-		W: CENTRO_CELDA,
-		NW: 0
-	};
+import {ANCHO_CELDA, CENTRO_CELDA, X,  Y} from './common.js';
 
 class Celda extends ParcelEv {
 	constructor (config) {

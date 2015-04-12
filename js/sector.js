@@ -9,8 +9,7 @@ import CeldaFactory from './celda.js';
 var _ = require('lodash'),
 	http = require('./component/http.js');
 
-var ANCHO_CELDA = 100,
-	CENTRO_CELDA = ANCHO_CELDA / 2;
+import {ANCHO_CELDA} from './common.js';
 
 export default class Sector extends Parcel {
 	constructor (config) {

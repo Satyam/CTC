@@ -19,35 +19,13 @@ var _ParcelEv2 = require('./component/parcelEv.js');
 
 var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
 
+var _ANCHO_CELDA$CENTRO_CELDA$X$Y = require('./common.js');
+
 /* jshint node:true , esnext:true*/
 
 'use strict';
 
 var _ = require('lodash');
-
-var ANCHO_CELDA = 100,
-    CENTRO_CELDA = ANCHO_CELDA / 2;
-
-var X = {
-	N: CENTRO_CELDA,
-	NE: ANCHO_CELDA,
-	E: ANCHO_CELDA,
-	SE: ANCHO_CELDA,
-	S: CENTRO_CELDA,
-	SW: 0,
-	W: 0,
-	NW: 0
-},
-    Y = {
-	N: 0,
-	NE: 0,
-	E: CENTRO_CELDA,
-	SE: ANCHO_CELDA,
-	S: ANCHO_CELDA,
-	SW: ANCHO_CELDA,
-	W: CENTRO_CELDA,
-	NW: 0
-};
 
 var Celda = (function (_ParcelEv) {
 	function Celda(config) {
@@ -66,7 +44,7 @@ var Celda = (function (_ParcelEv) {
 		this.containerType = 'g';
 		_.merge(this, config);
 		this.attributes = {
-			transform: 'translate(' + config.x * ANCHO_CELDA + ',' + config.y * ANCHO_CELDA + ')'
+			transform: 'translate(' + config.x * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ',' + config.y * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ')'
 		};
 	}
 
@@ -78,12 +56,12 @@ var Celda = (function (_ParcelEv) {
 			return [].concat(v('rect', {
 				x: 0,
 				y: 0,
-				width: ANCHO_CELDA,
-				height: ANCHO_CELDA,
+				width: _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA,
+				height: _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA,
 				'class': this.seleccionada ? 'seleccionada' : 'oculta'
 			}), content, v('text', {
-				x: CENTRO_CELDA,
-				y: CENTRO_CELDA
+				x: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
+				y: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA
 			}, this.x + ' ' + this.y));
 		}
 	}, {
@@ -114,10 +92,10 @@ var Celda = (function (_ParcelEv) {
 
 var lineaA = function lineaA(v, dest, estilo) {
 	return v('line', {
-		x1: CENTRO_CELDA,
-		y1: CENTRO_CELDA,
-		x2: X[dest],
-		y2: Y[dest],
+		x1: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
+		y1: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
+		x2: _ANCHO_CELDA$CENTRO_CELDA$X$Y.X[dest],
+		y2: _ANCHO_CELDA$CENTRO_CELDA$X$Y.Y[dest],
 		'class': estilo || ''
 	});
 };
@@ -200,9 +178,9 @@ var Celdas = {
 			key: 'view',
 			value: function view(v) {
 				return _get(Object.getPrototypeOf(Paragolpe.prototype), 'view', this).call(this, v, [lineaA(v, this.desde), v('circle', {
-					cx: CENTRO_CELDA,
-					cy: CENTRO_CELDA,
-					r: ANCHO_CELDA / 10
+					cx: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
+					cy: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
+					r: _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA / 10
 				})]);
 			}
 		}, {
@@ -301,7 +279,56 @@ var CeldaFactory = function CeldaFactory(celda) {
 exports['default'] = CeldaFactory;
 module.exports = exports['default'];
 
-},{"./component/parcelEv.js":4,"lodash":13}],2:[function(require,module,exports){
+},{"./common.js":2,"./component/parcelEv.js":5,"lodash":14}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+/* jshint node:true , esnext:true*/
+
+"use strict";
+
+var ANCHO_CELDA = 100,
+    CENTRO_CELDA = ANCHO_CELDA / 2;
+
+exports.ANCHO_CELDA = ANCHO_CELDA;
+exports.CENTRO_CELDA = CENTRO_CELDA;
+var X = {
+	N: CENTRO_CELDA,
+	NE: ANCHO_CELDA,
+	E: ANCHO_CELDA,
+	SE: ANCHO_CELDA,
+	S: CENTRO_CELDA,
+	SW: 0,
+	W: 0,
+	NW: 0
+},
+    Y = {
+	N: 0,
+	NE: 0,
+	E: CENTRO_CELDA,
+	SE: ANCHO_CELDA,
+	S: ANCHO_CELDA,
+	SW: ANCHO_CELDA,
+	W: CENTRO_CELDA,
+	NW: 0
+},
+    ANG = {
+	N: 270,
+	NE: 315,
+	E: 0,
+	SE: 45,
+	S: 90,
+	SW: 135,
+	W: 180,
+	NW: 225
+};
+exports.X = X;
+exports.Y = Y;
+exports.ANG = ANG;
+
+},{}],3:[function(require,module,exports){
 /* jshint node:true */
 /* global window: false */
 
@@ -319,7 +346,7 @@ module.exports = function (config, cb) {
 	});
 };
 
-},{"./virtual-dom.js":6,"xhr":14}],3:[function(require,module,exports){
+},{"./virtual-dom.js":7,"xhr":15}],4:[function(require,module,exports){
 'use strict';
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
@@ -509,7 +536,7 @@ var Parcel = (function () {
 exports['default'] = Parcel;
 module.exports = exports['default'];
 
-},{"lodash":13}],4:[function(require,module,exports){
+},{"lodash":14}],5:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -621,7 +648,7 @@ var ParcelEv = (function (_Parcel) {
 exports['default'] = ParcelEv;
 module.exports = exports['default'];
 
-},{"./parcel.js":3,"./virtual-dom.js":6,"events":12,"lodash":13}],5:[function(require,module,exports){
+},{"./parcel.js":4,"./virtual-dom.js":7,"events":13,"lodash":14}],6:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -706,7 +733,7 @@ var Radio = (function (_ParcelEv) {
 exports['default'] = Radio;
 module.exports = exports['default'];
 
-},{"./parcelEv.js":4}],6:[function(require,module,exports){
+},{"./parcelEv.js":5}],7:[function(require,module,exports){
 /*jshint node:true*/
 /*globals window: true */
 "use strict";
@@ -1549,7 +1576,7 @@ to compare whether the parcel contents has changed
 @static
 */
 
-},{"lodash":13}],7:[function(require,module,exports){
+},{"lodash":14}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1592,7 +1619,7 @@ enclavamientos = function (celda, celdas, fromEnclavamiento) {
 exports['default'] = enclavamientos;
 module.exports = exports['default'];
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1779,7 +1806,7 @@ var EstadoFactory = function EstadoFactory(celdas, celda) {
 exports['default'] = EstadoFactory;
 module.exports = exports['default'];
 
-},{"./component/parcel.js":3,"./component/radio.js":5,"./enclavamientos.js":7}],9:[function(require,module,exports){
+},{"./component/parcel.js":4,"./component/radio.js":6,"./enclavamientos.js":8}],10:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -1835,7 +1862,7 @@ global.Mimico = Mimico;
 vdom.rootApp(Mimico);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./component/parcel.js":3,"./component/virtual-dom.js":6,"./sector.js":10,"./teletipo.js":11}],10:[function(require,module,exports){
+},{"./component/parcel.js":4,"./component/virtual-dom.js":7,"./sector.js":11,"./teletipo.js":12}],11:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1864,15 +1891,14 @@ var _CeldaFactory = require('./celda.js');
 
 var _CeldaFactory2 = _interopRequireWildcard(_CeldaFactory);
 
+var _ANCHO_CELDA = require('./common.js');
+
 /* jshint node:true, esnext:true */
 
 'use strict';
 
 var _ = require('lodash'),
     http = require('./component/http.js');
-
-var ANCHO_CELDA = 100,
-    CENTRO_CELDA = ANCHO_CELDA / 2;
 
 var Sector = (function (_Parcel) {
 	function Sector(config) {
@@ -1935,7 +1961,7 @@ var Sector = (function (_Parcel) {
 		key: 'view',
 		value: function view(v) {
 			return v('div.pure-g', [v('div.pure-u-3-4', v('svg.sector', {
-				viewBox: '0 0 ' + this.ancho * ANCHO_CELDA + ' ' + this.alto * ANCHO_CELDA,
+				viewBox: '0 0 ' + this.ancho * _ANCHO_CELDA.ANCHO_CELDA + ' ' + this.alto * _ANCHO_CELDA.ANCHO_CELDA,
 				xmlns: 'http://www.w3.org/2000/svg',
 				version: 1.1
 			}, _.values(this.celdas))), v('div.pure-u-1-4', v('div.estado', this.estado))]);
@@ -1948,7 +1974,7 @@ var Sector = (function (_Parcel) {
 exports['default'] = Sector;
 module.exports = exports['default'];
 
-},{"./celda.js":1,"./component/http.js":2,"./component/parcel.js":3,"./estado.js":8,"lodash":13}],11:[function(require,module,exports){
+},{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcel.js":4,"./estado.js":9,"lodash":14}],12:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -2012,7 +2038,7 @@ var Teletipo = (function (_Parcel) {
 exports['default'] = Teletipo;
 module.exports = exports['default'];
 
-},{"./component/parcel.js":3}],12:[function(require,module,exports){
+},{"./component/parcel.js":4}],13:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2315,7 +2341,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -14122,7 +14148,7 @@ function isUndefined(arg) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -14294,7 +14320,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":15,"once":16,"parse-headers":20}],15:[function(require,module,exports){
+},{"global/window":16,"once":17,"parse-headers":21}],16:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -14307,7 +14333,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -14328,7 +14354,7 @@ function once (fn) {
   }
 }
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -14376,7 +14402,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":18}],18:[function(require,module,exports){
+},{"is-function":19}],19:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -14393,7 +14419,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -14409,7 +14435,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -14441,4 +14467,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":17,"trim":19}]},{},[9]);
+},{"for-each":18,"trim":20}]},{},[10]);

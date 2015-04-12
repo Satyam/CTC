@@ -65,7 +65,13 @@
 			"tipo":"desvio",
 			"punta":"SE",
 			"normal":"NW",
-			"invertido":"W"
+			"invertido":"W",
+			"señales": {
+				"SE": {
+					"primaria":"alto",
+					"secundaria":"cuidado"
+				}
+			}
 		},
 		
 		"0,4": {
@@ -82,7 +88,12 @@
 			"punta":"W",
 			"normal":"E",
 			"izq":"NE",
-			"der":"SE"
+			"der":"SE",
+			"señales": {
+				"W": {
+					"primaria":"alto"
+				}
+			}
 		},
 		"3,4": {
 			"tipo":"cruce",

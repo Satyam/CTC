@@ -52,3 +52,17 @@ div.estado {
 	padding: 0 0.5em;
 	width:auto;
 }
+
+.señal {
+	stroke-width:2;
+	stroke:black;
+}
+.señal .verde {
+	fill:green;
+}
+.señal .alto {
+	fill:red;
+}
+.señal .cuidado {
+	fill: yellow;
+}

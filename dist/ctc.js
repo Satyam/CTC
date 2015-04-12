@@ -19,6 +19,10 @@ var _ParcelEv2 = require('./component/parcelEv.js');
 
 var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
 
+var _SeAl = require('./senal.js');
+
+var _SeAl2 = _interopRequireWildcard(_SeAl);
+
 var _ANCHO_CELDA$CENTRO_CELDA$X$Y = require('./common.js');
 
 /* jshint node:true , esnext:true*/
@@ -41,11 +45,16 @@ var Celda = (function (_ParcelEv) {
 			}
 		});
 		this.enclavamientos = [];
+		this.señales = {};
 		this.containerType = 'g';
 		_.merge(this, config);
 		this.attributes = {
 			transform: 'translate(' + config.x * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ',' + config.y * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ')'
 		};
+		_.each(this.señales, function (config, dir) {
+			config.dir = dir;
+			_this.señales[dir] = new _SeAl2['default'](config);
+		});
 	}
 
 	_inherits(Celda, _ParcelEv);
@@ -62,7 +71,7 @@ var Celda = (function (_ParcelEv) {
 			}), content, v('text', {
 				x: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
 				y: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA
-			}, this.x + ' ' + this.y));
+			}, this.x + ' ' + this.y), _.values(this.señales));
 		}
 	}, {
 		key: 'toJSON',
@@ -279,7 +288,7 @@ var CeldaFactory = function CeldaFactory(celda) {
 exports['default'] = CeldaFactory;
 module.exports = exports['default'];
 
-},{"./common.js":2,"./component/parcelEv.js":5,"lodash":14}],2:[function(require,module,exports){
+},{"./common.js":2,"./component/parcelEv.js":5,"./senal.js":12,"lodash":15}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -346,7 +355,7 @@ module.exports = function (config, cb) {
 	});
 };
 
-},{"./virtual-dom.js":7,"xhr":15}],4:[function(require,module,exports){
+},{"./virtual-dom.js":7,"xhr":16}],4:[function(require,module,exports){
 'use strict';
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
@@ -536,7 +545,7 @@ var Parcel = (function () {
 exports['default'] = Parcel;
 module.exports = exports['default'];
 
-},{"lodash":14}],5:[function(require,module,exports){
+},{"lodash":15}],5:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -648,7 +657,7 @@ var ParcelEv = (function (_Parcel) {
 exports['default'] = ParcelEv;
 module.exports = exports['default'];
 
-},{"./parcel.js":4,"./virtual-dom.js":7,"events":13,"lodash":14}],6:[function(require,module,exports){
+},{"./parcel.js":4,"./virtual-dom.js":7,"events":14,"lodash":15}],6:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1576,7 +1585,7 @@ to compare whether the parcel contents has changed
 @static
 */
 
-},{"lodash":14}],8:[function(require,module,exports){
+},{"lodash":15}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1862,7 +1871,7 @@ global.Mimico = Mimico;
 vdom.rootApp(Mimico);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./component/parcel.js":4,"./component/virtual-dom.js":7,"./sector.js":11,"./teletipo.js":12}],11:[function(require,module,exports){
+},{"./component/parcel.js":4,"./component/virtual-dom.js":7,"./sector.js":11,"./teletipo.js":13}],11:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1974,7 +1983,72 @@ var Sector = (function (_Parcel) {
 exports['default'] = Sector;
 module.exports = exports['default'];
 
-},{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcel.js":4,"./estado.js":9,"lodash":14}],12:[function(require,module,exports){
+},{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcel.js":4,"./estado.js":9,"lodash":15}],12:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _Parcel2 = require('./component/parcel.js');
+
+var _Parcel3 = _interopRequireWildcard(_Parcel2);
+
+var _ANCHO_CELDA$CENTRO_CELDA$ANG = require('./common.js');
+
+/* jshint node:true , esnext:true*/
+
+'use strict';
+
+var _ = require('lodash');
+
+var Señal = (function (_Parcel) {
+	function Señal(config) {
+		_classCallCheck(this, Señal);
+
+		_get(Object.getPrototypeOf(Señal.prototype), 'constructor', this).call(this);
+		this.containerType = 'g';
+		this.className = 'señal';
+		_.merge(this, config);
+	}
+
+	_inherits(Señal, _Parcel);
+
+	_createClass(Señal, [{
+		key: 'dir',
+		set: function (value) {
+			this._dir = value;
+			this.attributes = {
+				transform: 'rotate(' + _ANCHO_CELDA$CENTRO_CELDA$ANG.ANG[value] + ', ' + _ANCHO_CELDA$CENTRO_CELDA$ANG.CENTRO_CELDA + ', ' + _ANCHO_CELDA$CENTRO_CELDA$ANG.CENTRO_CELDA + ')'
+			};
+		},
+		get: function () {
+			return this._dir;
+		}
+	}, {
+		key: 'view',
+		value: function view(v) {
+			return [this.secundaria ? v('circle.secundaria', { cx: 75, cy: 40, r: 5, 'class': this.secundaria }) : '', v('circle.primaria', { cx: 87, cy: 40, r: 5, 'class': this.primaria }), v('line', { x1: 92, y1: 40, x2: 97, y2: 40 }), v('line', { x1: 97, y1: 35, x2: 97, y2: 45 })];
+		}
+	}]);
+
+	return Señal;
+})(_Parcel3['default']);
+
+exports['default'] = Señal;
+module.exports = exports['default'];
+
+},{"./common.js":2,"./component/parcel.js":4,"lodash":15}],13:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -2038,7 +2112,7 @@ var Teletipo = (function (_Parcel) {
 exports['default'] = Teletipo;
 module.exports = exports['default'];
 
-},{"./component/parcel.js":4}],13:[function(require,module,exports){
+},{"./component/parcel.js":4}],14:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2341,7 +2415,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -14148,7 +14222,7 @@ function isUndefined(arg) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -14320,7 +14394,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":16,"once":17,"parse-headers":21}],16:[function(require,module,exports){
+},{"global/window":17,"once":18,"parse-headers":22}],17:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -14333,7 +14407,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -14354,7 +14428,7 @@ function once (fn) {
   }
 }
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -14402,7 +14476,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":19}],19:[function(require,module,exports){
+},{"is-function":20}],20:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -14419,7 +14493,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -14435,7 +14509,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -14467,4 +14541,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":18,"trim":20}]},{},[10]);
+},{"for-each":19,"trim":21}]},{},[10]);

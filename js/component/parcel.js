@@ -24,21 +24,8 @@ The [`init`](#method_init) might be considered the true constructor of the parce
 */
 export default class Parcel {
 	constructor  (config) {
+		config = config || {};
 		
-		/**
-		Provides default initialization values for the configuration of this Parcel.
-		It is used by the constructor to merge it with the `config` values it might have
-		received.
-
-		The constructor only makes a shallow copy of the values in the hash.
-		Object references must be initialized in the [`init`](#method_init) method,
-		otherwise they would all point to the very same copy.
-
-		@property defaultConfig
-		@type Object
-		@default undefined
-		*/
-
 		/**
 		Type of DOM element that will be created to serve as a container for this Parcel.
 		Defaults to a `DIV`
@@ -48,7 +35,7 @@ export default class Parcel {
 		@default DIV
 
 		*/
-		this.containerType = 'DIV';
+		this.containerType = config.containerType || 'DIV';
 		/**
 		CSS className to add to the container for this parcel.
 		This is in addition to the className of `parcel` which is
@@ -58,7 +45,7 @@ export default class Parcel {
 		@type String
 		@default ''
 		*/
-		this.className='';
+		this.className= config.className || '';
 		/**
 		Hash map of attributes for the container element
 
@@ -66,7 +53,9 @@ export default class Parcel {
 		@type Object
 		@default:null
 		*/
-		this.attributes=null;
+		this.attributes=config.attribute || null;
+
+		if (config.text) this._text = config.text;
 	}
 	/**
 	Destructor.  
@@ -157,7 +146,7 @@ export default class Parcel {
 	@return {vNode} The expected virtual DOM for this parcel.
 	*/
 	view () {
-		return '';
+		return this._text || '';
 	}
 
 	/**

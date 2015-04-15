@@ -1,0 +1,14 @@
+{
+	"constitucion": {
+		"nombre":"Constitución",
+		"descr": "Estación Constitución, Ciudad de Buenos Aires, Argentina"
+	},
+	"retiro": {
+		"nombre":"Retiro",
+		"descr": "Mentira, apenas una línea"
+	},
+	"otra": {
+		"nombre":"Otra",
+		"descr": "En realidad no hay ninguna otra"
+	}
+}

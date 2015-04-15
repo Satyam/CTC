@@ -26,7 +26,7 @@ var simpleEventListener = function (listener, ev) {
 export default class ParcelEv extends Parcel {
 	constructor(config) {
 		super(config);
-		this._cfgEvts = config.EVENTS || {};
+		this._cfgEvts = (typeof config == 'object'?config.EVENTS || {}:{});
 		this._eventsToDetach = {};
 		EventEmitter.call(this);
 		_.merge(this,EventEmitter.prototype);

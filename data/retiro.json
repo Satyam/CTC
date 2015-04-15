@@ -1,0 +1,25 @@
+{
+	"descr":"Retiro",
+	"ancho":3,
+	"alto":1,
+	"celdas": {
+		"0,0": {
+			"tipo":"linea",
+			"desde":"E",
+			"hacia":"W"
+		},
+		"1,0": {
+			"tipo":"linea",
+			"desde":"E",
+			"hacia":"W"
+		},
+		"2,0": {
+			"tipo":"linea",
+			"desde":"E",
+			"hacia":"W"
+		}
+
+
+	}
+
+}

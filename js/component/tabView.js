@@ -47,6 +47,8 @@ export default class TabView extends ParcelEv {
 				return true;
 			}
 		})) {
+			ev.preventDefault();
+			ev.stopPropagation();
 			this.selected = hash;
 			this.emit('click', hash, selTab, ev);
 		}
@@ -76,6 +78,17 @@ export default class TabView extends ParcelEv {
 			}
 		})) this._tabs.push(tab);
 		if (select) this._selected = tab;
+	}
+
+	getTab (name) {
+		var tab;
+		this._tabs.some((t) => {
+			if (t.name == name) {
+				tab = t;
+				return true;
+			}
+		});
+		return tab;
 	}
 
 	remove (name) {

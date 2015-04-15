@@ -2,7 +2,7 @@
 
 "use strict";
 
-import Parcel from './component/parcel.js';
+import ParcelEv from './component/parcelEv.js';
 import EstadoFactory from './estado.js';
 import CeldaFactory from './celda.js';
 
@@ -11,7 +11,7 @@ var _ = require('lodash'),
 
 import {ANCHO_CELDA} from './common.js';
 
-export default class Sector extends Parcel {
+export default class Sector extends ParcelEv {
 	constructor (config) {
 		super();
 	
@@ -20,12 +20,10 @@ export default class Sector extends Parcel {
 		this.celdas = {};
 		this.seleccionada;
 		this.estado = '';
+		this.name = config.sector;
 		
-		http(
-			{
-				json: true,
-				url: 'data/' + config.sector + '.json'
-			}, 
+		http.get(
+			'data/' + config.sector + '.json',
 			(response, body) => {
 				if (response.statusCode == 200) {
 					this.alto = body.alto;
@@ -38,12 +36,15 @@ export default class Sector extends Parcel {
 						this.celdas[coords] = new CeldaFactory(celda).on('click', this.onClick.bind(this));
 
 					});
-					body.enclavamientos.forEach((enclavamiento) => {
+					(body.enclavamientos || []).forEach((enclavamiento) => {
 						enclavamiento.celdas.forEach((celda) => {
 							this.celdas[celda].enclavamientos.push(enclavamiento);
 						});
 					});
+				} else {
+					this.fail = response.statusCode + ': ' + response.body;
 				}
+				this.emit('loaded');
 			}
 		);
 	}
@@ -65,6 +66,7 @@ export default class Sector extends Parcel {
 	}
 	
 	view (v) {
+		if (this.fail) return v('.error', this.fail);
 		return v('div.pure-g', [
 			v('div.pure-u-3-4',
 			  	v(

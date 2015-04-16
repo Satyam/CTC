@@ -118,7 +118,9 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   fill: aquamarine;
 }
 .sector rect.oculta {
-  fill: none;
+  fill: #eeeeee;
+  stroke: white;
+  stroke-width: 2;
 }
 
 .señal {

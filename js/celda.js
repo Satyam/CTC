@@ -36,9 +36,9 @@ class Celda extends ParcelEv {
 			}),
 			content,
 			v('text', {
-				x: CENTRO_CELDA,
-				y: CENTRO_CELDA
-			}, this.x + ' ' + this.y),
+				x: 5,
+				y: 95
+			}, this.x + ',' + this.y),
 			_.values(this.señales)
 		);
 	}

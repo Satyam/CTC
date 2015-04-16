@@ -43,6 +43,9 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   border-radius: 4px 4px 0 0;
   padding: 0.3em;
 }
+.tab-view > .tabs > li i.fa-close {
+  margin-left: 0.5em;
+}
 .tab-view > .tabs > li.more {
   border-radius: 4px 8px 4px 0;
 }
@@ -100,6 +103,10 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
 }
 .estado pre {
   font-size: .7em;
+}
+
+.lista-sectores {
+  margin: 1em;
 }
 
 .sector line {

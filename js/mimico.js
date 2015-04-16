@@ -16,7 +16,7 @@ class Mimico extends Parcel {
 	constructor() {
 		super();
 
-		var config = window.localStorage.getItem('CTC');
+		var config = Mimico.config = window.localStorage.getItem('CTC');
 		if (!config) {
 			config = {sectores:[]};
 			window.localStorage.setItem('CTC', JSON.stringify(config));
@@ -29,6 +29,10 @@ class Mimico extends Parcel {
 			config.sectores = q.sectores.split(',');
 			window.localStorage.setItem('CTC', JSON.stringify(config));
 		}
+
+		config.save = function () {
+			window.localStorage.setItem('CTC', JSON.stringify(config));
+		};
 
 		Mimico.sectTabs = new TabView({
 			tabs: config.sectores.map((name) => {
@@ -62,15 +66,16 @@ class Mimico extends Parcel {
 				tab.name = name;
 				tab.content = new Sector({sector:name}).once('loaded', this.sectorLoaded);
 			}
+			config.sectores.push(name);
+			config.save();
 		};
-//		this.tv.on('add', () => {
-//			console.log('add');
-//			this.tv.add({
-//				name:'nuevo' + num,
-//				label: 'Nuevo ' + num,
-//				content: new Parcel({text: 'Nuevo ' + num++})
-//			});
-//		});
+		Mimico.sectTabs.on('remove', (name) => {
+			var sects = config.sectores;
+
+			sects.splice(sects.indexOf(name),1);
+			config.save();
+		});
+
 	}
 
 	sectorLoaded () {

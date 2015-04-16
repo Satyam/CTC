@@ -23,8 +23,9 @@ export default class TabView extends ParcelEv {
 		super({
 			EVENTS: {
 				click: {
-					'li.more': this.onMore,
-					'li.tab, li.tab a': this.onClick
+					'li.more *': this.onMore,
+					'li.tab, li.tab a': this.onClick,
+					'li.tab i.fa': this.onClose
 				}
 			}
 		});
@@ -36,6 +37,8 @@ export default class TabView extends ParcelEv {
 
 	onMore (ev) {
 		this.emit('add', ev);
+		ev.preventDefault();
+		ev.stopPropagation();
 	}
 	onClick (ev) {
 		var target = ev.target,
@@ -52,6 +55,14 @@ export default class TabView extends ParcelEv {
 			this.selected = hash;
 			this.emit('click', hash, selTab, ev);
 		}
+	}
+
+	onClose (ev) {
+		ev.preventDefault();
+		ev.stopPropagation();
+
+		var hash = ev.target.parentNode.hash.substr(1);
+		this.remove(hash);
 	}
 
 	set selected (value) {
@@ -92,16 +103,19 @@ export default class TabView extends ParcelEv {
 	}
 
 	remove (name) {
-		if (this._selected.name == name) {
-			this._selected = this._tabs[0];
-		}
-		this._tabs.some((tab, index) => {
+		var removed;
+		if (this._tabs.some((tab, index) => {
 			if (tab.name === name) {
-				this._tabs.splice(index,1);
+				removed = this._tabs.splice(index,1)[0];
 				return true;
 			}
 			return false;
-		});
+		})) {
+			if (this._selected.name == name) {
+				this._selected = this._tabs[0];
+			}
+			this.emit('remove', name, removed);
+		}
 	}
 
 
@@ -115,13 +129,16 @@ export default class TabView extends ParcelEv {
 					{
 						class:  (this._selected.name == tab.name?' selected':'')
 					},
-					v('a', {href:'#' + tab.name}, tab.label || tab.name)
+					v('a', {href:'#' + tab.name}, [
+						tab.label || tab.name,
+						v('i.fa.fa-close')
+					])
 				));
 			} else break;
 		}
 
 		if (tab == '+') {
-			ts.push(v('li.more.tab-left', '+'));
+			ts.push(v('li.more.tab-left', v('i.fa.fa-plus')));
 			i++;
 		}
 

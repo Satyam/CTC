@@ -69,9 +69,9 @@ var Celda = (function (_ParcelEv) {
 				height: _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA,
 				'class': this.seleccionada ? 'seleccionada' : 'oculta'
 			}), content, v('text', {
-				x: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
-				y: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA
-			}, this.x + ' ' + this.y), _.values(this.señales));
+				x: 5,
+				y: 95
+			}, this.x + ',' + this.y), _.values(this.señales));
 		}
 	}, {
 		key: 'toJSON',
@@ -816,8 +816,9 @@ var TabView = (function (_ParcelEv) {
 		_get(Object.getPrototypeOf(TabView.prototype), 'constructor', this).call(this, {
 			EVENTS: {
 				click: {
-					'li.more': this.onMore,
-					'li.tab, li.tab a': this.onClick
+					'li.more *': this.onMore,
+					'li.tab, li.tab a': this.onClick,
+					'li.tab i.fa': this.onClose
 				}
 			}
 		});
@@ -833,6 +834,8 @@ var TabView = (function (_ParcelEv) {
 		key: 'onMore',
 		value: function onMore(ev) {
 			this.emit('add', ev);
+			ev.preventDefault();
+			ev.stopPropagation();
 		}
 	}, {
 		key: 'onClick',
@@ -851,6 +854,15 @@ var TabView = (function (_ParcelEv) {
 				this.selected = hash;
 				this.emit('click', hash, selTab, ev);
 			}
+		}
+	}, {
+		key: 'onClose',
+		value: function onClose(ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+
+			var hash = ev.target.parentNode.hash.substr(1);
+			this.remove(hash);
 		}
 	}, {
 		key: 'selected',
@@ -900,16 +912,19 @@ var TabView = (function (_ParcelEv) {
 		value: function remove(name) {
 			var _this3 = this;
 
-			if (this._selected.name == name) {
-				this._selected = this._tabs[0];
-			}
-			this._tabs.some(function (tab, index) {
+			var removed;
+			if (this._tabs.some(function (tab, index) {
 				if (tab.name === name) {
-					_this3._tabs.splice(index, 1);
+					removed = _this3._tabs.splice(index, 1)[0];
 					return true;
 				}
 				return false;
-			});
+			})) {
+				if (this._selected.name == name) {
+					this._selected = this._tabs[0];
+				}
+				this.emit('remove', name, removed);
+			}
 		}
 	}, {
 		key: 'view',
@@ -924,12 +939,12 @@ var TabView = (function (_ParcelEv) {
 				if (typeof tab == 'object') {
 					ts.push(v('li.tab.tab-left', {
 						'class': this._selected.name == tab.name ? ' selected' : ''
-					}, v('a', { href: '#' + tab.name }, tab.label || tab.name)));
+					}, v('a', { href: '#' + tab.name }, [tab.label || tab.name, v('i.fa.fa-close')])));
 				} else break;
 			}
 
 			if (tab == '+') {
-				ts.push(v('li.more.tab-left', '+'));
+				ts.push(v('li.more.tab-left', v('i.fa.fa-plus')));
 				i++;
 			}
 
@@ -2064,6 +2079,8 @@ var ListaSectores = (function (_ParcelEv) {
 			}
 		});
 
+		this.className = 'lista-sectores';
+
 		http.get('data/lista.json', function (response, body) {
 			if (response.statusCode == 200) {
 				_this.lista = body;
@@ -2076,13 +2093,16 @@ var ListaSectores = (function (_ParcelEv) {
 	_createClass(ListaSectores, [{
 		key: 'onClick',
 		value: function onClick(ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
 			this.emit('click', ev.target.hash.substr(1));
 		}
 	}, {
 		key: 'view',
 		value: function view(v) {
-			return v('table', _.map(this.lista, function (item, name) {
-				return v('tr', [v('th', v('a.pure-button', { href: '#' + name }, item.nombre)), v('td', item.descr)]);
+			var index = 0;
+			return v('table.pure-table', _.map(this.lista, function (item, name) {
+				return v('tr', { 'class': index++ & 1 ? 'pure-table-even' : 'pure-table-odd' }, [v('td', v('a', { href: '#' + name }, item.nombre)), v('td', item.descr)]);
 			}));
 		}
 	}]);
@@ -2142,7 +2162,7 @@ var Mimico = (function (_Parcel) {
 
 		_get(Object.getPrototypeOf(Mimico.prototype), 'constructor', this).call(this);
 
-		var config = window.localStorage.getItem('CTC');
+		var config = Mimico.config = window.localStorage.getItem('CTC');
 		if (!config) {
 			config = { sectores: [] };
 			window.localStorage.setItem('CTC', JSON.stringify(config));
@@ -2155,6 +2175,10 @@ var Mimico = (function (_Parcel) {
 			config.sectores = q.sectores.split(',');
 			window.localStorage.setItem('CTC', JSON.stringify(config));
 		}
+
+		config.save = function () {
+			window.localStorage.setItem('CTC', JSON.stringify(config));
+		};
 
 		Mimico.sectTabs = new _TabView2['default']({
 			tabs: config.sectores.map(function (name) {
@@ -2185,15 +2209,15 @@ var Mimico = (function (_Parcel) {
 				tab.name = name;
 				tab.content = new _Sector2['default']({ sector: name }).once('loaded', _this.sectorLoaded);
 			}
+			config.sectores.push(name);
+			config.save();
 		};
-		//		this.tv.on('add', () => {
-		//			console.log('add');
-		//			this.tv.add({
-		//				name:'nuevo' + num,
-		//				label: 'Nuevo ' + num,
-		//				content: new Parcel({text: 'Nuevo ' + num++})
-		//			});
-		//		});
+		Mimico.sectTabs.on('remove', function (name) {
+			var sects = config.sectores;
+
+			sects.splice(sects.indexOf(name), 1);
+			config.save();
+		});
 	}
 
 	_inherits(Mimico, _Parcel);

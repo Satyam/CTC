@@ -16,6 +16,8 @@ export default class ListaSectores extends ParcelEv {
 			}
 		});
 
+		this.className = 'lista-sectores';
+
 		http.get(
 			'data/lista.json',
 			(response, body) => {
@@ -27,15 +29,22 @@ export default class ListaSectores extends ParcelEv {
 	}
 
 	onClick (ev) {
+		ev.preventDefault();
+		ev.stopPropagation();
 		this.emit('click', ev.target.hash.substr(1));
 	}
 
 	view (v) {
-		return v('table', _.map(this.lista, ( item, name) => {
-			return v('tr', [
-				v('th', v('a.pure-button', { href:'#' + name}, item.nombre)),
-				v('td', item.descr)
-			]);
+		var index = 0;
+		return v('table.pure-table', _.map(this.lista, ( item, name) => {
+			return v(
+				'tr',
+				{class:(index++ & 1) ? 'pure-table-even':'pure-table-odd'},
+				[
+					v('td', v('a', { href:'#' + name}, item.nombre)),
+					v('td', item.descr)
+				]
+			);
 		}));
 	}
 }

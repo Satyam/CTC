@@ -2410,8 +2410,38 @@ var Señal = (function (_Parcel) {
 		}
 	}, {
 		key: 'view',
+
+		/*
+
+  		<g style="stroke-width:2" transform="rotate(225,50,50)">
+  			<line x1="97" y1="38" x2="83" y2="38" />
+  			<line x1="97" y1="33" x2="97" y2="43" />
+  			<circle cx="87" cy="38" r="5" fill="green"/>
+  			<!--circle cx="87" cy="33" r="5" fill="yellow"/> der
+  			<circle cx="87" cy="43" r="5" fill="red"/-->
+  		</g>
+
+  		*/
+
 		value: function view(v) {
-			return [this.secundaria ? v('circle.secundaria', { cx: 75, cy: 40, r: 5, 'class': this.secundaria }) : '', v('circle.primaria', { cx: 87, cy: 40, r: 5, 'class': this.primaria }), v('line', { x1: 92, y1: 40, x2: 97, y2: 40 }), v('line', { x1: 97, y1: 35, x2: 97, y2: 45 })];
+			var r = 5,
+			    y = 38,
+			    xTope = 95,
+			    x1 = xTope - 2 * r,
+			    x2 = x1 - 2 * r + 2,
+			    s = [v('line', { x1: xTope, y1: y, x2: x2 + r, y2: y }), v('line', { x1: xTope, y1: y - r, x2: xTope, y2: y + r })];
+			if (this.izq || this.der) {
+				s.push(v('circle.primaria', { cx: x2, cy: y, r: r, 'class': this.primaria }));
+				if (this.izq) {
+					s.push(v('circle.izq', { cx: x1, cy: y + r, r: r, 'class': this.izq }));
+				}
+				if (this.der) {
+					s.push(v('circle.der', { cx: x1, cy: y - r, r: r, 'class': this.der }));
+				}
+			} else {
+				s.push(v('circle.primaria', { cx: x1, cy: y, r: r, 'class': this.primaria }));
+			}
+			return s;
 		}
 	}]);
 

@@ -49,7 +49,12 @@
 		"5,3": {
 			"tipo":"linea",
 			"desde":"W",
-			"hacia":"E"
+			"hacia":"E",
+			"señales": {
+				"E": {
+					"primaria":"verde"
+				}
+			}
 		},
 		"6,3": {
 			"tipo":"linea",
@@ -69,7 +74,7 @@
 			"señales": {
 				"SE": {
 					"primaria":"alto",
-					"secundaria":"precaución"
+					"izq":"precaucion"
 				}
 			}
 		},
@@ -91,7 +96,9 @@
 			"der":"SE",
 			"señales": {
 				"W": {
-					"primaria":"alto"
+					"primaria":"alto",
+					"izq":"verde",
+					"der":"precaucion"
 				}
 			}
 		},
@@ -111,6 +118,13 @@
 			"punta":"W",
 			"normal":"E",
 			"invertido":"SE"
+			,
+			"señales": {
+				"W": {
+					"primaria":"alto",
+					"der":"precaucion"
+				}
+			}
 		},
 		"5,4": {
 			"tipo":"desvio",

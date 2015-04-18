@@ -145,15 +145,5 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
 }
 
 .teletipo {
-  border: thin solid gray;
-  padding: 3px;
-}
-.teletipo li {
-  list-style-type: none;
-}
-.teletipo li.even {
-  background-color: #e0e0e0;
-}
-.teletipo li.odd {
-  background-color: white;
+  width: 100%;
 }

@@ -34,6 +34,8 @@ class Mimico extends Parcel {
 			window.localStorage.setItem('CTC', JSON.stringify(config));
 		};
 
+		Mimico.teletipo = new Teletipo();
+
 		Mimico.sectTabs = new TabView({
 			tabs: config.sectores.map((name) => {
 				return {
@@ -43,16 +45,12 @@ class Mimico extends Parcel {
 				};
 			}).concat('+', [
 				{
-					name:'tres',
-					content: new Parcel({text:'Las solapas de la izquierda son para mostrar sectores, estas para mostrar otra información  (a determinar) o se eliminan, es un POC (proof of concept)'})
-				},
-				{
-					name:'cuatro',
-					content: new Parcel({text:'Las solapas de la izquierda son para mostrar sectores, estas para mostrar otra información  (a determinar) o se eliminan, es un POC (proof of concept)'})
+					name:'teletipo',
+					label: 'Teletipo',
+					content: Mimico.teletipo
 				}
 			])
 		});
-		Mimico.teletipo = Mimico.teletipo || new Teletipo();
 		Mimico.sectTabs.on('add', () => {
 			Mimico.sectTabs.add( {
 				name:'nuevo',
@@ -84,10 +82,7 @@ class Mimico extends Parcel {
 	}
 
 	view(v) {
-		return [
-			v('div.solapas', Mimico.sectTabs),
-			Mimico.teletipo
-		];
+		return v('div.solapas', Mimico.sectTabs);
 	}
 
 }

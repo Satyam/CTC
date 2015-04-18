@@ -2180,6 +2180,8 @@ var Mimico = (function (_Parcel) {
 			window.localStorage.setItem('CTC', JSON.stringify(config));
 		};
 
+		Mimico.teletipo = new _Teletipo2['default']();
+
 		Mimico.sectTabs = new _TabView2['default']({
 			tabs: config.sectores.map(function (name) {
 				return {
@@ -2188,14 +2190,11 @@ var Mimico = (function (_Parcel) {
 					content: new _Sector2['default']({ sector: name }).once('loaded', _this.sectorLoaded)
 				};
 			}).concat('+', [{
-				name: 'tres',
-				content: new _Parcel3['default']({ text: 'Las solapas de la izquierda son para mostrar sectores, estas para mostrar otra información  (a determinar) o se eliminan, es un POC (proof of concept)' })
-			}, {
-				name: 'cuatro',
-				content: new _Parcel3['default']({ text: 'Las solapas de la izquierda son para mostrar sectores, estas para mostrar otra información  (a determinar) o se eliminan, es un POC (proof of concept)' })
+				name: 'teletipo',
+				label: 'Teletipo',
+				content: Mimico.teletipo
 			}])
 		});
-		Mimico.teletipo = Mimico.teletipo || new _Teletipo2['default']();
 		Mimico.sectTabs.on('add', function () {
 			Mimico.sectTabs.add({
 				name: 'nuevo',
@@ -2231,7 +2230,7 @@ var Mimico = (function (_Parcel) {
 	}, {
 		key: 'view',
 		value: function view(v) {
-			return [v('div.solapas', Mimico.sectTabs), Mimico.teletipo];
+			return v('div.solapas', Mimico.sectTabs);
 		}
 	}]);
 
@@ -2453,8 +2452,8 @@ var Teletipo = (function (_Parcel) {
 
 		_get(Object.getPrototypeOf(Teletipo.prototype), 'constructor', this).call(this);
 		this.lista = [];
-		this.containerType = 'ul';
-		this.className = 'teletipo';
+		this.containerType = 'table';
+		this.className = 'teletipo pure-table';
 	}
 
 	_inherits(Teletipo, _Parcel);
@@ -2472,11 +2471,11 @@ var Teletipo = (function (_Parcel) {
 	}, {
 		key: 'view',
 		value: function view(v) {
-			return this.lista.map(function (item, index) {
-				return v('li', {
-					'class': index & 1 ? 'odd' : 'even'
-				}, '[' + item.timestamp.toLocaleTimeString() + '] ' + item.sector + ':' + item.idCelda + ':  ' + item.mensaje);
-			});
+			return [v('thead', v('tr', [v('th', 'Hora'), v('th', 'Sector'), v('th', 'Celda'), v('th', 'Novedad')])), v('tbody', this.lista.map(function (item, index) {
+				return v('tr', {
+					'class': index & 1 ? 'pure-table-odd' : 'pure-table-even'
+				}, [v('td', item.timestamp.toLocaleTimeString()), v('td', item.sector), v('td', item.idCelda), v('td', item.mensaje)]);
+			}))];
 		}
 	}]);
 

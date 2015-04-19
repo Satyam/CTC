@@ -288,7 +288,7 @@ var CeldaFactory = function CeldaFactory(celda) {
 exports['default'] = CeldaFactory;
 module.exports = exports['default'];
 
-},{"./common.js":2,"./component/parcelEv.js":5,"./senal.js":14,"lodash":22}],2:[function(require,module,exports){
+},{"./common.js":2,"./component/parcelEv.js":5,"./senal.js":15,"lodash":23}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -390,7 +390,7 @@ http.del = function (url, cb) {
 
 module.exports = http;
 
-},{"./virtual-dom.js":8,"xhr":23}],4:[function(require,module,exports){
+},{"./virtual-dom.js":8,"xhr":24}],4:[function(require,module,exports){
 'use strict';
 
 var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
@@ -572,7 +572,7 @@ var Parcel = (function () {
 exports['default'] = Parcel;
 module.exports = exports['default'];
 
-},{"lodash":22}],5:[function(require,module,exports){
+},{"lodash":23}],5:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -684,7 +684,7 @@ var ParcelEv = (function (_Parcel) {
 exports['default'] = ParcelEv;
 module.exports = exports['default'];
 
-},{"./parcel.js":4,"./virtual-dom.js":8,"events":16,"lodash":22}],6:[function(require,module,exports){
+},{"./parcel.js":4,"./virtual-dom.js":8,"events":17,"lodash":23}],6:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -964,7 +964,7 @@ var TabView = (function (_ParcelEv) {
 exports['default'] = TabView;
 module.exports = exports['default'];
 
-},{"./parcelEv.js":5,"lodash":22}],8:[function(require,module,exports){
+},{"./parcelEv.js":5,"lodash":23}],8:[function(require,module,exports){
 /*jshint node:true*/
 /*globals window: true */
 "use strict";
@@ -1807,7 +1807,7 @@ to compare whether the parcel contents has changed
 @static
 */
 
-},{"lodash":22}],9:[function(require,module,exports){
+},{"lodash":23}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -2113,7 +2113,7 @@ var ListaSectores = (function (_ParcelEv) {
 exports['default'] = ListaSectores;
 module.exports = exports['default'];
 
-},{"./component/http.js":3,"./component/parcelEv.js":5,"lodash":22}],12:[function(require,module,exports){
+},{"./component/http.js":3,"./component/parcelEv.js":5,"lodash":23}],12:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -2142,6 +2142,10 @@ var _Teletipo2 = _interopRequireWildcard(_Teletipo);
 var _ListaSectores = require('./listaSectores.js');
 
 var _ListaSectores2 = _interopRequireWildcard(_ListaSectores);
+
+var _Reloj = require('./reloj.js');
+
+var _Reloj2 = _interopRequireWildcard(_Reloj);
 
 var _TabView = require('./component/tabView.js');
 
@@ -2181,6 +2185,7 @@ var Mimico = (function (_Parcel) {
 		};
 
 		Mimico.teletipo = new _Teletipo2['default']();
+		Mimico.reloj = new _Reloj2['default']();
 
 		Mimico.sectTabs = new _TabView2['default']({
 			tabs: config.sectores.map(function (name) {
@@ -2230,7 +2235,7 @@ var Mimico = (function (_Parcel) {
 	}, {
 		key: 'view',
 		value: function view(v) {
-			return v('div.solapas', Mimico.sectTabs);
+			return [Mimico.reloj, v('div.solapas', Mimico.sectTabs)];
 		}
 	}]);
 
@@ -2241,7 +2246,153 @@ global.Mimico = Mimico;
 vdom.rootApp(Mimico);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./component/parcel.js":4,"./component/tabView.js":7,"./component/virtual-dom.js":8,"./listaSectores.js":11,"./sector.js":13,"./teletipo.js":15,"url":21}],13:[function(require,module,exports){
+},{"./component/parcel.js":4,"./component/tabView.js":7,"./component/virtual-dom.js":8,"./listaSectores.js":11,"./reloj.js":13,"./sector.js":14,"./teletipo.js":16,"url":22}],13:[function(require,module,exports){
+'use strict';
+
+var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+Object.defineProperty(exports, '__esModule', {
+	value: true
+});
+
+var _ParcelEv2 = require('./component/parcelEv.js');
+
+var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
+
+/* jshint node:true, esnext:true */
+
+'use strict';
+
+var vDOM = require('./component/virtual-dom.js');
+
+var ACELERACION = 10,
+    VELOCIDAD = 10,
+    INTERVAL = 200;
+
+var Reloj = (function (_ParcelEv) {
+	function Reloj() {
+		_classCallCheck(this, Reloj);
+
+		_get(Object.getPrototypeOf(Reloj.prototype), 'constructor', this).call(this, {
+			EVENTS: {
+				click: {
+					'.fa-backward': this.lento,
+					'.fa-forward': this.rapido,
+					'.fa-pause': this.pausa,
+					'.fa-play': this.continuar
+				}
+			}
+		});
+		this.className = 'reloj';
+
+		this._velocidad = VELOCIDAD;
+		this._ahora = 0;
+		this._enPausa = 0;
+		this._referencia = Date.now();
+		this._alarmas = [];
+
+		this.timer = setInterval(this.onTimer.bind(this), INTERVAL);
+	}
+
+	_inherits(Reloj, _ParcelEv);
+
+	_createClass(Reloj, [{
+		key: 'ahora',
+		get: function () {
+			return this._ahora;
+		}
+	}, {
+		key: 'enPausa',
+		get: function () {
+			return !!this._enPausa;
+		}
+	}, {
+		key: 'velocidad',
+		get: function () {
+			return this._velocidad;
+		},
+		set: function (valor) {
+			if (typeof valor == 'number' && valor >= 0) {
+				if (!valor) this.pausa();else {
+					this._velocidad = valor;
+				}
+			}
+		}
+	}, {
+		key: 'onTimer',
+		value: function onTimer() {
+			vDOM.redrawPending();
+
+			var ahora = this._ahora,
+			    aBorrar = 0;
+			ahora += (Date.now() - this._referencia) * this._velocidad;
+			this._alarmas.some(function (alarma) {
+				if (alarma.cuando < ahora) {
+					alarma.cb(ahora);
+					aBorrar++;
+				} else return true;
+			});
+			this._alarmas.splice(0, aBorrar);
+			this._ahora = ahora;
+			vDOM.redrawReady();
+		}
+	}, {
+		key: 'lento',
+		value: function lento() {
+			this._velocidad /= ACELERACION;
+		}
+	}, {
+		key: 'rapido',
+		value: function rapido() {
+			this._velocidad *= ACELERACION;
+		}
+	}, {
+		key: 'pausa',
+		value: function pausa() {
+			this._enPausa = Date.now();
+			clearTimeout(this.timer);
+		}
+	}, {
+		key: 'continuar',
+		value: function continuar() {
+			this._referencia -= Date.now() - this._enPausa;
+			this.timer = setInterval(this.onTimer.bind(this), INTERVAL);
+			this._enPausa = 0;
+		}
+	}, {
+		key: 'agregarAlarma',
+		value: function agregarAlarma(cuando, cb) {
+			if (typeof cuando != 'number' || typeof cb != 'function') {
+				return;
+			}this._alarmas.push({ cuando: cuando, cb: cb });
+			this._alarmas.sort(function (a, b) {
+				if (a.cuando < b.cuando) return -1;
+				if (a.cuando == b.cuando) return 0;
+				return 1;
+			});
+		}
+	}, {
+		key: 'view',
+		value: function view(v) {
+			return [new Date(this._ahora).toLocaleTimeString(), v('i.fa.fa-backward'), v(this._enPausa ? 'i.fa.fa-play' : 'i.fa.fa-pause'), v('i.fa.fa-forward')];
+		}
+	}]);
+
+	return Reloj;
+})(_ParcelEv3['default']);
+
+exports['default'] = Reloj;
+module.exports = exports['default'];
+
+},{"./component/parcelEv.js":5,"./component/virtual-dom.js":8}],14:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -2356,7 +2507,7 @@ var Sector = (function (_ParcelEv) {
 exports['default'] = Sector;
 module.exports = exports['default'];
 
-},{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcelEv.js":5,"./estado.js":10,"lodash":22}],14:[function(require,module,exports){
+},{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcelEv.js":5,"./estado.js":10,"lodash":23}],15:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -2451,7 +2602,7 @@ var Señal = (function (_Parcel) {
 exports['default'] = Señal;
 module.exports = exports['default'];
 
-},{"./common.js":2,"./component/parcel.js":4,"lodash":22}],15:[function(require,module,exports){
+},{"./common.js":2,"./component/parcel.js":4,"lodash":23}],16:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -2515,7 +2666,7 @@ var Teletipo = (function (_Parcel) {
 exports['default'] = Teletipo;
 module.exports = exports['default'];
 
-},{"./component/parcel.js":4}],16:[function(require,module,exports){
+},{"./component/parcel.js":4}],17:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2818,7 +2969,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (global){
 /*! http://mths.be/punycode v1.2.4 by @mathias */
 ;(function(root) {
@@ -3329,7 +3480,7 @@ function isUndefined(arg) {
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3415,7 +3566,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3502,13 +3653,13 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":18,"./encode":19}],21:[function(require,module,exports){
+},{"./decode":19,"./encode":20}],22:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4217,7 +4368,7 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":17,"querystring":20}],22:[function(require,module,exports){
+},{"punycode":18,"querystring":21}],23:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -16024,7 +16175,7 @@ function isNullOrUndefined(arg) {
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 var window = require("global/window")
 var once = require("once")
@@ -16196,7 +16347,7 @@ function createXHR(options, callback) {
 
 function noop() {}
 
-},{"global/window":24,"once":25,"parse-headers":29}],24:[function(require,module,exports){
+},{"global/window":25,"once":26,"parse-headers":30}],25:[function(require,module,exports){
 (function (global){
 if (typeof window !== "undefined") {
     module.exports = window;
@@ -16209,7 +16360,7 @@ if (typeof window !== "undefined") {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = once
 
 once.proto = once(function () {
@@ -16230,7 +16381,7 @@ function once (fn) {
   }
 }
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var isFunction = require('is-function')
 
 module.exports = forEach
@@ -16278,7 +16429,7 @@ function forEachObject(object, iterator, context) {
     }
 }
 
-},{"is-function":27}],27:[function(require,module,exports){
+},{"is-function":28}],28:[function(require,module,exports){
 module.exports = isFunction
 
 var toString = Object.prototype.toString
@@ -16295,7 +16446,7 @@ function isFunction (fn) {
       fn === window.prompt))
 };
 
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 
 exports = module.exports = trim;
 
@@ -16311,7 +16462,7 @@ exports.right = function(str){
   return str.replace(/\s*$/, '');
 };
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var trim = require('trim')
   , forEach = require('for-each')
   , isArray = function(arg) {
@@ -16343,4 +16494,4 @@ module.exports = function (headers) {
 
   return result
 }
-},{"for-each":26,"trim":28}]},{},[12]);
+},{"for-each":27,"trim":29}]},{},[12]);

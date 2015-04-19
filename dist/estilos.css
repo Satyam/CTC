@@ -109,6 +109,15 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   margin: 1em;
 }
 
+.reloj {
+  padding: 4px;
+  background-color: silver;
+  display: inline-block;
+}
+.reloj i.fa {
+  margin: 0 5px;
+}
+
 .sector line {
   stroke: black;
   stroke-width: 4;

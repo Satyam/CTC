@@ -8,6 +8,7 @@ import Parcel from './component/parcel.js';
 import Sector from './sector.js';
 import Teletipo from './teletipo.js';
 import ListaSectores from './listaSectores.js';
+import Reloj from './reloj.js';
 var url = require('url');
 
 import TabView from './component/tabView.js';
@@ -35,6 +36,7 @@ class Mimico extends Parcel {
 		};
 
 		Mimico.teletipo = new Teletipo();
+		Mimico.reloj = new Reloj();
 
 		Mimico.sectTabs = new TabView({
 			tabs: config.sectores.map((name) => {
@@ -82,7 +84,10 @@ class Mimico extends Parcel {
 	}
 
 	view(v) {
-		return v('div.solapas', Mimico.sectTabs);
+		return [
+			Mimico.reloj,
+			v('div.solapas', Mimico.sectTabs)
+		];
 	}
 
 }

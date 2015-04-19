@@ -165,7 +165,7 @@ var v = {
 		vAttrs = (vNode.attrs?_.clone(vNode.attrs):{});
 		vAttrs.className = (vAttrs.className?vAttrs.className.slice():[]);
 		var s = vAttrs.style;
-		if (s) vAttrs.style = _.clone(s);
+		vAttrs.style = s?_.clone(s):{};
 
 		// ensure the children are always an array.
 		if (children !== undefined) {

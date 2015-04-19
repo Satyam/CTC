@@ -118,25 +118,28 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   margin: 0 5px;
 }
 
-.sector line {
+.sector svg line {
   stroke: black;
   stroke-width: 4;
 }
-.sector line.off {
+.sector svg line.off {
   stroke: silver;
   stroke-width: 3;
 }
-.sector text {
+.sector svg text {
   stroke: blue;
   stroke-width: 1;
 }
-.sector rect.seleccionada {
+.sector svg rect.seleccionada {
   fill: aquamarine;
 }
-.sector rect.oculta {
+.sector svg rect.oculta {
   fill: #eeeeee;
   stroke: white;
   stroke-width: 2;
+}
+.sector .estado {
+  overflow-y: scroll;
 }
 
 .señal {

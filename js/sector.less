@@ -1,28 +1,33 @@
 .sector {
-	line {
-		stroke: black;
-		stroke-width: 4;
-		&.off {
-			stroke: silver;
-			stroke-width: 3;
+	svg {
+		line {
+			stroke: black;
+			stroke-width: 4;
+			&.off {
+				stroke: silver;
+				stroke-width: 3;
+			}
+		}
+
+
+		text {
+			stroke: blue;
+			stroke-width: 1;
+		}
+
+		rect {
+			&.seleccionada {
+				fill: aquamarine;
+			}
+
+			&.oculta {
+				fill: #eeeeee;
+				stroke: white;
+				stroke-width: 2;
+			}
 		}
 	}
-
-
-	text {
-		stroke: blue;
-		stroke-width: 1;
-	}
-
-	rect {
-		&.seleccionada {
-			fill: aquamarine;
-		}
-
-		&.oculta {
-			fill: #eeeeee;
-  			stroke: white;
-  			stroke-width: 2;
-		}
+	.estado {
+		overflow-y: scroll;
 	}
 }

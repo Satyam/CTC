@@ -1,4 +1,5 @@
 /* jshint node:true, esnext:true */
+/* global window */
 
 "use strict";
 
@@ -14,6 +15,8 @@ import {ANCHO_CELDA} from './common.js';
 export default class Sector extends ParcelEv {
 	constructor (config) {
 		super();
+
+		this.className = "pure-g sector";
 	
 		this.ancho = 1;
 		this.alto = 1;
@@ -67,18 +70,17 @@ export default class Sector extends ParcelEv {
 	
 	view (v) {
 		if (this.fail) return v('.error', this.fail);
-		return v('div.pure-g', [
+		return [
 			v('div.pure-u-3-4',
 			  	v(
-					'svg.sector', {
+					'svg', {
 						viewBox: "0 0 " + (this.ancho * ANCHO_CELDA) + ' ' + (this.alto * ANCHO_CELDA),
 						xmlns: "http://www.w3.org/2000/svg",
 						version: 1.1
 					}, _.values(this.celdas)
 				)
 			 ),
-			 v('div.pure-u-1-4', v('div.estado', this.estado))
-		]);
-
+			 v('div.pure-u-1-4', v('div.estado', {style: {height: window.innerHeight + 'px'}}, this.estado))
+		];
 	}
 }

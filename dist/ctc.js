@@ -1116,7 +1116,7 @@ var v = {
 		vAttrs = vNode.attrs ? _.clone(vNode.attrs) : {};
 		vAttrs.className = vAttrs.className ? vAttrs.className.slice() : [];
 		var s = vAttrs.style;
-		if (s) vAttrs.style = _.clone(s);
+		vAttrs.style = s ? _.clone(s) : {};
 
 		// ensure the children are always an array.
 		if (children !== undefined) {
@@ -2430,6 +2430,7 @@ var _CeldaFactory2 = _interopRequireWildcard(_CeldaFactory);
 var _ANCHO_CELDA = require('./common.js');
 
 /* jshint node:true, esnext:true */
+/* global window */
 
 'use strict';
 
@@ -2443,6 +2444,8 @@ var Sector = (function (_ParcelEv) {
 		_classCallCheck(this, Sector);
 
 		_get(Object.getPrototypeOf(Sector.prototype), 'constructor', this).call(this);
+
+		this.className = 'pure-g sector';
 
 		this.ancho = 1;
 		this.alto = 1;
@@ -2499,11 +2502,11 @@ var Sector = (function (_ParcelEv) {
 		value: function view(v) {
 			if (this.fail) {
 				return v('.error', this.fail);
-			}return v('div.pure-g', [v('div.pure-u-3-4', v('svg.sector', {
+			}return [v('div.pure-u-3-4', v('svg', {
 				viewBox: '0 0 ' + this.ancho * _ANCHO_CELDA.ANCHO_CELDA + ' ' + this.alto * _ANCHO_CELDA.ANCHO_CELDA,
 				xmlns: 'http://www.w3.org/2000/svg',
 				version: 1.1
-			}, _.values(this.celdas))), v('div.pure-u-1-4', v('div.estado', this.estado))]);
+			}, _.values(this.celdas))), v('div.pure-u-1-4', v('div.estado', { style: { height: window.innerHeight + 'px' } }, this.estado))];
 		}
 	}]);
 

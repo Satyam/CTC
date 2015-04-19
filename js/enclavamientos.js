@@ -4,31 +4,57 @@
 
 var enclavamientos;
 
+var _ = require('lodash');
+
+var getSenal = function (ident, sector) {
+	var partes = ident.split(','),
+		celda = sector.celdas[[partes[0], partes[1]].join(',')];
+	if (celda) return celda.senales[partes[2]];
+	// otherwise, returns undefined
+};
 var Enclavamientos = {
-	desvios: function (enclavamiento, celda, celdas) {
-		var desviado = celda.desviado ||  false;
+	apareados: function (enclavamiento, celda, sector) {
+		var desviado = celda.desviado || false;
 		enclavamiento.celdas.forEach(function (coord) {
-			var c = celdas[coord];
-			
+			var c = sector.celdas[coord];
+
 			if ((c.desviado || false) == desviado) return; // nothing to do
-			
+
 			if (c.manual) {
-				Mimico.teletipo.agregar('Constitución', coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
+				Mimico.teletipo.agregar(sector.descr, coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
 				return;
 			}
 
 			c.desviado = desviado;
 			c.manual = true;
-			enclavamientos(c, celdas, enclavamiento);
+			enclavamientos(c, sector, enclavamiento);
 			c.manual = false;
 		});
+	},
+	senalCambio: function (enclavamiento, celda, sector) {
+		var senal = getSenal(enclavamiento.senal),
+			conjunto = {};
+
+		switch (celda.tipo) {
+		case 'desvio':
+			conjunto = enclavamiento[celda.desviado ? 'desviado' : 'normal'];
+			break;
+		case 'triple':
+			conjunto = enclavamiento[celda.posicion ? celda.posicion > 0 ? 'der' : 'izq' : 'primaria'];
+			break;
+
+		}
+		_.each(conjunto, (color, luz) => {
+			senal[luz] = color;
+		});
+
 	}
 };
 
-enclavamientos = function (celda, celdas, fromEnclavamiento) {
-	celda.enclavamientos.forEach( function (enclavamiento) {
-		if (enclavamiento === fromEnclavamiento) return;  // don't bother repeating 
-		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, celdas);
+enclavamientos = function (celda, sector, fromEnclavamiento) {
+	celda.enclavamientos.forEach(function (enclavamiento) {
+		if (enclavamiento === fromEnclavamiento) return; // don't bother repeating
+		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, sector);
 
 	});
 };

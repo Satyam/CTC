@@ -142,17 +142,17 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   overflow-y: scroll;
 }
 
-.señal {
+.senal {
   stroke-width: 2;
   stroke: black;
 }
-.señal .verde {
+.senal .verde {
   fill: green;
 }
-.señal .alto {
+.senal .alto {
   fill: red;
 }
-.señal .precaucion {
+.senal .precaucion {
   fill: yellow;
 }
 

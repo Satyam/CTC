@@ -5,11 +5,11 @@ import Parcel from './component/parcel.js';
 var _ = require('lodash');
 import {ANCHO_CELDA, CENTRO_CELDA, ANG} from './common.js';
 
-export default class Señal extends Parcel {
+export default class Senal extends Parcel {
 	constructor (config) {
 		super();
 		this.containerType = 'g';
-		this.className = 'señal';
+		this.className = 'senal';
 		_.merge(this, config);
 	}
 

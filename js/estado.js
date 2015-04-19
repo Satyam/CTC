@@ -6,9 +6,9 @@ import enclavamientos from './enclavamientos.js';
 import Radios from './component/radio.js';
 
 class Estado extends Parcel {
-	constructor(celdas, celda) {
+	constructor(sector, celda) {
 		super();
-		this.celdas = celdas;
+		this.sector = sector;
 		this.celda = celda;
 	}
 	view(v) {
@@ -19,8 +19,8 @@ class Estado extends Parcel {
 var Estados = {
 	linea: class Linea extends Estado {},
 	desvio: class Desvio extends Estado {
-		constructor (celdas, celda) {
-			super(celdas, celda);
+		constructor (sector, celda) {
+			super(sector, celda);
 			this.desvio = new Radios({
 				title:'Desvío',
 				selected: celda.desviado?'desviado':'normal',
@@ -50,7 +50,7 @@ var Estados = {
 			celda.desviado = value == 'desviado';
 			var manual = celda.manual;
 			celda.manual = true;
-			enclavamientos(celda, this.celdas);
+			enclavamientos(celda, this.sector);
 			celda.manual = manual;
 		}
 			
@@ -62,8 +62,8 @@ var Estados = {
 	paragolpe: class Paragolpe extends Estado {},
 
 	triple: class Triple extends Estado {
-		constructor (celdas, celda) {
-			super(celdas, celda);
+		constructor (sector, celda) {
+			super(sector, celda);
 			this.desvio = new Radios({
 				title:'Desvío',
 				selected: '' + (celda.posicion || 0),
@@ -101,7 +101,7 @@ var Estados = {
 
 		
 export default class EstadoFactory {
-	constructor (celdas, celda) {
-		return new Estados[celda.tipo](celdas, celda);
+	constructor (sector, celda) {
+		return new Estados[celda.tipo](sector, celda);
 	}
 }

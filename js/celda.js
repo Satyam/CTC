@@ -2,7 +2,7 @@
 
 "use strict";
 import ParcelEv from './component/parcelEv.js';
-import Señal from './senal.js';
+import Senal from './senal.js';
 var _ = require('lodash');
 import {ANCHO_CELDA, CENTRO_CELDA, X,  Y} from './common.js';
 
@@ -14,15 +14,15 @@ class Celda extends ParcelEv {
 			}
 		});
 		this.enclavamientos = [];
-		this.señales = {};
+		this.senales = {};
 		this.containerType = 'g';
 		_.merge(this, config);
 		this.attributes = {
 			transform: `translate(${config.x * ANCHO_CELDA},${config.y * ANCHO_CELDA})`
 		};
-		_.each(this.señales, (config, dir) => {
+		_.each(this.senales, (config, dir) => {
 			config.dir = dir;
-			this.señales[dir] = new Señal(config);
+			this.senales[dir] = new Senal(config);
 		});
 	}
 	view (v, content) {
@@ -39,7 +39,7 @@ class Celda extends ParcelEv {
 				x: 5,
 				y: 95
 			}, this.x + ',' + this.y),
-			_.values(this.señales)
+			_.values(this.senales)
 		);
 	}
 	toJSON () {

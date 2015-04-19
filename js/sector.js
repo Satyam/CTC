@@ -40,9 +40,13 @@ export default class Sector extends ParcelEv {
 
 					});
 					(body.enclavamientos || []).forEach((enclavamiento) => {
-						enclavamiento.celdas.forEach((celda) => {
-							this.celdas[celda].enclavamientos.push(enclavamiento);
-						});
+						if (enclavamiento.celdas) {
+							enclavamiento.celdas.forEach((celda) => {
+								this.celdas[celda].enclavamientos.push(enclavamiento);
+							});
+						} else {
+							this.celdas[enclavamiento.celda].enclavamientos.push(enclavamiento);
+						}
 					});
 				} else {
 					this.fail = response.statusCode + ': ' + response.body;
@@ -64,7 +68,7 @@ export default class Sector extends ParcelEv {
 			if (this.estado.destructor) {
 				this.estado.destructor();
 			}
-			this.estado = new EstadoFactory(this.celdas, celda);
+			this.estado = new EstadoFactory(this, celda);
 		}
 	}
 	

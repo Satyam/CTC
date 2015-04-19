@@ -19,9 +19,9 @@ var _ParcelEv2 = require('./component/parcelEv.js');
 
 var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
 
-var _SeAl = require('./senal.js');
+var _Senal = require('./senal.js');
 
-var _SeAl2 = _interopRequireWildcard(_SeAl);
+var _Senal2 = _interopRequireWildcard(_Senal);
 
 var _ANCHO_CELDA$CENTRO_CELDA$X$Y = require('./common.js');
 
@@ -45,15 +45,15 @@ var Celda = (function (_ParcelEv) {
 			}
 		});
 		this.enclavamientos = [];
-		this.señales = {};
+		this.senales = {};
 		this.containerType = 'g';
 		_.merge(this, config);
 		this.attributes = {
 			transform: 'translate(' + config.x * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ',' + config.y * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ')'
 		};
-		_.each(this.señales, function (config, dir) {
+		_.each(this.senales, function (config, dir) {
 			config.dir = dir;
-			_this.señales[dir] = new _SeAl2['default'](config);
+			_this.senales[dir] = new _Senal2['default'](config);
 		});
 	}
 
@@ -71,7 +71,7 @@ var Celda = (function (_ParcelEv) {
 			}), content, v('text', {
 				x: 5,
 				y: 95
-			}, this.x + ',' + this.y), _.values(this.señales));
+			}, this.x + ',' + this.y), _.values(this.senales));
 		}
 	}, {
 		key: 'toJSON',
@@ -1825,38 +1825,65 @@ Object.defineProperty(exports, '__esModule', {
 
 var enclavamientos;
 
+var _ = require('lodash');
+
+var getSenal = function getSenal(ident, sector) {
+	var partes = ident.split(','),
+	    celda = sector.celdas[[partes[0], partes[1]].join(',')];
+	if (celda) {
+		return celda.senales[partes[2]];
+		// otherwise, returns undefined
+	}
+};
 var Enclavamientos = {
-	desvios: function desvios(enclavamiento, celda, celdas) {
+	apareados: function apareados(enclavamiento, celda, sector) {
 		var desviado = celda.desviado || false;
 		enclavamiento.celdas.forEach(function (coord) {
-			var c = celdas[coord];
+			var c = sector.celdas[coord];
 
 			if ((c.desviado || false) == desviado) return; // nothing to do
 
 			if (c.manual) {
-				Mimico.teletipo.agregar('Constitución', coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
+				Mimico.teletipo.agregar(sector.descr, coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
 				return;
 			}
 
 			c.desviado = desviado;
 			c.manual = true;
-			enclavamientos(c, celdas, enclavamiento);
+			enclavamientos(c, sector, enclavamiento);
 			c.manual = false;
+		});
+	},
+	senalCambio: function senalCambio(enclavamiento, celda, sector) {
+		var senal = getSenal(enclavamiento.senal),
+		    conjunto = {};
+
+		switch (celda.tipo) {
+			case 'desvio':
+				conjunto = enclavamiento[celda.desviado ? 'desviado' : 'normal'];
+				break;
+			case 'triple':
+				conjunto = enclavamiento[celda.posicion ? celda.posicion > 0 ? 'der' : 'izq' : 'primaria'];
+				break;
+
+		}
+		_.each(conjunto, function (color, luz) {
+			senal[luz] = color;
 		});
 	}
 };
 
-enclavamientos = function (celda, celdas, fromEnclavamiento) {
+enclavamientos = function (celda, sector, fromEnclavamiento) {
 	celda.enclavamientos.forEach(function (enclavamiento) {
 		if (enclavamiento === fromEnclavamiento) return; // don't bother repeating
-		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, celdas);
+		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, sector);
 	});
 };
 
 exports['default'] = enclavamientos;
 module.exports = exports['default'];
 
-},{}],10:[function(require,module,exports){
+},{"lodash":23}],10:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -1890,11 +1917,11 @@ var _Radios2 = _interopRequireWildcard(_Radios);
 'use strict';
 
 var Estado = (function (_Parcel) {
-	function Estado(celdas, celda) {
+	function Estado(sector, celda) {
 		_classCallCheck(this, Estado);
 
 		_get(Object.getPrototypeOf(Estado.prototype), 'constructor', this).call(this);
-		this.celdas = celdas;
+		this.sector = sector;
 		this.celda = celda;
 	}
 
@@ -1925,10 +1952,10 @@ var Estados = {
 		return Linea;
 	})(Estado),
 	desvio: (function (_Estado2) {
-		function Desvio(celdas, celda) {
+		function Desvio(sector, celda) {
 			_classCallCheck(this, Desvio);
 
-			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, celdas, celda);
+			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, sector, celda);
 			this.desvio = new _Radios2['default']({
 				title: 'Desvío',
 				selected: celda.desviado ? 'desviado' : 'normal',
@@ -1955,7 +1982,7 @@ var Estados = {
 				celda.desviado = value == 'desviado';
 				var manual = celda.manual;
 				celda.manual = true;
-				_enclavamientos2['default'](celda, this.celdas);
+				_enclavamientos2['default'](celda, this.sector);
 				celda.manual = manual;
 			}
 		}, {
@@ -1982,10 +2009,10 @@ var Estados = {
 	})(Estado),
 
 	triple: (function (_Estado4) {
-		function Triple(celdas, celda) {
+		function Triple(sector, celda) {
 			_classCallCheck(this, Triple);
 
-			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, celdas, celda);
+			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, sector, celda);
 			this.desvio = new _Radios2['default']({
 				title: 'Desvío',
 				selected: '' + (celda.posicion || 0),
@@ -2034,10 +2061,10 @@ var Estados = {
 	})(Estado)
 };
 
-var EstadoFactory = function EstadoFactory(celdas, celda) {
+var EstadoFactory = function EstadoFactory(sector, celda) {
 	_classCallCheck(this, EstadoFactory);
 
-	return new Estados[celda.tipo](celdas, celda);
+	return new Estados[celda.tipo](sector, celda);
 };
 
 exports['default'] = EstadoFactory;
@@ -2466,9 +2493,13 @@ var Sector = (function (_ParcelEv) {
 					_this.celdas[coords] = new _CeldaFactory2['default'](celda).on('click', _this.onClick.bind(_this));
 				});
 				(body.enclavamientos || []).forEach(function (enclavamiento) {
-					enclavamiento.celdas.forEach(function (celda) {
-						_this.celdas[celda].enclavamientos.push(enclavamiento);
-					});
+					if (enclavamiento.celdas) {
+						enclavamiento.celdas.forEach(function (celda) {
+							_this.celdas[celda].enclavamientos.push(enclavamiento);
+						});
+					} else {
+						_this.celdas[enclavamiento.celda].enclavamientos.push(enclavamiento);
+					}
 				});
 			} else {
 				_this.fail = response.statusCode + ': ' + response.body;
@@ -2494,7 +2525,7 @@ var Sector = (function (_ParcelEv) {
 				if (this.estado.destructor) {
 					this.estado.destructor();
 				}
-				this.estado = new _EstadoFactory2['default'](this.celdas, celda);
+				this.estado = new _EstadoFactory2['default'](this, celda);
 			}
 		}
 	}, {
@@ -2545,19 +2576,19 @@ var _ANCHO_CELDA$CENTRO_CELDA$ANG = require('./common.js');
 
 var _ = require('lodash');
 
-var Señal = (function (_Parcel) {
-	function Señal(config) {
-		_classCallCheck(this, Señal);
+var Senal = (function (_Parcel) {
+	function Senal(config) {
+		_classCallCheck(this, Senal);
 
-		_get(Object.getPrototypeOf(Señal.prototype), 'constructor', this).call(this);
+		_get(Object.getPrototypeOf(Senal.prototype), 'constructor', this).call(this);
 		this.containerType = 'g';
-		this.className = 'señal';
+		this.className = 'senal';
 		_.merge(this, config);
 	}
 
-	_inherits(Señal, _Parcel);
+	_inherits(Senal, _Parcel);
 
-	_createClass(Señal, [{
+	_createClass(Senal, [{
 		key: 'dir',
 		set: function (value) {
 			this._dir = value;
@@ -2605,10 +2636,10 @@ var Señal = (function (_Parcel) {
 		}
 	}]);
 
-	return Señal;
+	return Senal;
 })(_Parcel3['default']);
 
-exports['default'] = Señal;
+exports['default'] = Senal;
 module.exports = exports['default'];
 
 },{"./common.js":2,"./component/parcel.js":4,"lodash":23}],16:[function(require,module,exports){

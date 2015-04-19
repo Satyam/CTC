@@ -32,7 +32,7 @@ class Celda extends ParcelEv {
 				y: 0,
 				width: ANCHO_CELDA,
 				height: ANCHO_CELDA,
-				class: (this.seleccionada? 'seleccionada':'oculta')
+				className: (this.seleccionada? 'seleccionada':'oculta')
 			}),
 			content,
 			v('text', {
@@ -66,7 +66,7 @@ var lineaA = function (v, dest, estilo) {
 		y1: CENTRO_CELDA,
 		x2: X[dest],
 		y2: Y[dest],
-		class: estilo || ''
+		className: estilo || ''
 	});
 };
 

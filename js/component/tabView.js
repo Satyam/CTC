@@ -127,7 +127,7 @@ export default class TabView extends ParcelEv {
 				ts.push(v(
 					'li.tab.tab-left',
 					{
-						class:  (this._selected.name == tab.name?' selected':'')
+						className:  (this._selected.name == tab.name?' selected':'')
 					},
 					v('a', {href:'#' + tab.name}, [
 						tab.label || tab.name,
@@ -147,7 +147,7 @@ export default class TabView extends ParcelEv {
 			ts.push(v(
 				'li.tab.tab-right',
 				{
-					class:  (this._selected.name == tab.name?' selected':'')
+					className:  (this._selected.name == tab.name?' selected':'')
 				},
 				v('a', {href:'#' + tab.name}, tab.label || tab.name)
 			));

@@ -67,7 +67,7 @@ var Celda = (function (_ParcelEv) {
 				y: 0,
 				width: _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA,
 				height: _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA,
-				'class': this.seleccionada ? 'seleccionada' : 'oculta'
+				className: this.seleccionada ? 'seleccionada' : 'oculta'
 			}), content, v('text', {
 				x: 5,
 				y: 95
@@ -105,7 +105,7 @@ var lineaA = function lineaA(v, dest, estilo) {
 		y1: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
 		x2: _ANCHO_CELDA$CENTRO_CELDA$X$Y.X[dest],
 		y2: _ANCHO_CELDA$CENTRO_CELDA$X$Y.Y[dest],
-		'class': estilo || ''
+		className: estilo || ''
 	});
 };
 
@@ -538,7 +538,7 @@ var Parcel = (function () {
   		// Equivalent to:
   	view: function () {
   		return {tag:'div', attrs:{},children: [
-  			{tag:'p', attrs:{class:'joyful'}, children:['Hellow World!']},
+  			{tag:'p', attrs:{className:'joyful'}, children:['Hellow World!']},
   			{tag:'hr', attrs: {}, children: []},
   			{tag:'p', attrs:{}, children:['(Not very original, really)']}
   		]};
@@ -938,7 +938,7 @@ var TabView = (function (_ParcelEv) {
 				tab = tabs[i];
 				if (typeof tab == 'object') {
 					ts.push(v('li.tab.tab-left', {
-						'class': this._selected.name == tab.name ? ' selected' : ''
+						className: this._selected.name == tab.name ? ' selected' : ''
 					}, v('a', { href: '#' + tab.name }, [tab.label || tab.name, v('i.fa.fa-close')])));
 				} else break;
 			}
@@ -951,7 +951,7 @@ var TabView = (function (_ParcelEv) {
 			for (var j = l - 1; j >= i; j--) {
 				tab = tabs[j];
 				ts.push(v('li.tab.tab-right', {
-					'class': this._selected.name == tab.name ? ' selected' : ''
+					className: this._selected.name == tab.name ? ' selected' : ''
 				}, v('a', { href: '#' + tab.name }, tab.label || tab.name)));
 			}
 			return [v('ul.tabs', ts), v('.tab-content', this._selected.content)];
@@ -1022,8 +1022,8 @@ var v = {
  the attributes for variable parts.
  	If modifiers are used, the tagName itself can be omitter and a `div` will be assumed.
  Thus, `#a1` is the same as `div#al`.
- 	Attributes `class` and `style` have special treatment.
- 	The `class` attribute can be given as a string or as an array of values, the last being preferable.
+ 	Attributes `className` (or `class`) and `style` have special treatment.
+ 	The `className` attribute can be given as a string or as an array of values, the last being preferable.
  	The `style` attribute should be set with an object containing a hash map of style names to values.
  The style names should be in JavaScript format, not CSS format that is, `backgroundColor` not `background-color`.
  	Neither the `svg:` or the `math:` namespaces are required.  The renderer will add the corresponding
@@ -1040,7 +1040,7 @@ var v = {
  	return v('li', {'data-key': option.key}, option.text);
  }));
  // produces:
- {tag:'ul', attrs: {class:'list'}, children: [
+ {tag:'ul', attrs: {className:'list'}, children: [
  	{tag:'li', attrs: {'data-key': 'k1'}, children: ['first value']},
  	{tag:'li', attrs: {'data-key': 'k2'}, children: ['second value']}
  }
@@ -1063,7 +1063,7 @@ var v = {
   any number of CSS classNames each preceded by a `.`
   and attribute assignments enclosed in square brackets (see example above).
  @param [attrs] {Object} Collection of attributes to be set on the node.
-  Any value assigned to the `class` attribute will be appended to those provided along the tag.
+  Any value assigned to the `className` attribute will be appended to those provided along the tag.
  @param [children] {any}  It can be a further virtual DOM node, a parcel,
  a simple value which will result in a text string or an array of either.
  @return {Object} virtual DOM node.
@@ -1108,13 +1108,13 @@ var v = {
 						// Styles need to be processed or documented that they shouldn't be used.
 				}
 			}
-			if (classes.length) vAttrs["class"] = classes;
+			if (classes.length) vAttrs.className = classes;
 			if (!_.isEmpty(vAttrs)) vNode.attrs = vAttrs;
 		}
 		// Clone in order to avoid affecting the cached copy.
 		vNode = _.clone(vNode);
 		vAttrs = vNode.attrs ? _.clone(vNode.attrs) : {};
-		vAttrs["class"] = vAttrs["class"] ? vAttrs["class"].slice() : [];
+		vAttrs.className = vAttrs.className ? vAttrs.className.slice() : [];
 		var s = vAttrs.style;
 		if (s) vAttrs.style = _.clone(s);
 
@@ -1125,10 +1125,16 @@ var v = {
 		for (var attrName in attrs) {
 			switch (attrName) {
 				case "class":
-					if (typeof attrs["class"] == "string") {
-						attrs["class"] = attrs["class"].trim().replace(/\s+/, " ").split(" ");
+					attrs.className = attrs["class"];
+					delete attrs["class"];
+				/*jshint -W086 */
+				// continues on purpose
+				case "className":
+					/* jshint +W086 */
+					if (typeof attrs.className == "string") {
+						attrs.className = attrs.className.trim().replace(/\s+/, " ").split(" ");
 					}
-					vAttrs["class"] = vAttrs["class"].concat(attrs["class"]);
+					vAttrs.className = vAttrs.className.concat(attrs.className);
 					break;
 				case "style":
 					_.merge(vAttrs.style, attrs.style, vAttrs.style); // the new styles should prevail
@@ -1139,7 +1145,7 @@ var v = {
 			}
 		}
 
-		if (!vAttrs["class"].length) delete vAttrs["class"];
+		if (!vAttrs.className.length) delete vAttrs.className;
 		if (!_.isEmpty(vAttrs)) vNode.attrs = vAttrs;
 		return vNode;
 	},
@@ -1352,7 +1358,7 @@ var v = {
 
 			var expected = { parcel: parcel, stamp: NaN, children: children, attrs: {}, childPNodes: [] };
 			_.merge(expected.attrs, parcel.attributes);
-			expected.attrs["class"] = ["parcel", parcel.className];
+			expected.attrs.className = ["parcel", parcel.className];
 			v._diffVNodes(existing, expected, null, parentPNode);
 		}
 	},
@@ -1605,7 +1611,7 @@ var v = {
 				case "style":
 					v._diffStyles(existing, value, newValue);
 					break;
-				case "class":
+				case "className":
 					v._diffClassNames(existing, value, newValue);
 					break;
 				case "data":
@@ -1641,7 +1647,7 @@ var v = {
 							node.style[key] = style;
 						});
 						return;
-					case "class":
+					case "className":
 						node.setAttribute("class", value.join(" ").trim());
 						return;
 					case "data":
@@ -1668,7 +1674,7 @@ var v = {
  Compares the new and old list of classNames and
  if there is any difference, it sets the whole thing at once.
  	@method _diffClassNames
- @param existing {vDOM} virtual DOM node to apply this classes to
+ @param existing {vDOM} virtual DOM node to apply this classNames to
  @param value {Array} Object literal containing the current values
  @param newValue {Array} Object literal containin the new values
  @private
@@ -2102,7 +2108,7 @@ var ListaSectores = (function (_ParcelEv) {
 		value: function view(v) {
 			var index = 0;
 			return v('table.pure-table', _.map(this.lista, function (item, name) {
-				return v('tr', { 'class': index++ & 1 ? 'pure-table-even' : 'pure-table-odd' }, [v('td', v('a', { href: '#' + name }, item.nombre)), v('td', item.descr)]);
+				return v('tr', { className: index++ & 1 ? 'pure-table-even' : 'pure-table-odd' }, [v('td', v('a', { href: '#' + name }, item.nombre)), v('td', item.descr)]);
 			}));
 		}
 	}]);
@@ -2582,15 +2588,15 @@ var Señal = (function (_Parcel) {
 			    x2 = x1 - 2 * r + 2,
 			    s = [v('line', { x1: xTope, y1: y, x2: x2 + r, y2: y }), v('line', { x1: xTope, y1: y - r, x2: xTope, y2: y + r })];
 			if (this.izq || this.der) {
-				s.push(v('circle.primaria', { cx: x2, cy: y, r: r, 'class': this.primaria }));
+				s.push(v('circle.primaria', { cx: x2, cy: y, r: r, className: this.primaria }));
 				if (this.izq) {
-					s.push(v('circle.izq', { cx: x1, cy: y + r, r: r, 'class': this.izq }));
+					s.push(v('circle.izq', { cx: x1, cy: y + r, r: r, className: this.izq }));
 				}
 				if (this.der) {
-					s.push(v('circle.der', { cx: x1, cy: y - r, r: r, 'class': this.der }));
+					s.push(v('circle.der', { cx: x1, cy: y - r, r: r, className: this.der }));
 				}
 			} else {
-				s.push(v('circle.primaria', { cx: x1, cy: y, r: r, 'class': this.primaria }));
+				s.push(v('circle.primaria', { cx: x1, cy: y, r: r, className: this.primaria }));
 			}
 			return s;
 		}
@@ -2654,7 +2660,7 @@ var Teletipo = (function (_Parcel) {
 		value: function view(v) {
 			return [v('thead', v('tr', [v('th', 'Hora'), v('th', 'Sector'), v('th', 'Celda'), v('th', 'Novedad')])), v('tbody', this.lista.map(function (item, index) {
 				return v('tr', {
-					'class': index & 1 ? 'pure-table-odd' : 'pure-table-even'
+					className: index & 1 ? 'pure-table-odd' : 'pure-table-even'
 				}, [v('td', item.timestamp.toLocaleTimeString()), v('td', item.sector), v('td', item.idCelda), v('td', item.mensaje)]);
 			}))];
 		}

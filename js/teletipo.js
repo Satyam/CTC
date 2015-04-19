@@ -30,7 +30,7 @@ export default class Teletipo extends Parcel {
 				return v(
 					'tr',
 					{
-						class: (index & 1 ? 'pure-table-odd' : 'pure-table-even')
+						className: (index & 1 ? 'pure-table-odd' : 'pure-table-even')
 					}, [
 						v('td',item.timestamp.toLocaleTimeString()),
 						v('td', item.sector),

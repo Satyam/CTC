@@ -63,9 +63,9 @@ var v = {
 	If modifiers are used, the tagName itself can be omitter and a `div` will be assumed.
 	Thus, `#a1` is the same as `div#al`.
 
-	Attributes `class` and `style` have special treatment.
+	Attributes `className` (or `class`) and `style` have special treatment.
 
-	The `class` attribute can be given as a string or as an array of values, the last being preferable.
+	The `className` attribute can be given as a string or as an array of values, the last being preferable.
 
 	The `style` attribute should be set with an object containing a hash map of style names to values.
 	The style names should be in JavaScript format, not CSS format that is, `backgroundColor` not `background-color`.
@@ -87,7 +87,7 @@ var v = {
 		return v('li', {'data-key': option.key}, option.text);
 	}));
 	// produces:
-	{tag:'ul', attrs: {class:'list'}, children: [
+	{tag:'ul', attrs: {className:'list'}, children: [
 		{tag:'li', attrs: {'data-key': 'k1'}, children: ['first value']},
 		{tag:'li', attrs: {'data-key': 'k2'}, children: ['second value']}
 	}
@@ -112,7 +112,7 @@ var v = {
 	 any number of CSS classNames each preceded by a `.`
 	 and attribute assignments enclosed in square brackets (see example above).
 	@param [attrs] {Object} Collection of attributes to be set on the node.
-	 Any value assigned to the `class` attribute will be appended to those provided along the tag.
+	 Any value assigned to the `className` attribute will be appended to those provided along the tag.
 	@param [children] {any}  It can be a further virtual DOM node, a parcel,
 	a simple value which will result in a text string or an array of either.
 	@return {Object} virtual DOM node.
@@ -157,13 +157,13 @@ var v = {
 						// Styles need to be processed or documented that they shouldn't be used.
 				}
 			}
-			if (classes.length) vAttrs.class = classes;
+			if (classes.length) vAttrs.className = classes;
 			if (!_.isEmpty(vAttrs)) vNode.attrs = vAttrs;
 		}
 		// Clone in order to avoid affecting the cached copy.
 		vNode = _.clone(vNode);
 		vAttrs = (vNode.attrs?_.clone(vNode.attrs):{});
-		vAttrs.class = (vAttrs.class?vAttrs.class.slice():[]);
+		vAttrs.className = (vAttrs.className?vAttrs.className.slice():[]);
 		var s = vAttrs.style;
 		if (s) vAttrs.style = _.clone(s);
 
@@ -174,10 +174,16 @@ var v = {
 		for (var attrName in attrs) {
 			switch (attrName) {
 			case 'class':
-				if (typeof attrs.class == 'string') {
-					attrs.class = attrs.class.trim().replace(/\s+/,' ').split(' ');
+				attrs.className = attrs.class;
+				delete attrs.class;
+				/*jshint -W086 */
+				// continues on purpose
+			case 'className':
+				/* jshint +W086 */
+				if (typeof attrs.className == 'string') {
+					attrs.className = attrs.className.trim().replace(/\s+/,' ').split(' ');
 				}
-				vAttrs.class = vAttrs.class.concat(attrs.class);
+				vAttrs.className = vAttrs.className.concat(attrs.className);
 				break;
 			case 'style':
 				_.merge(vAttrs.style, attrs.style, vAttrs.style); // the new styles should prevail
@@ -188,7 +194,7 @@ var v = {
 			}
 		}
 
-		if (!vAttrs.class.length) delete vAttrs.class;
+		if (!vAttrs.className.length) delete vAttrs.className;
 		if (!_.isEmpty(vAttrs)) vNode.attrs = vAttrs;
 		return vNode;
 	},
@@ -409,7 +415,7 @@ var v = {
 
 			var expected =  {parcel:parcel, stamp:NaN, children: children, attrs: {}, childPNodes:[]};
 			_.merge(expected.attrs, parcel.attributes);
-			expected.attrs.class = ['parcel',  parcel.className];
+			expected.attrs.className = ['parcel',  parcel.className];
 			v._diffVNodes(existing, expected, null, parentPNode);
 		}
 	},
@@ -663,7 +669,7 @@ var v = {
 				case 'style':
 					v._diffStyles(existing, value, newValue);
 					break;
-				case 'class':
+				case 'className':
 					v._diffClassNames(existing, value, newValue);
 					break;
 				case 'data':
@@ -699,7 +705,7 @@ var v = {
 							node.style[key] = style;
 						});
 						return;
-					case 'class':
+					case 'className':
 						node.setAttribute('class', value.join(' ').trim());
 						return;
 					case 'data':
@@ -727,7 +733,7 @@ var v = {
 	if there is any difference, it sets the whole thing at once.
 
 	@method _diffClassNames
-	@param existing {vDOM} virtual DOM node to apply this classes to
+	@param existing {vDOM} virtual DOM node to apply this classNames to
 	@param value {Array} Object literal containing the current values
 	@param newValue {Array} Object literal containin the new values
 	@private

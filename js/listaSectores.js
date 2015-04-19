@@ -39,7 +39,7 @@ export default class ListaSectores extends ParcelEv {
 		return v('table.pure-table', _.map(this.lista, ( item, name) => {
 			return v(
 				'tr',
-				{class:(index++ & 1) ? 'pure-table-even':'pure-table-odd'},
+				{className:(index++ & 1) ? 'pure-table-even':'pure-table-odd'},
 				[
 					v('td', v('a', { href:'#' + name}, item.nombre)),
 					v('td', item.descr)

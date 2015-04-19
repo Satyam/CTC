@@ -137,7 +137,7 @@ export default class Parcel {
 		// Equivalent to:
 		view: function () {
 			return {tag:'div', attrs:{},children: [
-				{tag:'p', attrs:{class:'joyful'}, children:['Hellow World!']},
+				{tag:'p', attrs:{className:'joyful'}, children:['Hellow World!']},
 				{tag:'hr', attrs: {}, children: []},
 				{tag:'p', attrs:{}, children:['(Not very original, really)']}
 			]};

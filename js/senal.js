@@ -45,15 +45,15 @@ export default class Señal extends Parcel {
 				v('line', { x1:xTope, y1:y-r, x2:xTope,  y2:y+r})
 			];
 		if (this.izq || this.der) {
-			s.push(v('circle.primaria', { cx:x2,  cy:y, r:r, class:this.primaria}));
+			s.push(v('circle.primaria', { cx:x2,  cy:y, r:r, className:this.primaria}));
 			if (this.izq) {
-				s.push(v('circle.izq', { cx:x1,  cy:y+r, r:r, class:this.izq}));
+				s.push(v('circle.izq', { cx:x1,  cy:y+r, r:r, className:this.izq}));
 			}
 			if (this.der) {
-				s.push(v('circle.der', { cx:x1,  cy:y-r, r:r, class:this.der}));
+				s.push(v('circle.der', { cx:x1,  cy:y-r, r:r, className:this.der}));
 			}
 		} else {
-			s.push(v('circle.primaria', { cx:x1,  cy:y, r:r, class:this.primaria}));
+			s.push(v('circle.primaria', { cx:x1,  cy:y, r:r, className:this.primaria}));
 		}
 		return s;
 	}

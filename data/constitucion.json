@@ -52,7 +52,9 @@
 			"hacia":"E",
 			"senales": {
 				"E": {
-					"primaria":"verde"
+					"primaria":{
+						"estado":"verde"
+					}
 				}
 			}
 		},
@@ -73,8 +75,12 @@
 			"invertido":"W",
 			"senales": {
 				"SE": {
-					"primaria":"verde",
-					"izq":"alto"
+					"primaria":{
+						"estado":"verde"
+					},
+					"izq":{
+						"estado":"alto"
+					}
 				}
 			},
 			"enclavamientos": [
@@ -110,9 +116,15 @@
 			"der":"SE",
 			"senales": {
 				"W": {
-					"primaria":"alto",
-					"izq":"verde",
-					"der":"precaucion"
+					"primaria":{
+						"estado":"alto"
+					},
+					"izq":{
+						"estado":"verde"
+					},
+					"der":{
+						"estado":"precaucion"
+					}
 				}
 			}
 		},
@@ -134,8 +146,12 @@
 			"invertido":"SE",
 			"senales": {
 				"W": {
-					"primaria":"alto",
-					"der":"precaucion"
+					"primaria":{
+						"estado":"alto"
+					},
+					"der":{
+						"estado":"precaucion"
+					}
 				}
 			},
 			"enclavamientos": [

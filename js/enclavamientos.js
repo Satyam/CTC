@@ -12,6 +12,13 @@ var getSenal = function (ident, sector) {
 	if (celda) return celda.senales[partes[2]];
 	// otherwise, returns undefined
 };
+
+var prioridades = [
+	'verde',
+	'precaucion',
+	'alto'
+];
+
 var Enclavamientos = {
 	apareados: function (enclavamiento, celda, sector) {
 		var desviado = celda.desviado || false;
@@ -50,7 +57,9 @@ var Enclavamientos = {
 
 		}
 		_.each(conjunto, (color, luz) => {
-			senal[luz] = color;
+			//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
+				senal[luz].estado = color;
+			//}
 		});
 
 	}

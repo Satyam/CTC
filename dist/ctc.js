@@ -1835,6 +1835,9 @@ var getSenal = function getSenal(ident, sector) {
 		// otherwise, returns undefined
 	}
 };
+
+var prioridades = ['verde', 'precaucion', 'alto'];
+
 var Enclavamientos = {
 	apareados: function apareados(enclavamiento, celda, sector) {
 		var desviado = celda.desviado || false;
@@ -1873,7 +1876,9 @@ var Enclavamientos = {
 
 		}
 		_.each(conjunto, function (color, luz) {
-			senal[luz] = color;
+			//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
+			senal[luz].estado = color;
+			//}
 		});
 	}
 };
@@ -1943,6 +1948,13 @@ var Estado = (function (_Parcel) {
 			celda._enProceso = true;
 			_enclavamientos2['default'](celda, this.sector);
 			celda._enProceso = false;
+		}
+	}, {
+		key: 'destructor',
+		value: function destructor() {
+			this.celda = null;
+			this.sector = null;
+			_get(Object.getPrototypeOf(Estado.prototype), 'destructor', this).call(this);
 		}
 	}]);
 
@@ -2504,15 +2516,6 @@ var Sector = (function (_ParcelEv) {
 					celda.y = parseInt(coord[1], 10);
 					_this.celdas[coords] = new _CeldaFactory2['default'](celda).on('click', _this.onClick.bind(_this));
 				});
-				(body.enclavamientos || []).forEach(function (enclavamiento) {
-					if (enclavamiento.celdas) {
-						enclavamiento.celdas.forEach(function (celda) {
-							_this.celdas[celda].enclavamientos.push(enclavamiento);
-						});
-					} else {
-						_this.celdas[enclavamiento.celda].enclavamientos.push(enclavamiento);
-					}
-				});
 			} else {
 				_this.fail = response.statusCode + ': ' + response.body;
 			}
@@ -2531,14 +2534,10 @@ var Sector = (function (_ParcelEv) {
 			this.seleccionada = celda;
 			celda.seleccionada = true;
 
-			if (this.estado.celda && this.estado.celda.tipo == celda.tipo) {
-				this.estado.celda = celda;
-			} else {
-				if (this.estado.destructor) {
-					this.estado.destructor();
-				}
-				this.estado = new _EstadoFactory2['default'](this, celda);
+			if (this.estado.destructor) {
+				this.estado.destructor();
 			}
+			this.estado = new _EstadoFactory2['default'](this, celda);
 		}
 	}, {
 		key: 'view',
@@ -2634,15 +2633,15 @@ var Senal = (function (_Parcel) {
 			    x2 = x1 - 2 * r + 2,
 			    s = [v('line', { x1: xTope, y1: y, x2: x2 + r, y2: y }), v('line', { x1: xTope, y1: y - r, x2: xTope, y2: y + r })];
 			if (this.izq || this.der) {
-				s.push(v('circle.primaria', { cx: x2, cy: y, r: r, className: this.primaria }));
+				s.push(v('circle.primaria', { cx: x2, cy: y, r: r, className: this.primaria.estado }));
 				if (this.izq) {
-					s.push(v('circle.izq', { cx: x1, cy: y + r, r: r, className: this.izq }));
+					s.push(v('circle.izq', { cx: x1, cy: y + r, r: r, className: this.izq.estado }));
 				}
 				if (this.der) {
-					s.push(v('circle.der', { cx: x1, cy: y - r, r: r, className: this.der }));
+					s.push(v('circle.der', { cx: x1, cy: y - r, r: r, className: this.der.estado }));
 				}
 			} else {
-				s.push(v('circle.primaria', { cx: x1, cy: y, r: r, className: this.primaria }));
+				s.push(v('circle.primaria', { cx: x1, cy: y, r: r, className: this.primaria.estado }));
 			}
 			return s;
 		}

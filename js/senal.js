@@ -45,15 +45,15 @@ export default class Senal extends Parcel {
 				v('line', { x1:xTope, y1:y-r, x2:xTope,  y2:y+r})
 			];
 		if (this.izq || this.der) {
-			s.push(v('circle.primaria', { cx:x2,  cy:y, r:r, className:this.primaria}));
+			s.push(v('circle.primaria', { cx:x2,  cy:y, r:r, className:this.primaria.estado}));
 			if (this.izq) {
-				s.push(v('circle.izq', { cx:x1,  cy:y+r, r:r, className:this.izq}));
+				s.push(v('circle.izq', { cx:x1,  cy:y+r, r:r, className:this.izq.estado}));
 			}
 			if (this.der) {
-				s.push(v('circle.der', { cx:x1,  cy:y-r, r:r, className:this.der}));
+				s.push(v('circle.der', { cx:x1,  cy:y-r, r:r, className:this.der.estado}));
 			}
 		} else {
-			s.push(v('circle.primaria', { cx:x1,  cy:y, r:r, className:this.primaria}));
+			s.push(v('circle.primaria', { cx:x1,  cy:y, r:r, className:this.primaria.estado}));
 		}
 		return s;
 	}

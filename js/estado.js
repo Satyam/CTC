@@ -20,6 +20,11 @@ class Estado extends Parcel {
 		enclavamientos(celda, this.sector);
 		celda._enProceso = false;
 	}
+	destructor () {
+		this.celda = null;
+		this.sector = null;
+		super.destructor();
+	}
 }
 
 var Estados = {
@@ -59,7 +64,6 @@ var Estados = {
 		cambiarManual (value) {
 			this.celda.manual = value == 'manual';
 		}
-
 	},
 	paragolpe: class Paragolpe extends Estado {},
 

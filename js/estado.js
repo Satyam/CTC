@@ -14,6 +14,12 @@ class Estado extends Parcel {
 	view(v) {
 		return v('pre', this.celda.toString());
 	}
+	procesarEnclavamientos () {
+		var celda = this.celda;
+		celda._enProceso = true;
+		enclavamientos(celda, this.sector);
+		celda._enProceso = false;
+	}
 }
 
 var Estados = {
@@ -46,12 +52,8 @@ var Estados = {
 			];
 		}
 		cambiar (value) {
-			var celda = this.celda;
-			celda.desviado = value == 'desviado';
-			var manual = celda.manual;
-			celda.manual = true;
-			enclavamientos(celda, this.sector);
-			celda.manual = manual;
+			this.celda.desviado = value == 'desviado';
+			super.procesarEnclavamientos();
 		}
 			
 		cambiarManual (value) {

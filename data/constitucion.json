@@ -76,7 +76,21 @@
 					"primaria":"verde",
 					"izq":"alto"
 				}
-			}
+			},
+			"enclavamientos": [
+				{
+					"tipo":"senalCambio",
+					"senal":"8,3,SE",
+					"normal": {
+						"primaria": "verde",
+						"izq":"alto"
+					},
+					"desviado":{
+						"primaria": "alto",
+						"izq":"precaucion"
+					}
+				}
+			]
 		},
 		
 		"0,4": {
@@ -117,20 +131,31 @@
 			"tipo":"desvio",
 			"punta":"W",
 			"normal":"E",
-			"invertido":"SE"
-			,
+			"invertido":"SE",
 			"senales": {
 				"W": {
 					"primaria":"alto",
 					"der":"precaucion"
 				}
-			}
+			},
+			"enclavamientos": [
+				{
+					"tipo":"apareados",
+					"celdas":["5,5"]
+				}
+			]
 		},
 		"5,4": {
 			"tipo":"desvio",
 			"punta":"E",
 			"normal":"W",
-			"invertido":"SW"
+			"invertido":"SW",
+			"enclavamientos": [
+				{
+					"tipo":"apareados",
+					"celdas":["4,5"]
+				}
+			]
 		},
 		"6,4": {
 			"tipo":"linea",
@@ -172,13 +197,25 @@
 			"tipo":"desvio",
 			"punta":"W",
 			"normal":"E",
-			"invertido": "NE"
+			"invertido": "NE",
+			"enclavamientos": [
+				{
+					"tipo":"apareados",
+					"celdas":["5,4"]
+				}
+			]
 		},
 		"5,5": {
 			"tipo":"desvio",
 			"punta":"E",
 			"normal":"W",
-			"invertido": "NW"
+			"invertido": "NW",
+			"enclavamientos": [
+				{
+					"tipo":"apareados",
+					"celdas":["4,4"]
+				}
+			]
 		},
 		"6,5": {
 			"tipo":"linea",
@@ -197,35 +234,6 @@
 		}
 			
 			
-	},
-	"enclavamientos": [
-		{
-			"tipo": "apareados",
-			"celdas": [
-				"4,4",
-				"5,5"
-			]
-		},
-		{
-			"tipo": "apareados",
-			"celdas": [
-				"4,5",
-				"5,4"
-			]
-		},
-		{
-			"tipo":"senalCambio",
-			"celda":"8,3",
-			"senal":"8,3,SE",
-			"normal": {
-				"primaria": "verde",
-				"izq":"alto"
-			},
-			"desviado":{
-				"primaria": "alto",
-				"izq":"precaucion"
-			}
-		}
-	]
+	}
 		
 }

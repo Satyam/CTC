@@ -1839,23 +1839,28 @@ var Enclavamientos = {
 	apareados: function apareados(enclavamiento, celda, sector) {
 		var desviado = celda.desviado || false;
 		enclavamiento.celdas.forEach(function (coord) {
-			var c = sector.celdas[coord];
+			var celdaDest = sector.celdas[coord];
 
-			if ((c.desviado || false) == desviado) return; // nothing to do
+			if ((celdaDest.desviado || false) == desviado) return; // nothing to do
 
-			if (c.manual) {
+			if (celdaDest.manual) {
 				Mimico.teletipo.agregar(sector.descr, coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
 				return;
 			}
 
-			c.desviado = desviado;
-			c.manual = true;
-			enclavamientos(c, sector, enclavamiento);
-			c.manual = false;
+			if (celdaDest._enProceso) {
+				Mimico.teletipo.agregar(sector.descr, coord, 'Lazo infinito de enclavamiento desde ' + celda.x + ',' + celda.y);
+				return;
+			}
+
+			celdaDest.desviado = desviado;
+			celdaDest._enProceso = true;
+			enclavamientos(celdaDest, sector);
+			celdaDest._enProceso = false;
 		});
 	},
 	senalCambio: function senalCambio(enclavamiento, celda, sector) {
-		var senal = getSenal(enclavamiento.senal),
+		var senal = getSenal(enclavamiento.senal, sector),
 		    conjunto = {};
 
 		switch (celda.tipo) {
@@ -1873,9 +1878,8 @@ var Enclavamientos = {
 	}
 };
 
-enclavamientos = function (celda, sector, fromEnclavamiento) {
+enclavamientos = function (celda, sector) {
 	celda.enclavamientos.forEach(function (enclavamiento) {
-		if (enclavamiento === fromEnclavamiento) return; // don't bother repeating
 		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, sector);
 	});
 };
@@ -1932,6 +1936,14 @@ var Estado = (function (_Parcel) {
 		value: function view(v) {
 			return v('pre', this.celda.toString());
 		}
+	}, {
+		key: 'procesarEnclavamientos',
+		value: function procesarEnclavamientos() {
+			var celda = this.celda;
+			celda._enProceso = true;
+			_enclavamientos2['default'](celda, this.sector);
+			celda._enProceso = false;
+		}
 	}]);
 
 	return Estado;
@@ -1978,12 +1990,8 @@ var Estados = {
 		}, {
 			key: 'cambiar',
 			value: function cambiar(value) {
-				var celda = this.celda;
-				celda.desviado = value == 'desviado';
-				var manual = celda.manual;
-				celda.manual = true;
-				_enclavamientos2['default'](celda, this.sector);
-				celda.manual = manual;
+				this.celda.desviado = value == 'desviado';
+				_get(Object.getPrototypeOf(Desvio.prototype), 'procesarEnclavamientos', this).call(this);
 			}
 		}, {
 			key: 'cambiarManual',

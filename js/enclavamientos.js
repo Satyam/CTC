@@ -16,23 +16,28 @@ var Enclavamientos = {
 	apareados: function (enclavamiento, celda, sector) {
 		var desviado = celda.desviado || false;
 		enclavamiento.celdas.forEach(function (coord) {
-			var c = sector.celdas[coord];
+			var celdaDest = sector.celdas[coord];
 
-			if ((c.desviado || false) == desviado) return; // nothing to do
+			if ((celdaDest.desviado || false) == desviado) return; // nothing to do
 
-			if (c.manual) {
+			if (celdaDest.manual) {
 				Mimico.teletipo.agregar(sector.descr, coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
 				return;
 			}
 
-			c.desviado = desviado;
-			c.manual = true;
-			enclavamientos(c, sector, enclavamiento);
-			c.manual = false;
+			if (celdaDest._enProceso) {
+				Mimico.teletipo.agregar(sector.descr, coord, 'Lazo infinito de enclavamiento desde ' + celda.x + ',' + celda.y);
+				return;
+			}
+
+			celdaDest.desviado = desviado;
+			celdaDest._enProceso = true;
+			enclavamientos(celdaDest, sector);
+			celdaDest._enProceso = false;
 		});
 	},
 	senalCambio: function (enclavamiento, celda, sector) {
-		var senal = getSenal(enclavamiento.senal),
+		var senal = getSenal(enclavamiento.senal, sector),
 			conjunto = {};
 
 		switch (celda.tipo) {
@@ -51,11 +56,9 @@ var Enclavamientos = {
 	}
 };
 
-enclavamientos = function (celda, sector, fromEnclavamiento) {
+enclavamientos = function (celda, sector) {
 	celda.enclavamientos.forEach(function (enclavamiento) {
-		if (enclavamiento === fromEnclavamiento) return; // don't bother repeating
 		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, sector);
-
 	});
 };
 

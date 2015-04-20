@@ -52,14 +52,10 @@ export default class Sector extends ParcelEv {
 		this.seleccionada = celda;
 		celda.seleccionada = true;
 
-		if (this.estado.celda && this.estado.celda.tipo == celda.tipo) {
-			this.estado.celda = celda;
-		} else {
-			if (this.estado.destructor) {
-				this.estado.destructor();
-			}
-			this.estado = new EstadoFactory(this, celda);
+		if (this.estado.destructor) {
+			this.estado.destructor();
 		}
+		this.estado = new EstadoFactory(this, celda);
 	}
 	
 	view (v) {

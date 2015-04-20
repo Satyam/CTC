@@ -2370,20 +2370,24 @@ var Reloj = (function (_ParcelEv) {
 	}, {
 		key: 'onTimer',
 		value: function onTimer() {
-			vDOM.redrawPending();
 
 			var ahora = this._ahora,
 			    aBorrar = 0;
 			ahora += (Date.now() - this._referencia) * this._velocidad;
-			this._alarmas.some(function (alarma) {
-				if (alarma.cuando < ahora) {
-					alarma.cb(ahora);
-					aBorrar++;
-				} else return true;
-			});
-			this._alarmas.splice(0, aBorrar);
 			this._ahora = ahora;
-			vDOM.redrawReady();
+			if (this._alarmas.length) {
+				vDOM.redrawPending();
+				this._alarmas.some(function (alarma) {
+					if (alarma.cuando < ahora) {
+						alarma.cb(ahora);
+						aBorrar++;
+					} else return true;
+				});
+				this._alarmas.splice(0, aBorrar);
+				vDOM.redrawReady();
+			} else {
+				vDOM.render(this);
+			}
 		}
 	}, {
 		key: 'lento',

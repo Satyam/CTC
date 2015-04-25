@@ -6,6 +6,7 @@
 import ParcelEv from './component/parcelEv.js';
 import EstadoFactory from './estado.js';
 import CeldaFactory from './celda.js';
+import EnclavamientoFactory from './enclavamientos.js';
 
 var _ = require('lodash'),
 	http = require('./component/http.js');
@@ -21,6 +22,7 @@ export default class Sector extends ParcelEv {
 		this.ancho = 1;
 		this.alto = 1;
 		this.celdas = {};
+		this.enclavamientos = [];
 		this.seleccionada;
 		this.estado = '';
 		this.name = config.sector;
@@ -33,11 +35,12 @@ export default class Sector extends ParcelEv {
 					this.ancho = body.ancho;
 					this.descr = body.descr;
 					_.forEach(body.celdas, (celda, coords) => {
-						var coord = coords.split(',');
-						celda.x = parseInt(coord[0], 10);
-						celda.y = parseInt(coord[1], 10);
-						this.celdas[coords] = new CeldaFactory(celda).on('click', this.onClick.bind(this));
+						this.celdas[coords] = new CeldaFactory(celda, coords).on('click', this.onClick.bind(this));
 					});
+					_.forEach(body.enclavamientos, (enclavamiento) => {
+						this.enclavamientos.push(new EnclavamientoFactory(enclavamiento, this));
+					});
+
 				} else {
 					this.fail = response.statusCode + ': ' + response.body;
 				}
@@ -73,4 +76,20 @@ export default class Sector extends ParcelEv {
 			 v('div.pure-u-1-4', v('div.estado', {style: {height: window.innerHeight + 'px'}}, this.estado))
 		];
 	}
+
+	getCelda (x, y) {
+		var coord = arguments.length == 2?x + ',' + y:x;
+		return this.celdas[coord];
+	}
+
+	getSenal (x, y, dir) {
+		var partes = Array.prototype.slice.call(arguments, 0);
+		if (partes.length === 1) {
+			partes = partes[0].split(',');
+		}
+		var celda = this.celdas[[partes[0], partes[1]].join(',')];
+		if (celda) return celda.senales[partes[2]];
+		// otherwise, returns undefined
+	}
+
 }

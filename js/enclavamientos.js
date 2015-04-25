@@ -2,16 +2,7 @@
 /* global Mimico:true */
 "use strict";
 
-var enclavamientos;
-
 var _ = require('lodash');
-
-var getSenal = function (ident, sector) {
-	var partes = ident.split(','),
-		celda = sector.celdas[[partes[0], partes[1]].join(',')];
-	if (celda) return celda.senales[partes[2]];
-	// otherwise, returns undefined
-};
 
 var prioridades = [
 	'verde',
@@ -19,56 +10,96 @@ var prioridades = [
 	'alto'
 ];
 
+class Enclavamiento {
+	constructor (config, sector) {
+		this.sector = sector;
+	}
+
+}
+
 var Enclavamientos = {
-	apareados: function (enclavamiento, celda, sector) {
-		var desviado = celda.desviado || false;
-		enclavamiento.celdas.forEach(function (coord) {
-			var celdaDest = sector.celdas[coord];
-
-			if ((celdaDest.desviado || false) == desviado) return; // nothing to do
-
-			if (celdaDest.manual) {
-				Mimico.teletipo.agregar(sector.descr, coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
-				return;
-			}
-
-			if (celdaDest._enProceso) {
-				Mimico.teletipo.agregar(sector.descr, coord, 'Lazo infinito de enclavamiento desde ' + celda.x + ',' + celda.y);
-				return;
-			}
-
-			celdaDest.desviado = desviado;
-			celdaDest._enProceso = true;
-			enclavamientos(celdaDest, sector);
-			celdaDest._enProceso = false;
-		});
-	},
-	senalCambio: function (enclavamiento, celda, sector) {
-		var senal = getSenal(enclavamiento.senal, sector),
-			conjunto = {};
-
-		switch (celda.tipo) {
-		case 'desvio':
-			conjunto = enclavamiento[celda.desviado ? 'desviado' : 'normal'];
-			break;
-		case 'triple':
-			conjunto = enclavamiento[celda.posicion ? celda.posicion > 0 ? 'der' : 'izq' : 'primaria'];
-			break;
-
+	apareados: class Apareados extends Enclavamiento {
+		constructor (config, sector) {
+			super(config, sector);
+			this._celdas = [];
+			this._boundCambioListener = this.onCambio.bind(this);
+			config.celdas.forEach((coord) => {
+				this._celdas.push(sector.getCelda(coord).on('cambio', this._boundCambioListener));
+			});
 		}
-		_.each(conjunto, (color, luz) => {
-			//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-				senal[luz].estado = color;
-			//}
-		});
+		onCambio (celda, desviado) {
+			celda._enProceso = true;
+			this._celdas.forEach((celdaDest) => {
+				if ((celdaDest.desviado || false) == desviado) return; // nothing to do
+
+				if (celdaDest.manual) {
+					Mimico.teletipo.agregar(this.sector.descr, celdaDest.coords, 'Desvio automático propagado a celda en manual desde ' + celda.coords);
+					return;
+				}
+
+				if (celdaDest._enProceso) {
+					Mimico.teletipo.agregar(this.sector.descr, celdaDest.coords, 'Lazo infinito de enclavamiento desde ' + celda.coords);
+					return;
+				}
+
+				celdaDest._enProceso = true;
+				celdaDest.desviado = desviado;
+				celdaDest._enProceso = false;
+			});
+			celda._enProceso = false;
+		}
+		destructor () {
+			this._celdas.forEach((celda) => {
+				celda.removeEventListener('cambio',this._boundCambioListener);
+			});
+		}
+	},
+	senalCambio: class SenalCambio extends Enclavamiento {
+		constructor (config, sector) {
+			super(config, sector);
+			this.senal = sector.getSenal(config.senal);
+			this._boundCambioListener = this.onCambio.bind(this);
+			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			switch (this.celda.tipo) {
+			case 'desvio':
+				this.normal = config.normal;
+				this.desviado = config.desviado;
+				break;
+			case 'triple':
+				this.izq = config.izq;
+				this.centro = config.centro;
+				this.der = config.der;
+				break;
+
+			}
+		}
+		onCambio (celda, estado) {
+			var conjunto = {};
+
+			switch (celda.tipo) {
+			case 'desvio':
+				conjunto = this[estado ? 'desviado' : 'normal'];
+				break;
+			case 'triple':
+				conjunto = this[['izq' , 'centro', 'der'][estado+1]];
+				break;
+
+			}
+			_.each(conjunto, (color, luz) => {
+				//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
+					this.senal[luz].estado = color;
+				//}
+			});
+		}
+		destructor () {
+			this.celda.removeEventListener('cambio', this._boundCambioListener);
+		}
 
 	}
 };
 
-enclavamientos = function (celda, sector) {
-	celda.enclavamientos.forEach(function (enclavamiento) {
-		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, sector);
-	});
-};
-
-export default enclavamientos;
+export default class EnclavamientoFactory {
+	constructor (enclavamiento, sector) {
+		return new Enclavamientos[enclavamiento.tipo](enclavamiento, sector);
+	}
+}

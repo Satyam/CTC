@@ -2,7 +2,6 @@
 
 "use strict";
 import Parcel from './component/parcel.js';
-import enclavamientos from './enclavamientos.js';
 import Radios from './component/radio.js';
 
 class Estado extends Parcel {
@@ -13,12 +12,6 @@ class Estado extends Parcel {
 	}
 	view(v) {
 		return v('pre', this.celda.toString());
-	}
-	procesarEnclavamientos () {
-		var celda = this.celda;
-		celda._enProceso = true;
-		enclavamientos(celda, this.sector);
-		celda._enProceso = false;
 	}
 	destructor () {
 		this.celda = null;
@@ -58,7 +51,6 @@ var Estados = {
 		}
 		cambiar (value) {
 			this.celda.desviado = value == 'desviado';
-			super.procesarEnclavamientos();
 		}
 			
 		cambiarManual (value) {

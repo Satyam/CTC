@@ -1,187 +1,161 @@
 {
-	"descr":"Constitución",
-	"ancho":16,
-	"alto":7,
+	"descr": "Constitución",
+	"ancho": 16,
+	"alto": 7,
 	"celdas": {
 		"5,0": {
-			"tipo":"linea",
-			"desde":"N",
-			"hacia":"S"
+			"tipo": "linea",
+			"desde": "N",
+			"hacia": "S"
 		},
 		"6,0": {
-			"tipo":"linea",
-			"desde":"N",
-			"hacia":"S"
+			"tipo": "linea",
+			"desde": "N",
+			"hacia": "S"
 		},
-		
+
 		"5,1": {
-			"tipo":"linea",
-			"desde":"N",
-			"hacia":"SW"
+			"tipo": "linea",
+			"desde": "N",
+			"hacia": "SW"
 		},
 		"6,1": {
-			"tipo":"linea",
-			"desde":"N",
-			"hacia":"SE"
+			"tipo": "linea",
+			"desde": "N",
+			"hacia": "SE"
 		},
-		
+
 		"4,2": {
-			"tipo":"linea",
-			"desde":"NE",
-			"hacia":"SW"
+			"tipo": "linea",
+			"desde": "NE",
+			"hacia": "SW"
 		},
 		"7,2": {
-			"tipo":"linea",
-			"desde":"NW",
-			"hacia":"SE"
+			"tipo": "linea",
+			"desde": "NW",
+			"hacia": "SE"
 		},
-		
+
 		"3,3": {
 			"tipo": "linea",
-			"desde":"NE",
-			"hacia":"SW"
+			"desde": "NE",
+			"hacia": "SW"
 		},
 		"4,3": {
-			"tipo":"linea",
-			"desde":"SW",
+			"tipo": "linea",
+			"desde": "SW",
 			"hacia": "E"
 		},
 		"5,3": {
-			"tipo":"linea",
-			"desde":"W",
-			"hacia":"E",
+			"tipo": "linea",
+			"desde": "W",
+			"hacia": "E",
 			"senales": {
 				"E": {
-					"primaria":{
-						"estado":"verde"
+					"primaria": {
+						"estado": "verde"
 					}
 				}
 			}
 		},
 		"6,3": {
-			"tipo":"linea",
-			"desde":"W",
-			"hacia":"E"
+			"tipo": "linea",
+			"desde": "W",
+			"hacia": "E"
 		},
 		"7,3": {
-			"tipo":"linea",
-			"desde":"W",
-			"hacia":"E"
+			"tipo": "linea",
+			"desde": "W",
+			"hacia": "E"
 		},
 		"8,3": {
-			"tipo":"desvio",
-			"punta":"SE",
-			"normal":"NW",
-			"invertido":"W",
+			"tipo": "desvio",
+			"punta": "SE",
+			"normal": "NW",
+			"invertido": "W",
 			"senales": {
 				"SE": {
-					"primaria":{
-						"estado":"verde"
+					"primaria": {
+						"estado": "verde"
 					},
-					"izq":{
-						"estado":"alto"
+					"izq": {
+						"estado": "alto"
 					}
 				}
-			},
-			"enclavamientos": [
-				{
-					"tipo":"senalCambio",
-					"senal":"8,3,SE",
-					"normal": {
-						"primaria": "verde",
-						"izq":"alto"
-					},
-					"desviado":{
-						"primaria": "alto",
-						"izq":"precaucion"
-					}
-				}
-			]
+			}
 		},
-		
+
 		"0,4": {
-			"tipo":"paragolpe",
-			"desde":"E"
+			"tipo": "paragolpe",
+			"desde": "E"
 		},
-		"1,4":  {
-			"tipo":"linea",
-			"desde":"W",
-			"hacia":"E"
+		"1,4": {
+			"tipo": "linea",
+			"desde": "W",
+			"hacia": "E"
 		},
 		"2,4": {
-			"tipo":"triple",
-			"punta":"W",
-			"normal":"E",
-			"izq":"NE",
-			"der":"SE",
+			"tipo": "triple",
+			"punta": "W",
+			"centro": "E",
+			"izq": "NE",
+			"der": "SE",
 			"senales": {
 				"W": {
-					"primaria":{
-						"estado":"alto"
+					"primaria": {
+						"estado": "alto"
 					},
-					"izq":{
-						"estado":"verde"
+					"izq": {
+						"estado": "verde"
 					},
-					"der":{
-						"estado":"precaucion"
+					"der": {
+						"estado": "precaucion"
 					}
 				}
 			}
 		},
 		"3,4": {
-			"tipo":"cruce",
+			"tipo": "cruce",
 			"l1": {
-				"desde":"SW",
-				"hacia":"NE"
+				"desde": "SW",
+				"hacia": "NE"
 			},
 			"l2": {
-				"desde":"W",
-				"hacia":"E"
+				"desde": "W",
+				"hacia": "E"
 			}
 		},
 		"4,4": {
-			"tipo":"desvio",
-			"punta":"W",
-			"normal":"E",
-			"invertido":"SE",
+			"tipo": "desvio",
+			"punta": "W",
+			"normal": "E",
+			"invertido": "SE",
 			"senales": {
 				"W": {
-					"primaria":{
-						"estado":"alto"
+					"primaria": {
+						"estado": "alto"
 					},
-					"der":{
-						"estado":"precaucion"
+					"der": {
+						"estado": "precaucion"
 					}
 				}
-			},
-			"enclavamientos": [
-				{
-					"tipo":"apareados",
-					"celdas":["5,5"]
-				}
-			]
+			}
 		},
 		"5,4": {
-			"tipo":"desvio",
-			"punta":"E",
-			"normal":"W",
-			"invertido":"SW",
-			"enclavamientos": [
-				{
-					"tipo":"apareados",
-					"celdas":["4,5"]
-				}
-			]
+			"tipo": "desvio",
+			"punta": "E",
+			"normal": "W",
+			"invertido": "SW"
 		},
 		"6,4": {
-			"tipo":"linea",
-			"desde":"W",
-			"hacia":"SE"
+			"tipo": "linea",
+			"desde": "W",
+			"hacia": "SE"
 		},
 		"9,4": {
-			"tipo":"linea",
-			"desde":"NW",
-			"hacia":"SE"
+			"tipo": "linea",
+			"desde": "NW",
+			"hacia": "SE"
 		},
 		"0,5": {
 			"tipo": "paragolpe",
@@ -199,57 +173,85 @@
 			"invertido": "NE"
 		},
 		"3,5": {
-			"tipo":"cruce",
+			"tipo": "cruce",
 			"l1": {
-				"desde":"NW",
-				"hacia":"SE"
+				"desde": "NW",
+				"hacia": "SE"
 			},
 			"l2": {
-				"desde":"W",
-				"hacia":"E"
+				"desde": "W",
+				"hacia": "E"
 			}
 		},
 		"4,5": {
-			"tipo":"desvio",
-			"punta":"W",
-			"normal":"E",
-			"invertido": "NE",
-			"enclavamientos": [
-				{
-					"tipo":"apareados",
-					"celdas":["5,4"]
-				}
-			]
+			"tipo": "desvio",
+			"punta": "W",
+			"normal": "E",
+			"invertido": "NE"
 		},
 		"5,5": {
-			"tipo":"desvio",
-			"punta":"E",
-			"normal":"W",
-			"invertido": "NW",
-			"enclavamientos": [
-				{
-					"tipo":"apareados",
-					"celdas":["4,4"]
-				}
-			]
+			"tipo": "desvio",
+			"punta": "E",
+			"normal": "W",
+			"invertido": "NW"
 		},
 		"6,5": {
-			"tipo":"linea",
-			"desde":"W",
-			"hacia":"SE"
+			"tipo": "linea",
+			"desde": "W",
+			"hacia": "SE"
 		},
 		"7,5": {
-			"tipo":"linea",
-			"desde":"NW",
-			"hacia":"SE"
+			"tipo": "linea",
+			"desde": "NW",
+			"hacia": "SE"
 		},
 		"10,5": {
-			"tipo":"linea",
-			"desde":"NW",
-			"hacia":"SE"
+			"tipo": "linea",
+			"desde": "NW",
+			"hacia": "SE"
 		}
-			
-			
-	}
-		
+	},
+	"enclavamientos": [
+		{
+			"tipo": "apareados",
+			"celdas": ["4,4", "5,5"]
+		},
+		{
+			"tipo": "apareados",
+			"celdas": ["5,4", "4,5"]
+		},
+		{
+			"tipo": "senalCambio",
+			"senal": "8,3,SE",
+			"celda": "8,3",
+			"normal": {
+				"primaria": "verde",
+				"izq": "alto"
+			},
+			"desviado": {
+				"primaria": "alto",
+				"izq": "precaucion"
+			}
+		},
+		{
+			"tipo": "senalCambio",
+			"senal": "2,4,W",
+			"celda": "2,4",
+			"izq": {
+				"izq": "verde",
+				"primaria": "alto",
+				"der": "alto"
+			},
+			"centro": {
+				"izq": "alto",
+				"primaria": "verde",
+				"der": "alto"
+			},
+			"der": {
+				"izq": "alto",
+				"primaria": "alto",
+				"der": "verde"
+			}
+		}
+	]
 }

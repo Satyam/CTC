@@ -32,7 +32,7 @@ var _ANCHO_CELDA$CENTRO_CELDA$X$Y = require('./common.js');
 var _ = require('lodash');
 
 var Celda = (function (_ParcelEv) {
-	function Celda(config) {
+	function Celda(config, coords) {
 		var _this = this;
 
 		_classCallCheck(this, Celda);
@@ -44,13 +44,19 @@ var Celda = (function (_ParcelEv) {
 				}
 			}
 		});
-		this.enclavamientos = [];
+
+		coords = coords.split(',');
+		this.x = parseInt(coords[0], 10);
+		this.y = parseInt(coords[1], 10);
+
 		this.senales = {};
 		this.containerType = 'g';
 		_.merge(this, config);
+
 		this.attributes = {
-			transform: 'translate(' + config.x * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ',' + config.y * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ')'
+			transform: 'translate(' + this.x * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ',' + this.y * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ')'
 		};
+
 		_.each(this.senales, function (config, dir) {
 			config.dir = dir;
 			_this.senales[dir] = new _Senal2['default'](config);
@@ -80,8 +86,7 @@ var Celda = (function (_ParcelEv) {
 				coords: this.coords,
 				tipo: this.tipo,
 				x: this.x,
-				y: this.y,
-				enclavamientos: this.enclavamientos
+				y: this.y
 			};
 		}
 	}, {
@@ -111,10 +116,10 @@ var lineaA = function lineaA(v, dest, estilo) {
 
 var Celdas = {
 	linea: (function (_Celda) {
-		function Linea(config) {
+		function Linea(config, coords) {
 			_classCallCheck(this, Linea);
 
-			_get(Object.getPrototypeOf(Linea.prototype), 'constructor', this).call(this, config);
+			_get(Object.getPrototypeOf(Linea.prototype), 'constructor', this).call(this, config, coords);
 		}
 
 		_inherits(Linea, _Celda);
@@ -141,18 +146,30 @@ var Celdas = {
 		return Linea;
 	})(Celda),
 	desvio: (function (_Celda2) {
-		function Desvio(config) {
+		function Desvio(config, coords) {
 			_classCallCheck(this, Desvio);
 
-			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, config);
+			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, config, coords);
 		}
 
 		_inherits(Desvio, _Celda2);
 
 		_createClass(Desvio, [{
+			key: 'desviado',
+			get: function () {
+				return this._desviado;
+			},
+			set: function (value) {
+				value = !!value;
+				if (value != this._desviado) {
+					this._desviado = value;
+					this.emit('cambio', this, value);
+				}
+			}
+		}, {
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Desvio.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this.desviado ? 'off' : null), lineaA(v, this.invertido, !this.desviado ? 'off' : null)]);
+				return _get(Object.getPrototypeOf(Desvio.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this._desviado ? 'off' : null), lineaA(v, this.invertido, !this._desviado ? 'off' : null)]);
 			}
 		}, {
 			key: 'toJSON',
@@ -164,7 +181,7 @@ var Celdas = {
 						normal: this.normal,
 						invertido: this.invertido
 					},
-					desviado: this.desviado,
+					desviado: this._desviado,
 					manual: this.manual
 
 				});
@@ -175,10 +192,10 @@ var Celdas = {
 		return Desvio;
 	})(Celda),
 	paragolpe: (function (_Celda3) {
-		function Paragolpe(config) {
+		function Paragolpe(config, coords) {
 			_classCallCheck(this, Paragolpe);
 
-			_get(Object.getPrototypeOf(Paragolpe.prototype), 'constructor', this).call(this, config);
+			_get(Object.getPrototypeOf(Paragolpe.prototype), 'constructor', this).call(this, config, coords);
 		}
 
 		_inherits(Paragolpe, _Celda3);
@@ -208,10 +225,10 @@ var Celdas = {
 		return Paragolpe;
 	})(Celda),
 	triple: (function (_Celda4) {
-		function Triple(config) {
+		function Triple(config, coords) {
 			_classCallCheck(this, Triple);
 
-			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, config);
+			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, config, coords);
 		}
 
 		_inherits(Triple, _Celda4);
@@ -219,7 +236,21 @@ var Celdas = {
 		_createClass(Triple, [{
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this.posicion ? 'off' : null), lineaA(v, this.izq, this.posicion != -1 ? 'off' : null), lineaA(v, this.der, this.posicion != 1 ? 'off' : null)]);
+				return _get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.centro, this._posicion ? 'off' : null), lineaA(v, this.izq, this._posicion != -1 ? 'off' : null), lineaA(v, this.der, this._posicion != 1 ? 'off' : null)]);
+			}
+		}, {
+			key: 'posicion',
+			get: function () {
+				return this._posicion;
+			},
+			set: function (value) {
+				if (_.isFinite(value)) {
+					value = value > 0 ? 1 : value < 0 ? -1 : 0;
+					if (value == this._posicion) return;
+					var anterior = this._posicion;
+					this._posicion = value;
+					this.emit('cambio', this, value, anterior);
+				}
 			}
 		}, {
 			key: 'toJSON',
@@ -228,11 +259,11 @@ var Celdas = {
 				_.merge(s, {
 					geometria: {
 						punta: this.punta,
-						normal: this.normal,
+						centro: this.centro,
 						izquierda: this.izq,
 						derecha: this.der
 					},
-					posicion: this.posicion ? this.posicion == -1 ? 'izquierda' : 'derecha' : 'normal',
+					posicion: this._posicion,
 					manual: this.manual
 				});
 				return s;
@@ -242,10 +273,10 @@ var Celdas = {
 		return Triple;
 	})(Celda),
 	cruce: (function (_Celda5) {
-		function Cruce(config) {
+		function Cruce(config, coords) {
 			_classCallCheck(this, Cruce);
 
-			_get(Object.getPrototypeOf(Cruce.prototype), 'constructor', this).call(this, config);
+			_get(Object.getPrototypeOf(Cruce.prototype), 'constructor', this).call(this, config, coords);
 		}
 
 		_inherits(Cruce, _Celda5);
@@ -279,10 +310,10 @@ var Celdas = {
 	})(Celda)
 };
 
-var CeldaFactory = function CeldaFactory(celda) {
+var CeldaFactory = function CeldaFactory(celda, coords) {
 	_classCallCheck(this, CeldaFactory);
 
-	return new Celdas[celda.tipo](celda);
+	return new Celdas[celda.tipo](celda, coords);
 };
 
 exports['default'] = CeldaFactory;
@@ -1816,6 +1847,14 @@ to compare whether the parcel contents has changed
 },{"lodash":23}],9:[function(require,module,exports){
 'use strict';
 
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
 Object.defineProperty(exports, '__esModule', {
 	value: true
 });
@@ -1823,73 +1862,135 @@ Object.defineProperty(exports, '__esModule', {
 /* global Mimico:true */
 'use strict';
 
-var enclavamientos;
-
 var _ = require('lodash');
-
-var getSenal = function getSenal(ident, sector) {
-	var partes = ident.split(','),
-	    celda = sector.celdas[[partes[0], partes[1]].join(',')];
-	if (celda) {
-		return celda.senales[partes[2]];
-		// otherwise, returns undefined
-	}
-};
 
 var prioridades = ['verde', 'precaucion', 'alto'];
 
+var Enclavamiento = function Enclavamiento(config, sector) {
+	_classCallCheck(this, Enclavamiento);
+
+	this.sector = sector;
+};
+
 var Enclavamientos = {
-	apareados: function apareados(enclavamiento, celda, sector) {
-		var desviado = celda.desviado || false;
-		enclavamiento.celdas.forEach(function (coord) {
-			var celdaDest = sector.celdas[coord];
+	apareados: (function (_Enclavamiento) {
+		function Apareados(config, sector) {
+			var _this = this;
 
-			if ((celdaDest.desviado || false) == desviado) return; // nothing to do
+			_classCallCheck(this, Apareados);
 
-			if (celdaDest.manual) {
-				Mimico.teletipo.agregar(sector.descr, coord, 'Desvio automático propagado a celda en manual desde ' + celda.x + ',' + celda.y);
-				return;
-			}
-
-			if (celdaDest._enProceso) {
-				Mimico.teletipo.agregar(sector.descr, coord, 'Lazo infinito de enclavamiento desde ' + celda.x + ',' + celda.y);
-				return;
-			}
-
-			celdaDest.desviado = desviado;
-			celdaDest._enProceso = true;
-			enclavamientos(celdaDest, sector);
-			celdaDest._enProceso = false;
-		});
-	},
-	senalCambio: function senalCambio(enclavamiento, celda, sector) {
-		var senal = getSenal(enclavamiento.senal, sector),
-		    conjunto = {};
-
-		switch (celda.tipo) {
-			case 'desvio':
-				conjunto = enclavamiento[celda.desviado ? 'desviado' : 'normal'];
-				break;
-			case 'triple':
-				conjunto = enclavamiento[celda.posicion ? celda.posicion > 0 ? 'der' : 'izq' : 'primaria'];
-				break;
-
+			_get(Object.getPrototypeOf(Apareados.prototype), 'constructor', this).call(this, config, sector);
+			this._celdas = [];
+			this._boundCambioListener = this.onCambio.bind(this);
+			config.celdas.forEach(function (coord) {
+				_this._celdas.push(sector.getCelda(coord).on('cambio', _this._boundCambioListener));
+			});
 		}
-		_.each(conjunto, function (color, luz) {
-			//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-			senal[luz].estado = color;
-			//}
-		});
-	}
+
+		_inherits(Apareados, _Enclavamiento);
+
+		_createClass(Apareados, [{
+			key: 'onCambio',
+			value: function onCambio(celda, desviado) {
+				var _this2 = this;
+
+				celda._enProceso = true;
+				this._celdas.forEach(function (celdaDest) {
+					if ((celdaDest.desviado || false) == desviado) return; // nothing to do
+
+					if (celdaDest.manual) {
+						Mimico.teletipo.agregar(_this2.sector.descr, celdaDest.coords, 'Desvio automático propagado a celda en manual desde ' + celda.coords);
+						return;
+					}
+
+					if (celdaDest._enProceso) {
+						Mimico.teletipo.agregar(_this2.sector.descr, celdaDest.coords, 'Lazo infinito de enclavamiento desde ' + celda.coords);
+						return;
+					}
+
+					celdaDest._enProceso = true;
+					celdaDest.desviado = desviado;
+					celdaDest._enProceso = false;
+				});
+				celda._enProceso = false;
+			}
+		}, {
+			key: 'destructor',
+			value: function destructor() {
+				var _this3 = this;
+
+				this._celdas.forEach(function (celda) {
+					celda.removeEventListener('cambio', _this3._boundCambioListener);
+				});
+			}
+		}]);
+
+		return Apareados;
+	})(Enclavamiento),
+	senalCambio: (function (_Enclavamiento2) {
+		function SenalCambio(config, sector) {
+			_classCallCheck(this, SenalCambio);
+
+			_get(Object.getPrototypeOf(SenalCambio.prototype), 'constructor', this).call(this, config, sector);
+			this.senal = sector.getSenal(config.senal);
+			this._boundCambioListener = this.onCambio.bind(this);
+			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			switch (this.celda.tipo) {
+				case 'desvio':
+					this.normal = config.normal;
+					this.desviado = config.desviado;
+					break;
+				case 'triple':
+					this.izq = config.izq;
+					this.centro = config.centro;
+					this.der = config.der;
+					break;
+
+			}
+		}
+
+		_inherits(SenalCambio, _Enclavamiento2);
+
+		_createClass(SenalCambio, [{
+			key: 'onCambio',
+			value: function onCambio(celda, estado) {
+				var _this4 = this;
+
+				var conjunto = {};
+
+				switch (celda.tipo) {
+					case 'desvio':
+						conjunto = this[estado ? 'desviado' : 'normal'];
+						break;
+					case 'triple':
+						conjunto = this[['izq', 'centro', 'der'][estado + 1]];
+						break;
+
+				}
+				_.each(conjunto, function (color, luz) {
+					//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
+					_this4.senal[luz].estado = color;
+					//}
+				});
+			}
+		}, {
+			key: 'destructor',
+			value: function destructor() {
+				this.celda.removeEventListener('cambio', this._boundCambioListener);
+			}
+		}]);
+
+		return SenalCambio;
+	})(Enclavamiento)
 };
 
-enclavamientos = function (celda, sector) {
-	celda.enclavamientos.forEach(function (enclavamiento) {
-		Enclavamientos[enclavamiento.tipo](enclavamiento, celda, sector);
-	});
+var EnclavamientoFactory = function EnclavamientoFactory(enclavamiento, sector) {
+	_classCallCheck(this, EnclavamientoFactory);
+
+	return new Enclavamientos[enclavamiento.tipo](enclavamiento, sector);
 };
 
-exports['default'] = enclavamientos;
+exports['default'] = EnclavamientoFactory;
 module.exports = exports['default'];
 
 },{"lodash":23}],10:[function(require,module,exports){
@@ -1912,10 +2013,6 @@ Object.defineProperty(exports, '__esModule', {
 var _Parcel2 = require('./component/parcel.js');
 
 var _Parcel3 = _interopRequireWildcard(_Parcel2);
-
-var _enclavamientos = require('./enclavamientos.js');
-
-var _enclavamientos2 = _interopRequireWildcard(_enclavamientos);
 
 var _Radios = require('./component/radio.js');
 
@@ -1940,14 +2037,6 @@ var Estado = (function (_Parcel) {
 		key: 'view',
 		value: function view(v) {
 			return v('pre', this.celda.toString());
-		}
-	}, {
-		key: 'procesarEnclavamientos',
-		value: function procesarEnclavamientos() {
-			var celda = this.celda;
-			celda._enProceso = true;
-			_enclavamientos2['default'](celda, this.sector);
-			celda._enProceso = false;
 		}
 	}, {
 		key: 'destructor',
@@ -2003,7 +2092,6 @@ var Estados = {
 			key: 'cambiar',
 			value: function cambiar(value) {
 				this.celda.desviado = value == 'desviado';
-				_get(Object.getPrototypeOf(Desvio.prototype), 'procesarEnclavamientos', this).call(this);
 			}
 		}, {
 			key: 'cambiarManual',
@@ -2090,7 +2178,7 @@ var EstadoFactory = function EstadoFactory(sector, celda) {
 exports['default'] = EstadoFactory;
 module.exports = exports['default'];
 
-},{"./component/parcel.js":4,"./component/radio.js":6,"./enclavamientos.js":9}],11:[function(require,module,exports){
+},{"./component/parcel.js":4,"./component/radio.js":6}],11:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -2478,6 +2566,10 @@ var _CeldaFactory = require('./celda.js');
 
 var _CeldaFactory2 = _interopRequireWildcard(_CeldaFactory);
 
+var _EnclavamientoFactory = require('./enclavamientos.js');
+
+var _EnclavamientoFactory2 = _interopRequireWildcard(_EnclavamientoFactory);
+
 var _ANCHO_CELDA = require('./common.js');
 
 /* jshint node:true, esnext:true */
@@ -2501,6 +2593,7 @@ var Sector = (function (_ParcelEv) {
 		this.ancho = 1;
 		this.alto = 1;
 		this.celdas = {};
+		this.enclavamientos = [];
 		this.seleccionada;
 		this.estado = '';
 		this.name = config.sector;
@@ -2511,10 +2604,10 @@ var Sector = (function (_ParcelEv) {
 				_this.ancho = body.ancho;
 				_this.descr = body.descr;
 				_.forEach(body.celdas, function (celda, coords) {
-					var coord = coords.split(',');
-					celda.x = parseInt(coord[0], 10);
-					celda.y = parseInt(coord[1], 10);
-					_this.celdas[coords] = new _CeldaFactory2['default'](celda).on('click', _this.onClick.bind(_this));
+					_this.celdas[coords] = new _CeldaFactory2['default'](celda, coords).on('click', _this.onClick.bind(_this));
+				});
+				_.forEach(body.enclavamientos, function (enclavamiento) {
+					_this.enclavamientos.push(new _EnclavamientoFactory2['default'](enclavamiento, _this));
 				});
 			} else {
 				_this.fail = response.statusCode + ': ' + response.body;
@@ -2550,6 +2643,25 @@ var Sector = (function (_ParcelEv) {
 				version: 1.1
 			}, _.values(this.celdas))), v('div.pure-u-1-4', v('div.estado', { style: { height: window.innerHeight + 'px' } }, this.estado))];
 		}
+	}, {
+		key: 'getCelda',
+		value: function getCelda(x, y) {
+			var coord = arguments.length == 2 ? x + ',' + y : x;
+			return this.celdas[coord];
+		}
+	}, {
+		key: 'getSenal',
+		value: function getSenal(x, y, dir) {
+			var partes = Array.prototype.slice.call(arguments, 0);
+			if (partes.length === 1) {
+				partes = partes[0].split(',');
+			}
+			var celda = this.celdas[[partes[0], partes[1]].join(',')];
+			if (celda) {
+				return celda.senales[partes[2]];
+				// otherwise, returns undefined
+			}
+		}
 	}]);
 
 	return Sector;
@@ -2558,7 +2670,7 @@ var Sector = (function (_ParcelEv) {
 exports['default'] = Sector;
 module.exports = exports['default'];
 
-},{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcelEv.js":5,"./estado.js":10,"lodash":23}],15:[function(require,module,exports){
+},{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcelEv.js":5,"./enclavamientos.js":9,"./estado.js":10,"lodash":23}],15:[function(require,module,exports){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };

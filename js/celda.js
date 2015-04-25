@@ -7,19 +7,25 @@ var _ = require('lodash');
 import {ANCHO_CELDA, CENTRO_CELDA, X,  Y} from './common.js';
 
 class Celda extends ParcelEv {
-	constructor (config) {
+	constructor (config, coords) {
 		super({
 			EVENTS: {
 				click: (ev) => this.emit('click',this)
 			}
 		});
-		this.enclavamientos = [];
+
+		coords = coords.split(',');
+		this.x = parseInt(coords[0], 10);
+		this.y = parseInt(coords[1], 10);
+
 		this.senales = {};
 		this.containerType = 'g';
 		_.merge(this, config);
+
 		this.attributes = {
-			transform: `translate(${config.x * ANCHO_CELDA},${config.y * ANCHO_CELDA})`
+			transform: `translate(${this.x * ANCHO_CELDA},${this.y * ANCHO_CELDA})`
 		};
+
 		_.each(this.senales, (config, dir) => {
 			config.dir = dir;
 			this.senales[dir] = new Senal(config);
@@ -47,8 +53,7 @@ class Celda extends ParcelEv {
 			coords: this.coords,
 			tipo:this.tipo,
 			x:this.x,
-			y:this.y,
-			enclavamientos: this.enclavamientos
+			y:this.y
 		};
 	}
 	toString () {
@@ -72,8 +77,8 @@ var lineaA = function (v, dest, estilo) {
 
 var Celdas =  {
 	linea: class Linea extends Celda {
-		constructor(config) {
-			super(config);
+		constructor(config, coords) {
+			super(config, coords);
 		}
 		view (v) {
 			return super.view(v,[
@@ -93,14 +98,26 @@ var Celdas =  {
 		}
 	},
 	desvio: class Desvio extends Celda {
-		constructor(config) {
-			super(config);
+		constructor(config, coords) {
+			super(config, coords);
+		}
+
+		get desviado () {
+			return this._desviado;
+		}
+
+		set desviado (value) {
+			value = !!value;
+			if (value != this._desviado) {
+				this._desviado = value;
+				this.emit('cambio', this, value);
+			}
 		}
 		view (v) {
 			return super.view(v,[
 				lineaA(v, this.punta),
-				lineaA(v, this.normal, this.desviado ? 'off' : null),
-				lineaA(v, this.invertido, !this.desviado ? 'off' : null)
+				lineaA(v, this.normal, this._desviado ? 'off' : null),
+				lineaA(v, this.invertido, !this._desviado ? 'off' : null)
 			]);
 		}
 		toJSON () {
@@ -111,7 +128,7 @@ var Celdas =  {
 					normal: this.normal,
 					invertido: this.invertido
 				},
-				desviado: this.desviado,
+				desviado: this._desviado,
 				manual: this.manual
 
 			});
@@ -119,8 +136,8 @@ var Celdas =  {
 		}
 	},
 	paragolpe: class Paragolpe extends Celda {
-		constructor(config) {
-			super(config);
+		constructor(config, coords) {
+			super(config, coords);
 		}
 		view (v) {
 			return super.view(v, [
@@ -143,35 +160,51 @@ var Celdas =  {
 		}
 	},
 	triple: class Triple extends Celda {
-		constructor(config) {
-			super(config);
+		constructor(config, coords) {
+			super(config, coords);
 		}
 		view (v) {
 			return super.view(v,[
 				lineaA(v, this.punta),
-				lineaA(v, this.normal, this.posicion ?'off':null),
-				lineaA(v, this.izq, this.posicion != -1 ?'off':null),
-				lineaA(v, this.der, this.posicion != 1 ?'off':null)
+				lineaA(v, this.centro, this._posicion ?'off':null),
+				lineaA(v, this.izq, this._posicion != -1 ?'off':null),
+				lineaA(v, this.der, this._posicion != 1 ?'off':null)
 			]);
 		}
+
+		get posicion () {
+			return this._posicion;
+		}
+
+		set posicion (value) {
+			if (_.isFinite(value)) {
+				value = value > 0? 1: (value < 0 ? -1: 0);
+				if (value == this._posicion) return;
+				let anterior = this._posicion;
+				this._posicion = value;
+				this.emit('cambio', this, value, anterior);
+			}
+		}
+
+
 		toJSON () {
 			var s = super.toJSON();
 			_.merge(s, {
 				geometria: {
 					punta: this.punta,
-					normal: this.normal,
+					centro: this.centro,
 					izquierda: this.izq,
 					derecha: this.der
 				},
-				posicion: this.posicion?(this.posicion == -1?'izquierda':'derecha'):'normal',
+				posicion: this._posicion,
 				manual: this.manual
 			});
 			return s;
 		}
 	},
 	cruce: class Cruce extends Celda {
-		constructor(config) {
-			super(config);
+		constructor(config, coords) {
+			super(config, coords);
 		}
 		view (v) {
 			return super.view(v, [
@@ -201,7 +234,7 @@ var Celdas =  {
 };
 
 export default class CeldaFactory {
-	constructor (celda) {
-		return new Celdas[celda.tipo](celda);
+	constructor (celda, coords) {
+		return new Celdas[celda.tipo](celda, coords);
 	}
 }

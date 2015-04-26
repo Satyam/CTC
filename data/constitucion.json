@@ -234,7 +234,7 @@
 			}
 		},
 		{
-			"tipo": "senalCambio",
+			"tipo": "senalTriple",
 			"senal": "2,4,W",
 			"celda": "2,4",
 			"izq": {

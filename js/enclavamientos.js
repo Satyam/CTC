@@ -13,23 +13,37 @@ var prioridades = [
 class Enclavamiento {
 	constructor (config, sector) {
 		this.sector = sector;
+		_.merge(this, config);
 	}
 
+	toJSON () {
+		return {
+			tipo: this.tipo
+		};
+	}
+	toString () {
+		return JSON.stringify(this.toJSON(), null, 2);
+	}
+
+	destructor () {
+		delete this.sector;
+	}
 }
 
 var Enclavamientos = {
 	apareados: class Apareados extends Enclavamiento {
 		constructor (config, sector) {
 			super(config, sector);
-			this._celdas = [];
 			this._boundCambioListener = this.onCambio.bind(this);
 			config.celdas.forEach((coord) => {
-				this._celdas.push(sector.getCelda(coord).on('cambio', this._boundCambioListener));
+				sector.getCelda(coord).on('cambio', this._boundCambioListener);
 			});
 		}
 		onCambio (celda, desviado) {
 			celda._enProceso = true;
-			this._celdas.forEach((celdaDest) => {
+			this.celdas.forEach((coord) => {
+				let celdaDest = this.sector.getCelda(coord);
+				if (celda === celdaDest) return;
 				if ((celdaDest.desviado || false) == desviado) return; // nothing to do
 
 				if (celdaDest.manual) {
@@ -48,50 +62,78 @@ var Enclavamientos = {
 			});
 			celda._enProceso = false;
 		}
+		toJSON () {
+			var s = super.toJSON();
+			_.merge(s, {
+				celdas: this.celdas
+			});
+			return s;
+		}
 		destructor () {
-			this._celdas.forEach((celda) => {
-				celda.removeEventListener('cambio',this._boundCambioListener);
+			super.destructor();
+			this.celdas.forEach((coord) => {
+				this.sector.getCelda(coord).removeEventListener('cambio',this._boundCambioListener);
 			});
 		}
 	},
 	senalCambio: class SenalCambio extends Enclavamiento {
 		constructor (config, sector) {
 			super(config, sector);
-			this.senal = sector.getSenal(config.senal);
 			this._boundCambioListener = this.onCambio.bind(this);
-			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
-			switch (this.celda.tipo) {
-			case 'cambio':
-				this.normal = config.normal;
-				this.desviado = config.desviado;
-				break;
-			case 'triple':
-				this.izq = config.izq;
-				this.centro = config.centro;
-				this.der = config.der;
-				break;
-
-			}
+			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 		}
 		onCambio (celda, estado) {
-			var conjunto = {};
-
-			switch (celda.tipo) {
-			case 'cambio':
-				conjunto = this[estado ? 'desviado' : 'normal'];
-				break;
-			case 'triple':
-				conjunto = this[['izq' , 'centro', 'der'][estado+1]];
-				break;
-
-			}
-			_.each(conjunto, (color, luz) => {
+			var senal = this.sector.getSenal(this.senal);
+			_.each(this[estado ? 'desviado' : 'normal'], (color, luz) => {
 				//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					this.senal[luz].estado = color;
+					senal[luz].estado = color;
 				//}
 			});
 		}
+		toJSON () {
+			var s = super.toJSON();
+			_.merge(s, {
+				celda: this.celda,
+				senal: this.senal,
+				normal: this.normal,
+				desviado: this.desviado
+			});
+			return s;
+		}
 		destructor () {
+			super.destructor();
+			this.celda.removeEventListener('cambio', this._boundCambioListener);
+		}
+
+	},
+	senalTriple: class SenalTriple extends Enclavamiento {
+		constructor (config, sector) {
+			super(config, sector);
+			this._boundCambioListener = this.onCambio.bind(this);
+			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+		}
+		onCambio (celda, estado) {
+			var senal = this.sector.getSenal(this.senal);
+
+			_.each(this[['izq' , 'centro', 'der'][estado+1]], (color, luz) => {
+				//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
+					senal[luz].estado = color;
+				//}
+			});
+		}
+		toJSON () {
+			var s = super.toJSON();
+			_.merge(s, {
+				celda: this.celda,
+				senal: this.senal,
+				izq: this.izq,
+				centro: this.centro,
+				der: this.der
+			});
+			return s;
+		}
+		destructor () {
+			super.destructor();
 			this.celda.removeEventListener('cambio', this._boundCambioListener);
 		}
 

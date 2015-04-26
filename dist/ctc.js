@@ -135,12 +135,10 @@ var Celdas = {
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(Linea.prototype), 'toJSON', this).call(this);
-				_.merge(s, {
+				return _.merge(_get(Object.getPrototypeOf(Linea.prototype), 'toJSON', this).call(this), {
 					desde: this.desde,
 					hacia: this.hacia
 				});
-				return s;
 			}
 		}]);
 
@@ -175,8 +173,7 @@ var Celdas = {
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(Cambio.prototype), 'toJSON', this).call(this);
-				_.merge(s, {
+				return _.merge(_get(Object.getPrototypeOf(Cambio.prototype), 'toJSON', this).call(this), {
 					punta: this.punta,
 					normal: this.normal,
 					invertido: this.invertido,
@@ -184,7 +181,6 @@ var Celdas = {
 					manual: this.manual
 
 				});
-				return s;
 			}
 		}]);
 
@@ -211,11 +207,9 @@ var Celdas = {
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(Paragolpe.prototype), 'toJSON', this).call(this);
-				_.merge(s, {
+				return _.merge(_get(Object.getPrototypeOf(Paragolpe.prototype), 'toJSON', this).call(this), {
 					desde: this.desde
 				});
-				return s;
 			}
 		}]);
 
@@ -252,8 +246,7 @@ var Celdas = {
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(Triple.prototype), 'toJSON', this).call(this);
-				_.merge(s, {
+				return _.merge(_get(Object.getPrototypeOf(Triple.prototype), 'toJSON', this).call(this), {
 					punta: this.punta,
 					centro: this.centro,
 					izq: this.izq,
@@ -261,7 +254,6 @@ var Celdas = {
 					posicion: this._posicion,
 					manual: this.manual
 				});
-				return s;
 			}
 		}]);
 
@@ -1935,11 +1927,9 @@ var Enclavamientos = {
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(Apareados.prototype), 'toJSON', this).call(this);
-				_.merge(s, {
+				return _.merge(_get(Object.getPrototypeOf(Apareados.prototype), 'toJSON', this).call(this), {
 					celdas: this.celdas
 				});
-				return s;
 			}
 		}, {
 			key: 'destructor',
@@ -1979,14 +1969,12 @@ var Enclavamientos = {
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(SenalCambio.prototype), 'toJSON', this).call(this);
-				_.merge(s, {
+				return _.merge(_get(Object.getPrototypeOf(SenalCambio.prototype), 'toJSON', this).call(this), {
 					celda: this.celda,
 					senal: this.senal,
 					normal: this.normal,
 					desviado: this.desviado
 				});
-				return s;
 			}
 		}, {
 			key: 'destructor',
@@ -2023,15 +2011,13 @@ var Enclavamientos = {
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(SenalTriple.prototype), 'toJSON', this).call(this);
-				_.merge(s, {
+				return _.merge(_get(Object.getPrototypeOf(SenalTriple.prototype), 'toJSON', this).call(this), {
 					celda: this.celda,
 					senal: this.senal,
 					izq: this.izq,
 					centro: this.centro,
 					der: this.der
 				});
-				return s;
 			}
 		}, {
 			key: 'destructor',

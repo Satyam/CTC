@@ -88,12 +88,10 @@ var Celdas =  {
 			]);
 		}
 		toJSON () {
-			var s = super.toJSON();
-			_.merge(s, {
+			return _.merge(super.toJSON(), {
 				desde:this.desde,
 				hacia:this.hacia
 			});
-			return s;
 		}
 	},
 	cambio: class Cambio extends Celda {
@@ -120,8 +118,7 @@ var Celdas =  {
 			]);
 		}
 		toJSON () {
-			var s = super.toJSON();
-			_.merge(s, {
+			return _.merge(super.toJSON(), {
 				punta: this.punta,
 				normal: this.normal,
 				invertido: this.invertido,
@@ -129,7 +126,6 @@ var Celdas =  {
 				manual: this.manual
 
 			});
-			return s;
 		}
 	},
 	paragolpe: class Paragolpe extends Celda {
@@ -147,11 +143,9 @@ var Celdas =  {
 			]);
 		}
 		toJSON () {
-			var s = super.toJSON();
-			_.merge(s, {
+			return _.merge(super.toJSON(), {
 				desde: this.desde
 			});
-			return s;
 		}
 	},
 	triple: class Triple extends Celda {
@@ -183,8 +177,7 @@ var Celdas =  {
 
 
 		toJSON () {
-			var s = super.toJSON();
-			_.merge(s, {
+			return _.merge(super.toJSON(), {
 				punta: this.punta,
 				centro: this.centro,
 				izq: this.izq,
@@ -192,7 +185,6 @@ var Celdas =  {
 				posicion: this._posicion,
 				manual: this.manual
 			});
-			return s;
 		}
 	},
 	cruce: class Cruce extends Celda {

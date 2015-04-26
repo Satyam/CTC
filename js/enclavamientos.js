@@ -63,11 +63,9 @@ var Enclavamientos = {
 			celda._enProceso = false;
 		}
 		toJSON () {
-			var s = super.toJSON();
-			_.merge(s, {
+			return _.merge(super.toJSON(), {
 				celdas: this.celdas
 			});
-			return s;
 		}
 		destructor () {
 			super.destructor();
@@ -91,14 +89,12 @@ var Enclavamientos = {
 			});
 		}
 		toJSON () {
-			var s = super.toJSON();
-			_.merge(s, {
+			return _.merge(super.toJSON(), {
 				celda: this.celda,
 				senal: this.senal,
 				normal: this.normal,
 				desviado: this.desviado
 			});
-			return s;
 		}
 		destructor () {
 			super.destructor();
@@ -122,15 +118,13 @@ var Enclavamientos = {
 			});
 		}
 		toJSON () {
-			var s = super.toJSON();
-			_.merge(s, {
+			return _.merge(super.toJSON(), {
 				celda: this.celda,
 				senal: this.senal,
 				izq: this.izq,
 				centro: this.centro,
 				der: this.der
 			});
-			return s;
 		}
 		destructor () {
 			super.destructor();

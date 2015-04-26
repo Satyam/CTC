@@ -97,7 +97,7 @@ var Celdas =  {
 			return s;
 		}
 	},
-	desvio: class Desvio extends Celda {
+	cambio: class Cambio extends Celda {
 		constructor(config, coords) {
 			super(config, coords);
 		}

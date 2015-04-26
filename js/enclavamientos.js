@@ -33,7 +33,7 @@ var Enclavamientos = {
 				if ((celdaDest.desviado || false) == desviado) return; // nothing to do
 
 				if (celdaDest.manual) {
-					Mimico.teletipo.agregar(this.sector.descr, celdaDest.coords, 'Desvio automático propagado a celda en manual desde ' + celda.coords);
+					Mimico.teletipo.agregar(this.sector.descr, celdaDest.coords, 'Cambio automático propagado a celda en manual desde ' + celda.coords);
 					return;
 				}
 
@@ -61,7 +61,7 @@ var Enclavamientos = {
 			this._boundCambioListener = this.onCambio.bind(this);
 			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 			switch (this.celda.tipo) {
-			case 'desvio':
+			case 'cambio':
 				this.normal = config.normal;
 				this.desviado = config.desviado;
 				break;
@@ -77,7 +77,7 @@ var Enclavamientos = {
 			var conjunto = {};
 
 			switch (celda.tipo) {
-			case 'desvio':
+			case 'cambio':
 				conjunto = this[estado ? 'desviado' : 'normal'];
 				break;
 			case 'triple':

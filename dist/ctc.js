@@ -145,16 +145,16 @@ var Celdas = {
 
 		return Linea;
 	})(Celda),
-	desvio: (function (_Celda2) {
-		function Desvio(config, coords) {
-			_classCallCheck(this, Desvio);
+	cambio: (function (_Celda2) {
+		function Cambio(config, coords) {
+			_classCallCheck(this, Cambio);
 
-			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, config, coords);
+			_get(Object.getPrototypeOf(Cambio.prototype), 'constructor', this).call(this, config, coords);
 		}
 
-		_inherits(Desvio, _Celda2);
+		_inherits(Cambio, _Celda2);
 
-		_createClass(Desvio, [{
+		_createClass(Cambio, [{
 			key: 'desviado',
 			get: function () {
 				return this._desviado;
@@ -169,12 +169,12 @@ var Celdas = {
 		}, {
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Desvio.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this._desviado ? 'off' : null), lineaA(v, this.invertido, !this._desviado ? 'off' : null)]);
+				return _get(Object.getPrototypeOf(Cambio.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this._desviado ? 'off' : null), lineaA(v, this.invertido, !this._desviado ? 'off' : null)]);
 			}
 		}, {
 			key: 'toJSON',
 			value: function toJSON() {
-				var s = _get(Object.getPrototypeOf(Desvio.prototype), 'toJSON', this).call(this);
+				var s = _get(Object.getPrototypeOf(Cambio.prototype), 'toJSON', this).call(this);
 				_.merge(s, {
 					geometria: {
 						punta: this.punta,
@@ -189,7 +189,7 @@ var Celdas = {
 			}
 		}]);
 
-		return Desvio;
+		return Cambio;
 	})(Celda),
 	paragolpe: (function (_Celda3) {
 		function Paragolpe(config, coords) {
@@ -1899,7 +1899,7 @@ var Enclavamientos = {
 					if ((celdaDest.desviado || false) == desviado) return; // nothing to do
 
 					if (celdaDest.manual) {
-						Mimico.teletipo.agregar(_this2.sector.descr, celdaDest.coords, 'Desvio automático propagado a celda en manual desde ' + celda.coords);
+						Mimico.teletipo.agregar(_this2.sector.descr, celdaDest.coords, 'Cambio automático propagado a celda en manual desde ' + celda.coords);
 						return;
 					}
 
@@ -1936,7 +1936,7 @@ var Enclavamientos = {
 			this._boundCambioListener = this.onCambio.bind(this);
 			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 			switch (this.celda.tipo) {
-				case 'desvio':
+				case 'cambio':
 					this.normal = config.normal;
 					this.desviado = config.desviado;
 					break;
@@ -1959,7 +1959,7 @@ var Enclavamientos = {
 				var conjunto = {};
 
 				switch (celda.tipo) {
-					case 'desvio':
+					case 'cambio':
 						conjunto = this[estado ? 'desviado' : 'normal'];
 						break;
 					case 'triple':
@@ -2064,12 +2064,12 @@ var Estados = {
 
 		return Linea;
 	})(Estado),
-	desvio: (function (_Estado2) {
-		function Desvio(sector, celda) {
-			_classCallCheck(this, Desvio);
+	cambio: (function (_Estado2) {
+		function Cambio(sector, celda) {
+			_classCallCheck(this, Cambio);
 
-			_get(Object.getPrototypeOf(Desvio.prototype), 'constructor', this).call(this, sector, celda);
-			this.desvio = new _Radios2['default']({
+			_get(Object.getPrototypeOf(Cambio.prototype), 'constructor', this).call(this, sector, celda);
+			this.desviado = new _Radios2['default']({
 				title: 'Desvío',
 				selected: celda.desviado ? 'desviado' : 'normal',
 				opts: [{ normal: 'Normal' }, { desviado: 'Desviado' }]
@@ -2081,12 +2081,12 @@ var Estados = {
 			}).on('click', this.cambiarManual.bind(this));
 		}
 
-		_inherits(Desvio, _Estado2);
+		_inherits(Cambio, _Estado2);
 
-		_createClass(Desvio, [{
+		_createClass(Cambio, [{
 			key: 'view',
 			value: function view(v) {
-				return [_get(Object.getPrototypeOf(Desvio.prototype), 'view', this).call(this, v), this.desvio, this.manual];
+				return [_get(Object.getPrototypeOf(Cambio.prototype), 'view', this).call(this, v), this.desviado, this.manual];
 			}
 		}, {
 			key: 'cambiar',
@@ -2100,7 +2100,7 @@ var Estados = {
 			}
 		}]);
 
-		return Desvio;
+		return Cambio;
 	})(Estado),
 	paragolpe: (function (_Estado3) {
 		function Paragolpe() {
@@ -2121,8 +2121,8 @@ var Estados = {
 			_classCallCheck(this, Triple);
 
 			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, sector, celda);
-			this.desvio = new _Radios2['default']({
-				title: 'Desvío',
+			this.posicion = new _Radios2['default']({
+				title: 'Posición',
 				selected: '' + (celda.posicion || 0),
 				opts: [{ '-1': 'Izquierda' }, { '0': 'Normal' }, { '1': 'Derecha' }]
 			}).on('click', this.cambiar.bind(this));
@@ -2148,7 +2148,7 @@ var Estados = {
 		}, {
 			key: 'view',
 			value: function view(v) {
-				return [_get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v), this.desvio, this.manual];
+				return [_get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v), this.posicion, this.manual];
 			}
 		}]);
 

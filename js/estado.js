@@ -22,10 +22,10 @@ class Estado extends Parcel {
 
 var Estados = {
 	linea: class Linea extends Estado {},
-	desvio: class Desvio extends Estado {
+	cambio: class Cambio extends Estado {
 		constructor (sector, celda) {
 			super(sector, celda);
-			this.desvio = new Radios({
+			this.desviado = new Radios({
 				title:'Desvío',
 				selected: celda.desviado?'desviado':'normal',
 				opts: [
@@ -45,7 +45,7 @@ var Estados = {
 		view (v) {
 			return [
 				super.view(v),
-				this.desvio,
+				this.desviado,
 				this.manual
 			];
 		}
@@ -62,8 +62,8 @@ var Estados = {
 	triple: class Triple extends Estado {
 		constructor (sector, celda) {
 			super(sector, celda);
-			this.desvio = new Radios({
-				title:'Desvío',
+			this.posicion = new Radios({
+				title:'Posición',
 				selected: '' + (celda.posicion || 0),
 				opts: [
 					{'-1':'Izquierda'},
@@ -89,7 +89,7 @@ var Estados = {
 		view (v) {
 			return [
 				super.view(v),
-				this.desvio,
+				this.posicion,
 				this.manual
 			];
 		}

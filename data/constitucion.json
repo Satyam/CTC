@@ -69,7 +69,7 @@
 			"hacia": "E"
 		},
 		"8,3": {
-			"tipo": "desvio",
+			"tipo": "cambio",
 			"punta": "SE",
 			"normal": "NW",
 			"invertido": "W",
@@ -126,7 +126,7 @@
 			}
 		},
 		"4,4": {
-			"tipo": "desvio",
+			"tipo": "cambio",
 			"punta": "W",
 			"normal": "E",
 			"invertido": "SE",
@@ -142,7 +142,7 @@
 			}
 		},
 		"5,4": {
-			"tipo": "desvio",
+			"tipo": "cambio",
 			"punta": "E",
 			"normal": "W",
 			"invertido": "SW"
@@ -167,7 +167,7 @@
 			"hacia": "E"
 		},
 		"2,5": {
-			"tipo": "desvio",
+			"tipo": "cambio",
 			"punta": "W",
 			"normal": "E",
 			"invertido": "NE"
@@ -184,13 +184,13 @@
 			}
 		},
 		"4,5": {
-			"tipo": "desvio",
+			"tipo": "cambio",
 			"punta": "W",
 			"normal": "E",
 			"invertido": "NE"
 		},
 		"5,5": {
-			"tipo": "desvio",
+			"tipo": "cambio",
 			"punta": "E",
 			"normal": "W",
 			"invertido": "NW"

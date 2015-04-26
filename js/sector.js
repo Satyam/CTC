@@ -92,4 +92,19 @@ export default class Sector extends ParcelEv {
 		// otherwise, returns undefined
 	}
 
+	toJSON () {
+		return {
+			name: this.name,
+			ancho:this.ancho,
+			alto:this.alto,
+			descr: this.descr,
+			celdas: _.mapValues(this.celdas, (celda) => celda.toJSON()),
+			enclavamientos: _.map(this.enclavamientos, (enclavamiento) => enclavamiento.toJSON())
+		};
+
+	}
+	toString () {
+		return JSON.stringify(this.toJSON(), null, 2);
+	}
+
 }

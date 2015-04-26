@@ -57,4 +57,12 @@ export default class Senal extends Parcel {
 		}
 		return s;
 	}
+
+	toJSON() {
+		return {
+			primaria:this.primaria,
+			izq: this.izq,
+			der: this.der
+		};
+	}
 }

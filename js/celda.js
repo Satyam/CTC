@@ -50,10 +50,11 @@ class Celda extends ParcelEv {
 	}
 	toJSON () {
 		return {
-			coords: this.coords,
 			tipo:this.tipo,
+			coords: this.coords,
 			x:this.x,
-			y:this.y
+			y:this.y,
+			senales: _.mapValues(this.senales, (senal) => senal.toJSON())
 		};
 	}
 	toString () {
@@ -89,10 +90,8 @@ var Celdas =  {
 		toJSON () {
 			var s = super.toJSON();
 			_.merge(s, {
-				geometria: {
-					desde:this.desde,
-					hacia:this.hacia
-				}
+				desde:this.desde,
+				hacia:this.hacia
 			});
 			return s;
 		}
@@ -123,11 +122,9 @@ var Celdas =  {
 		toJSON () {
 			var s = super.toJSON();
 			_.merge(s, {
-				geometria: {
-					punta: this.punta,
-					normal: this.normal,
-					invertido: this.invertido
-				},
+				punta: this.punta,
+				normal: this.normal,
+				invertido: this.invertido,
 				desviado: this._desviado,
 				manual: this.manual
 
@@ -152,9 +149,7 @@ var Celdas =  {
 		toJSON () {
 			var s = super.toJSON();
 			_.merge(s, {
-				geometria: {
-					desde: this.desde
-				}
+				desde: this.desde
 			});
 			return s;
 		}
@@ -190,12 +185,10 @@ var Celdas =  {
 		toJSON () {
 			var s = super.toJSON();
 			_.merge(s, {
-				geometria: {
-					punta: this.punta,
-					centro: this.centro,
-					izquierda: this.izq,
-					derecha: this.der
-				},
+				punta: this.punta,
+				centro: this.centro,
+				izq: this.izq,
+				der: this.der,
 				posicion: this._posicion,
 				manual: this.manual
 			});
@@ -217,15 +210,13 @@ var Celdas =  {
 		toJSON () {
 			var s = super.toJSON();
 			_.merge(s, {
-				geometria: {
-					linea1: {
-						desde:this.l1.desde,
-						hacia:this.l1.hacia
-					},
-					linea2: {
-						desde:this.l2.desde,
-						hacia:this.l2.hacia
-					}
+				l1: {
+					desde:this.l1.desde,
+					hacia:this.l1.hacia
+				},
+				l2: {
+					desde:this.l2.desde,
+					hacia:this.l2.hacia
 				}
 			});
 			return s;

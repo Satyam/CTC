@@ -100,7 +100,7 @@ var Celdas =  {
 		}
 
 		get desviado () {
-			return this._desviado;
+			return this._desviado || false;
 		}
 
 		set desviado (value) {
@@ -162,7 +162,7 @@ var Celdas =  {
 		}
 
 		get posicion () {
-			return this._posicion;
+			return this._posicion || 0;
 		}
 
 		set posicion (value) {

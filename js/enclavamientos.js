@@ -40,6 +40,7 @@ var Enclavamientos = {
 			});
 		}
 		onCambio (celda, desviado) {
+			var huboCambio = 0;
 			celda._enProceso = true;
 			this.celdas.forEach((coord) => {
 				let celdaDest = this.sector.getCelda(coord);
@@ -59,8 +60,14 @@ var Enclavamientos = {
 				celdaDest._enProceso = true;
 				celdaDest.desviado = desviado;
 				celdaDest._enProceso = false;
+				huboCambio ++;
 			});
 			celda._enProceso = false;
+			return !!huboCambio;
+		}
+		inicial () {
+			var celda = this.sector.getCelda(this.celdas[0]);
+			return this.onCambio (celda, celda.desviado);
 		}
 		toJSON () {
 			return _.merge(super.toJSON(), {
@@ -81,12 +88,22 @@ var Enclavamientos = {
 			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 		}
 		onCambio (celda, estado) {
-			var senal = this.sector.getSenal(this.senal);
+			var senal = this.sector.getSenal(this.senal),
+				cambiosEfectuados = 0;
 			_.each(this[estado ? 'desviado' : 'normal'], (color, luz) => {
 				//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					senal[luz].estado = color;
+					if (senal[luz].estado != color) {
+						senal[luz].estado = color;
+						cambiosEfectuados++;
+					}
 				//}
 			});
+			return cambiosEfectuados;
+		}
+
+		inicial () {
+			var celda = this.sector.getCelda(this.celda);
+			return this.onCambio (celda, celda.desviado);
 		}
 		toJSON () {
 			return _.merge(super.toJSON(), {
@@ -109,13 +126,23 @@ var Enclavamientos = {
 			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 		}
 		onCambio (celda, estado) {
-			var senal = this.sector.getSenal(this.senal);
+			var senal = this.sector.getSenal(this.senal),
+				cambiosEfectuados = 0;
 
 			_.each(this[['izq' , 'centro', 'der'][estado+1]], (color, luz) => {
 				//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					senal[luz].estado = color;
+					if (senal[luz].estado != color) {
+						senal[luz].estado = color;
+						cambiosEfectuados++;
+					}
 				//}
 			});
+			return cambiosEfectuados;
+		}
+
+		inicial () {
+			var celda = this.sector.getCelda(this.celda);
+			return this.onCambio (celda, celda.posicion);
 		}
 		toJSON () {
 			return _.merge(super.toJSON(), {

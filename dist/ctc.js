@@ -156,7 +156,7 @@ var Celdas = {
 		_createClass(Cambio, [{
 			key: 'desviado',
 			get: function () {
-				return this._desviado;
+				return this._desviado || false;
 			},
 			set: function (value) {
 				value = !!value;
@@ -232,7 +232,7 @@ var Celdas = {
 		}, {
 			key: 'posicion',
 			get: function () {
-				return this._posicion;
+				return this._posicion || 0;
 			},
 			set: function (value) {
 				if (_.isFinite(value)) {
@@ -1902,6 +1902,7 @@ var Enclavamientos = {
 			value: function onCambio(celda, desviado) {
 				var _this2 = this;
 
+				var huboCambio = 0;
 				celda._enProceso = true;
 				this.celdas.forEach(function (coord) {
 					var celdaDest = _this2.sector.getCelda(coord);
@@ -1921,8 +1922,16 @@ var Enclavamientos = {
 					celdaDest._enProceso = true;
 					celdaDest.desviado = desviado;
 					celdaDest._enProceso = false;
+					huboCambio++;
 				});
 				celda._enProceso = false;
+				return !!huboCambio;
+			}
+		}, {
+			key: 'inicial',
+			value: function inicial() {
+				var celda = this.sector.getCelda(this.celdas[0]);
+				return this.onCambio(celda, celda.desviado);
 			}
 		}, {
 			key: 'toJSON',
@@ -1959,12 +1968,23 @@ var Enclavamientos = {
 		_createClass(SenalCambio, [{
 			key: 'onCambio',
 			value: function onCambio(celda, estado) {
-				var senal = this.sector.getSenal(this.senal);
+				var senal = this.sector.getSenal(this.senal),
+				    cambiosEfectuados = 0;
 				_.each(this[estado ? 'desviado' : 'normal'], function (color, luz) {
 					//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					senal[luz].estado = color;
+					if (senal[luz].estado != color) {
+						senal[luz].estado = color;
+						cambiosEfectuados++;
+					}
 					//}
 				});
+				return cambiosEfectuados;
+			}
+		}, {
+			key: 'inicial',
+			value: function inicial() {
+				var celda = this.sector.getCelda(this.celda);
+				return this.onCambio(celda, celda.desviado);
 			}
 		}, {
 			key: 'toJSON',
@@ -2000,13 +2020,24 @@ var Enclavamientos = {
 		_createClass(SenalTriple, [{
 			key: 'onCambio',
 			value: function onCambio(celda, estado) {
-				var senal = this.sector.getSenal(this.senal);
+				var senal = this.sector.getSenal(this.senal),
+				    cambiosEfectuados = 0;
 
 				_.each(this[['izq', 'centro', 'der'][estado + 1]], function (color, luz) {
 					//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					senal[luz].estado = color;
+					if (senal[luz].estado != color) {
+						senal[luz].estado = color;
+						cambiosEfectuados++;
+					}
 					//}
 				});
+				return cambiosEfectuados;
+			}
+		}, {
+			key: 'inicial',
+			value: function inicial() {
+				var celda = this.sector.getCelda(this.celda);
+				return this.onCambio(celda, celda.posicion);
 			}
 		}, {
 			key: 'toJSON',
@@ -2653,9 +2684,18 @@ var Sector = (function (_ParcelEv) {
 				_.forEach(body.celdas, function (celda, coords) {
 					_this.celdas[coords] = new _CeldaFactory2['default'](celda, coords).on('click', _this.onClick.bind(_this));
 				});
-				_.forEach(body.enclavamientos, function (enclavamiento) {
+				body.enclavamientos.forEach(function (enclavamiento) {
 					_this.enclavamientos.push(new _EnclavamientoFactory2['default'](enclavamiento, _this));
 				});
+				var reintentos = 10;
+				while (reintentos--) {
+					if (_this.enclavamientos.reduce(function (prevVal, enclavamiento) {
+						return prevVal + enclavamiento.inicial() ? 1 : 0;
+					}, 0) === 0) break;
+				}
+				if (reintentos == -1) {
+					alert('El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones');
+				}
 			} else {
 				_this.fail = response.statusCode + ': ' + response.body;
 			}

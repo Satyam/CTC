@@ -37,9 +37,19 @@ export default class Sector extends ParcelEv {
 					_.forEach(body.celdas, (celda, coords) => {
 						this.celdas[coords] = new CeldaFactory(celda, coords).on('click', this.onClick.bind(this));
 					});
-					_.forEach(body.enclavamientos, (enclavamiento) => {
+					body.enclavamientos.forEach((enclavamiento) => {
 						this.enclavamientos.push(new EnclavamientoFactory(enclavamiento, this));
 					});
+					let reintentos = 10;
+					while (reintentos--) {
+						if (this.enclavamientos.reduce((prevVal, enclavamiento) => {
+							return prevVal + enclavamiento.inicial()?1:0;
+						},0) === 0) break;
+					}
+					if (reintentos == -1) {
+						alert("El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones");
+					}
+
 
 				} else {
 					this.fail = response.statusCode + ': ' + response.body;

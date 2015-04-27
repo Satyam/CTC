@@ -234,6 +234,19 @@
 			}
 		},
 		{
+			"tipo": "senalCambio",
+			"senal": "4,4,W",
+			"celda": "4,4",
+			"normal": {
+				"primaria": "verde",
+				"der": "alto"
+			},
+			"desviado": {
+				"primaria": "alto",
+				"der": "precaucion"
+			}
+		},
+		{
 			"tipo": "senalTriple",
 			"senal": "2,4,W",
 			"celda": "2,4",

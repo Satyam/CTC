@@ -478,7 +478,7 @@ var v = {
 				parentEl.replaceChild(child.node, oldNode);
 				children[childPos] = child;
 			} else {
-				parentEl.insertBefore(child.node, parentEl.childNodes[childPos]);
+				parentEl.insertBefore(child.node, parentEl.childNodes[childPos] || null); // Null is for the benefit of IE
 				children.splice(childPos,0,child);
 			}
 		};

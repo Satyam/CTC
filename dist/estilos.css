@@ -116,6 +116,7 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
 }
 .reloj i.fa {
   margin: 0 5px;
+  cursor: pointer;
 }
 
 .sector svg line {

@@ -422,22 +422,25 @@ Object.defineProperty(exports, '__esModule', {
 var _ = require('lodash');
 
 /**
-@module core
+@module Parcela
 @submodule parcel
 */
 
 /**
+Represents a section of real state in the HTML page.
+
 All Parcela apps should inherit from this class.
 
-The constructor ensures the `config` argument exists and is an object.
-It merges the values from the [`defaultConfig`](#property_defaultConfig) property into it and
-sets the properties of the instance to the resulting values.
-It then calls the `init` method with all its arguments, including the defaults.
-The [`init`](#method_init) might be considered the true constructor of the parcel.
+Several properties might be configured on instantiation:
 
-
+* [containerType](#property_containerType)
+* [className](#property_className)
+* [attributes](#property_attributes)
+* [text](#property_text)
 
 @class Parcel
+@param [config] {Object}  Initial configuration.
+
 @constructor
 */
 
@@ -455,6 +458,7 @@ var Parcel = (function () {
   @default DIV
   	*/
 		this.containerType = config.containerType || 'DIV';
+
 		/**
   CSS className to add to the container for this parcel.
   This is in addition to the className of `parcel` which is
@@ -464,6 +468,7 @@ var Parcel = (function () {
   @default ''
   */
 		this.className = config.className || '';
+
 		/**
   Hash map of attributes for the container element
   	@property attributes
@@ -472,6 +477,16 @@ var Parcel = (function () {
   */
 		this.attributes = config.attribute || null;
 
+		/**
+  String to be shown within the container.
+
+  This is used, mostly, for initial testing of layouts,
+  to have something to show within the parcel.
+  It is rarely used in the final product.
+
+  @property text
+  @type String
+  */
 		if (config.text) this._text = config.text;
 	}
 
@@ -483,6 +498,9 @@ var Parcel = (function () {
   	The provided method checks all the instance properties and if any of them are 
   instances of Parcel or arrays of Parcel instances, 
   it will call the `destructor` method on each of the child parcels.
+
+  It is a last-resort tactic to avoid leaving stuff behind.
+  In practice, it should be overriden to destroy only what each parcel has created.
   	@method destructor
   */
 		value: function destructor() {
@@ -535,16 +553,16 @@ var Parcel = (function () {
 
 		/**
   Returns the virtual DOM for this parcel.
-  	Must be overriden by each Parcela app.
+  	Must be overriden by each Parcela app.  By default, it returns the value of the [text](#property_text) property.
   	A virtual DOM node is composed of the following elements:
   	* `tag` {String}:  Name of the HTML tag for the node to be created.
   * `attrs` {Object}: Collection of HTML attributes to be added to the node.
   * `children` {Array}: Array of virtual DOM nodes that will become children of the created node.
-  	This method will usually use the [`ITSA.vNode`](ITSA.html#method_vNode)
-  helper function to produce the virtual DOM node.
+  	As a convenience, this method receives a reference to the [`vDOM.vNode`](vDOM.html#method_vNode)
+  helper function to produce the virtual DOM node, however it may be ignored as long as a
+  virtual DOM node is somehow returned.
   	@example
-  	view: function () {
-  		var v = I.Parcel.vNode;
+  	view: function (v) {
   		return v('div', [
   			v('p.joyful','Hello Workd!'),
   			v('hr'),
@@ -552,7 +570,7 @@ var Parcel = (function () {
   		]);
   	}
   		// Equivalent to:
-  	view: function () {
+  	view: function (v) {
   		return {tag:'div', attrs:{},children: [
   			{tag:'p', attrs:{className:'joyful'}, children:['Hellow World!']},
   			{tag:'hr', attrs: {}, children: []},
@@ -560,9 +578,10 @@ var Parcel = (function () {
   		]};
   	}
   @method view
-  @return {vNode} The expected virtual DOM for this parcel.
+  @param v {function} Reference to the [`vDOM.vNode`](vDOM.html#method_vNode) helper function.
+  @return {vNode} The expected virtual DOM node for this parcel.
   */
-		value: function view() {
+		value: function view(v) {
 			return this._text || '';
 		}
 	}, {
@@ -612,6 +631,11 @@ var _Parcel3 = _interopRequireWildcard(_Parcel2);
 /* jshint esnext:true */
 
 'use strict';
+/**
+@module Parcela
+@submodule parcelEv
+*/
+
 var vDOM = require('./virtual-dom.js');
 
 var EventEmitter = require('events').EventEmitter,
@@ -619,20 +643,73 @@ var EventEmitter = require('events').EventEmitter,
 
 var simpleEventListener = function simpleEventListener(listener, ev) {
 	vDOM.redrawPending();
-	(typeof listener == 'string' ? this[listener] : listener).call(this, ev);
-	vDOM.redrawReady();
+	vDOM.redrawReady((typeof listener == 'string' ? this[listener] : listener).call(this, ev));
 },
     pickyEventListener = function pickyEventListener(cbOrSel, ev) {
 	var _this = this;
 
 	vDOM.redrawPending();
-	_.each(cbOrSel, function (listener, cssSel) {
+	vDOM.redrawReady(!_.every(cbOrSel, function (listener, cssSel) {
 		if (ev.target.matches(cssSel)) {
-			(typeof listener == 'string' ? _this[listener] : listener).call(_this, ev);
+			return !(typeof listener == 'string' ? _this[listener] : listener).call(_this, ev);
 		}
-	});
-	vDOM.redrawReady();
+		return true;
+	}));
 };
+
+/**
+Subclass of [Parcel](Parcel.html) capable of listening and
+relaying DOM events.
+
+Besides the configuration attributes used by [Parcel](Parcel.html),
+`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.
+
+Each entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)
+followed either by a listener function or a further object.
+
+* A function can be given as a reference or as a string with the name of the method within this class
+  that handles it.  The function will be called whenever that event is fired.
+* If an object, it should be a hash map of CSS selectors and functions.
+  This limits the kind of DOM element or elements whose events you want to listen to.
+  The function will then be called only when the element generating it satisfies the condition.
+
+`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.
+
+`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.
+See: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)
+
+@example
+      class MyDialogBox extends ParcelEv {
+	  		constructor(config) {
+				super({
+					EVENTS: {
+						// Listening to keypresses anywhere within this Parcel
+						'keypress': this.onKeyPress
+						// Listening to clicks on specific elements within the Parcel
+						'click': {
+							// only on a button with the className `ok` on it.
+							'button.ok': this.onOk,
+							// The function reference is given as a string which translates to `this.onCancel`
+							'button.cancel':'onCancel'
+						}
+					},
+					// Other configuration options will be passed to the Parcel constructor
+					className: 'dialog'
+				});
+			}
+			// Methods handling the functions, will receive the original DOM event object.
+			// Their `this` will be that of the instance of ParcelEv.
+			onKeyPress (ev) {}
+			onOk (ev) {}
+			onCancel (ev) {}
+		}
+
+@class ParcelEv
+@extends Parcel
+@uses EventEmitter
+@constructor
+@param [config] {Object}  Initial configuration
+*/
 
 var ParcelEv = (function (_Parcel) {
 	function ParcelEv(config) {
@@ -649,6 +726,12 @@ var ParcelEv = (function (_Parcel) {
 
 	_createClass(ParcelEv, [{
 		key: 'preView',
+
+		/**
+  Overrides the original (empty) [preView](Parcel.html#method_preView) to set the event listeners
+
+  @method preView
+  */
 		value: function preView() {
 			var _this2 = this;
 
@@ -674,6 +757,13 @@ var ParcelEv = (function (_Parcel) {
 		}
 	}, {
 		key: 'postView',
+
+		/**
+  Overrides the original (empty) [postView](Parcel.html#method_postView)
+  to detach the event listeners.
+
+  @method postView
+  */
 		value: function postView() {
 			var _this3 = this;
 
@@ -684,6 +774,13 @@ var ParcelEv = (function (_Parcel) {
 		}
 	}, {
 		key: 'destructor',
+
+		/**
+  Extends the original destructor method so as to detach all the event listeners
+
+  @method destructor
+  */
+
 		value: function destructor() {
 			var _this4 = this;
 
@@ -717,6 +814,11 @@ Object.defineProperty(exports, '__esModule', {
 	value: true
 });
 
+/**
+@module Components
+@submodule radio
+*/
+
 var _ParcelEv2 = require('./parcelEv.js');
 
 var _ParcelEv3 = _interopRequireWildcard(_ParcelEv2);
@@ -728,13 +830,38 @@ var count = 0;
 /*
 { 
 	opts: [
-		{name: text},
+		{value: text},
 		....
 	],
 	selected: name,
 	title: text,
 	groupName: text
 }
+*/
+
+/**
+Provides a set of HTML radio buttons optionally enclosed in a `&lt;fieldset&gt;`.
+Emits the [`click`](#event_click) when clicked.
+
+@example
+	var desviado = new Radios({
+		title:'Desvío',
+		selected: celda.desviado?'desviado':'normal',
+		opts: [
+			{normal: 'Normal'},
+			{desviado: 'Desviado'}
+		]
+	}).on('click', this.cambiar.bind(this));
+
+
+@class Radio
+@extends ParcelEv
+@constructor
+@param config {Object} configuration options
+@param config.opts {Array of Objects} Set of options to choose from.  Each is an object with the value to identify each option as its key and the text to be shown as its value.	It has to be an array to ensure the order of the buttons.
+@param [config.selected] {String} value of the radio selected
+@param [config.title] {String} If present, a `&lt;fieldset&gt;` will enclose the buttons and this set as its legend
+@param [config.groupName] {String} A `name` to be assigned to the set of radios.  If not provided, a unique name will be generated.
 */
 
 var Radio = (function (_ParcelEv) {
@@ -763,6 +890,22 @@ var Radio = (function (_ParcelEv) {
 
 	_createClass(Radio, [{
 		key: 'view',
+
+		/**
+  Emitted when a button is clicked.  It reports the `value` of the radio selected
+
+  @event click
+  @param value {String} value of the option seleted
+  @param ev {DOMEvent} original DOM event
+  */
+
+		/**
+  Overrides Parcel's [view](Parcel.html#method_view) method to generate the set of radio buttons
+
+  @method view
+  @private
+  */
+
 		value: function view(v) {
 			var _this2 = this;
 
@@ -988,11 +1131,9 @@ module.exports = exports['default'];
 /**
 Provides virtual dom functionality for other modules.
 
-The module exports a single function which should be called to
-fetch the [vDOM](../classes/vDOM.html) class.
-
-@module virtual-dom
- */
+@module Parcela
+@submodule virtual-DOM
+*/
 
 /**
 Contains the virtual DOM handling methods and properties
@@ -1008,6 +1149,7 @@ var _ = require("lodash"),
 
 var v = {
 	/**
+
  Hash of special `tagNames` that imply change in the XML namespacing.
  	@property _xmlNS
  @type hash
@@ -1024,6 +1166,7 @@ var v = {
  @private
  */
 	_vDOM: null,
+
 	/**
  Helper function to build [vNodes](vNode.html).
  	It takes the name of the `tag` to be created.
@@ -1042,12 +1185,13 @@ var v = {
  	The `className` attribute can be given as a string or as an array of values, the last being preferable.
  	The `style` attribute should be set with an object containing a hash map of style names to values.
  The style names should be in JavaScript format, not CSS format that is, `backgroundColor` not `background-color`.
- 	Neither the `svg:` or the `math:` namespaces are required.  The renderer will add the corresponding
+ 	*Pending:* Neither the `svg:` or the `math:` namespaces are required.  The renderer will add the corresponding
  `xmlns` attribute upon detecting the `<svg>` or `<math>` elements.  All elements contained within
  any of those will be properly namespaced.
  	@example
  ```
- var v = ITSA.Parcel.vNode;
+
+ var v = vDOM.vNode;
  	v('br');
  // produces:
  {tag: 'br', attrs:{}, children:[]}
@@ -1167,7 +1311,7 @@ var v = {
 	},
 
 	/**
- Triggers the rendering process for the page or parcel.
+ Triggers the rendering process for the page or a specific parcel.
  	The rendering process starts with the production of a new virtual DOM for the page or component
  and a comparisson of the newly created *expected* DOM against the *existing* DOM.
  The render process will only change those nodes in the actual DOM that differ in between the two.
@@ -1238,14 +1382,18 @@ var v = {
 	/**
  Signals that the operation that would require a redraw has been finished
  and that, if no further async operations are pending, it may now proceed.
+ Optionally, it may cancel the rendering.
  It should be used paired with [redrawPending](#method_redrawPending).
- 	@method redrawReady
+
+ @method redrawReady
+ @param [cancel] {Boolean} If present and truish, the redraw will be cancelled.
  @static
  */
-	redrawReady: function redrawReady() {
+	redrawReady: function redrawReady(cancel) {
 		pendingRedraws = Math.max(pendingRedraws - 1, 0);
-		if (pendingRedraws === 0) v.render();
+		if (!cancel && pendingRedraws === 0) v.render();
 	},
+
 	/**
  Executes the given function `fn` on all parcels in the vDOM
  starting from the given `parcel`.

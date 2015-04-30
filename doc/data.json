@@ -1,0 +1,1388 @@
+{
+    "project": {
+        "name": "ctc",
+        "description": "Control de tráfico centralizado",
+        "version": "0.1.0",
+        "url": "https://github.com/Satyam/CTC.git"
+    },
+    "files": {
+        "js/component/EventEmitter.js": {
+            "name": "js/component/EventEmitter.js",
+            "modules": {
+                "Events": 1
+            },
+            "classes": {
+                "EventEmitter": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/component/parcel.js": {
+            "name": "js/component/parcel.js",
+            "modules": {
+                "parcel": 1
+            },
+            "classes": {
+                "Parcel": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/component/parcelEv.js": {
+            "name": "js/component/parcelEv.js",
+            "modules": {
+                "parcelEv": 1
+            },
+            "classes": {
+                "ParcelEv": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/component/radio.js": {
+            "name": "js/component/radio.js",
+            "modules": {
+                "radio": 1
+            },
+            "classes": {
+                "Radio": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/component/virtual-dom.js": {
+            "name": "js/component/virtual-dom.js",
+            "modules": {
+                "virtual-DOM": 1
+            },
+            "classes": {
+                "vDOM": 1,
+                "vNode": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "Browserify": {
+            "name": "Browserify",
+            "submodules": {
+                "Events": 1
+            },
+            "classes": {
+                "EventEmitter": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "file": "js/component/EventEmitter.js",
+            "line": 18
+        },
+        "Events": {
+            "name": "Events",
+            "submodules": {},
+            "classes": {
+                "EventEmitter": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Browserify",
+            "namespace": "",
+            "file": "js/component/EventEmitter.js",
+            "line": 18,
+            "description": "Browserify implementation of NodeJS Events module.\n\nThis is for *documentation purposes only*. \n\nThe information herein was taken from NodeJS documentation and reformatted in JSDoc format.\n\nMany objects in Node emit events: a net.Server emits an event each time a peer connects to it, a fs.readStream emits an event when the file is opened. All objects which emit events are instances of events.EventEmitter. You can access this module by doing: require(\"events\");\n\nTypically, event names are represented by a camel-cased string, however, there aren't any strict restrictions on that, as any string will be accepted.\n\nFunctions can then be attached to objects, to be executed when an event is emitted. These functions are called listeners. Inside a listener function, this refers to the EventEmitter that the listener was attached to."
+        },
+        "Parcela": {
+            "name": "Parcela",
+            "submodules": {
+                "parcel": 1,
+                "parcelEv": 1,
+                "virtual-DOM": 1
+            },
+            "classes": {
+                "Parcel": 1,
+                "ParcelEv": 1,
+                "vDOM": 1,
+                "vNode": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "file": "js/component/virtual-dom.js",
+            "line": 793
+        },
+        "parcel": {
+            "name": "parcel",
+            "submodules": {},
+            "classes": {
+                "Parcel": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Parcela",
+            "namespace": "",
+            "file": "js/component/parcel.js",
+            "line": 11,
+            "description": "Represents a section of real state in the HTML page.\n\nAll Parcela apps should inherit from this class.\n\nSeveral properties might be configured on instantiation:\n\n* [containerType](#property_containerType)\n* [className](#property_className)\n* [attributes](#property_attributes)\n* [text](#property_text)"
+        },
+        "parcelEv": {
+            "name": "parcelEv",
+            "submodules": {},
+            "classes": {
+                "ParcelEv": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Parcela",
+            "namespace": "",
+            "file": "js/component/parcelEv.js",
+            "line": 31,
+            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html), \n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.   \n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.  \n  This limits the kind of DOM element or elements whose events you want to listen to.  \n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)"
+        },
+        "Components": {
+            "name": "Components",
+            "submodules": {
+                "radio": 1
+            },
+            "classes": {
+                "Radio": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "file": "js/component/radio.js",
+            "line": 23
+        },
+        "radio": {
+            "name": "radio",
+            "submodules": {},
+            "classes": {
+                "Radio": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Components",
+            "namespace": "",
+            "file": "js/component/radio.js",
+            "line": 23,
+            "description": "Provides a set of HTML radio buttons optionally enclosed in a `&lt;fieldset&gt;`.\nEmits the [`click`](#event_click) when clicked."
+        },
+        "virtual-DOM": {
+            "name": "virtual-DOM",
+            "submodules": {},
+            "classes": {
+                "vDOM": 1,
+                "vNode": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Parcela",
+            "namespace": "",
+            "file": "js/component/virtual-dom.js",
+            "line": 793,
+            "description": "Provides virtual dom functionality for other modules."
+        }
+    },
+    "classes": {
+        "EventEmitter": {
+            "name": "EventEmitter",
+            "shortname": "EventEmitter",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [
+                "ParcelEv"
+            ],
+            "module": "Browserify",
+            "submodule": "Events",
+            "namespace": "",
+            "file": "js/component/EventEmitter.js",
+            "line": 18,
+            "description": "To access the EventEmitter class, require('events').EventEmitter.\n\nWhen an EventEmitter instance experiences an error, the typical action is to emit an 'error' event. Error events are treated as a special case in node. If there is no listener for it, then the default action is to print a stack trace and exit the program.\n\nAll EventEmitters emit the event 'newListener' when new listeners are added and 'removeListener' when a listener is removed."
+        },
+        "Parcel": {
+            "name": "Parcel",
+            "shortname": "Parcel",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Parcela",
+            "submodule": "parcel",
+            "namespace": "",
+            "file": "js/component/parcel.js",
+            "line": 11,
+            "description": "Represents a section of real state in the HTML page.\n\nAll Parcela apps should inherit from this class.\n\nSeveral properties might be configured on instantiation:\n\n* [containerType](#property_containerType)\n* [className](#property_className)\n* [attributes](#property_attributes)\n* [text](#property_text)",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Initial configuration.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "is_constructor": 1
+        },
+        "ParcelEv": {
+            "name": "ParcelEv",
+            "shortname": "ParcelEv",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Parcela",
+            "submodule": "parcelEv",
+            "namespace": "",
+            "file": "js/component/parcelEv.js",
+            "line": 31,
+            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html), \n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.   \n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.  \n  This limits the kind of DOM element or elements whose events you want to listen to.  \n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)",
+            "example": [
+                "\n      class MyDialogBox extends ParcelEv {\n\t  \t\tconstructor(config) {\n\t\t\t\tsuper({\n\t\t\t\t\tEVENTS: {\n\t\t\t\t\t\t// Listening to keypresses anywhere within this Parcel\n\t\t\t\t\t\t'keypress': this.onKeyPress\n\t\t\t\t\t\t// Listening to clicks on specific elements within the Parcel\n\t\t\t\t\t\t'click': {\n\t\t\t\t\t\t\t// only on a button with the className `ok` on it.\n\t\t\t\t\t\t\t'button.ok': this.onOk,\n\t\t\t\t\t\t\t// The function reference is given as a string which translates to `this.onCancel`\n\t\t\t\t\t\t\t'button.cancel':'onCancel'\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t// Other configuration options will be passed to the Parcel constructor\n\t\t\t\t\tclassName: 'dialog'\n\t\t\t\t});\n\t\t\t}\n\t\t\t// Methods handling the functions, will receive the original DOM event object.\n\t\t\t// Their `this` will be that of the instance of ParcelEv.\n\t\t\tonKeyPress (ev) {}\n\t\t\tonOk (ev) {}\n\t\t\tonCancel (ev) {}\n\t\t}"
+            ],
+            "extends": "Parcel",
+            "uses": [
+                "EventEmitter"
+            ],
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Initial configuration",
+                    "type": "Object",
+                    "optional": true
+                }
+            ]
+        },
+        "Radio": {
+            "name": "Radio",
+            "shortname": "Radio",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Components",
+            "submodule": "radio",
+            "namespace": "",
+            "file": "js/component/radio.js",
+            "line": 23,
+            "description": "Provides a set of HTML radio buttons optionally enclosed in a `&lt;fieldset&gt;`.\nEmits the [`click`](#event_click) when clicked.",
+            "example": [
+                "\n\tvar desviado = new Radios({\n\t\ttitle:'Desvío',\n\t\tselected: celda.desviado?'desviado':'normal',\n\t\topts: [\n\t\t\t{normal: 'Normal'},\n\t\t\t{desviado: 'Desviado'}\n\t\t]\n\t}).on('click', this.cambiar.bind(this));"
+            ],
+            "extends": "ParcelEv",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "configuration options",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "opts",
+                            "description": "Set of options to choose from.  Each is an object with the value to identify each option as its key and the text to be shown as its value.\tIt has to be an array to ensure the order of the buttons.",
+                            "type": "Array of Objects"
+                        },
+                        {
+                            "name": "selected",
+                            "description": "value of the radio selected",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "title",
+                            "description": "If present, a `&lt;fieldset&gt;` will enclose the buttons and this set as its legend",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "groupName",
+                            "description": "A `name` to be assigned to the set of radios.  If not provided, a unique name will be generated.",
+                            "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "vDOM": {
+            "name": "vDOM",
+            "shortname": "vDOM",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Parcela",
+            "submodule": "virtual-DOM",
+            "namespace": "",
+            "file": "js/component/virtual-dom.js",
+            "line": 12,
+            "description": "Contains the virtual DOM handling methods and properties"
+        },
+        "vNode": {
+            "name": "vNode",
+            "shortname": "vNode",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Parcela",
+            "submodule": "virtual-DOM",
+            "namespace": "",
+            "file": "js/component/virtual-dom.js",
+            "line": 793,
+            "description": "Internal, virtual representation of an actual DOM node.\nThere are two sub-versions of it.\n\n* For text nodes, the vNode will be an instance of String\n  with an extra `node` property.\n* For nodes corresponding to Parcel containers, the node\n  will have the extra `parcel` and `stamp` properties.\n\nThe virtual DOM version differs from that produced by the\n[Parcel.view](Parcel.html#method_view) method in that it has the `node`\nproperty set.\n\nThis entry is just for documentation purposes.\nThere is no actual code for this class.  It is created as an object literal.",
+            "access": "protected",
+            "tagname": "",
+            "static": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 29,
+            "description": "Adds a listener to the end of the listeners array for the specified event. No checks are made to see if the listener has already been added. Multiple calls passing the same combination of event and listener will result in the listener being added multiple times.",
+            "example": [
+                "\n\tserver.addListener('connection', function (stream) {\n\t  console.log('someone connected!');\n\t});\n\nReturns emitter, so calls can be chained."
+            ],
+            "itemtype": "method",
+            "name": "addListener",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier of the event to subscribe to",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "Callback function to receive the event",
+                    "type": "Function"
+                }
+            ],
+            "chainable": 1,
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 44,
+            "description": "Adds a listener to the end of the listeners array for the specified event. No checks are made to see if the listener has already been added. Multiple calls passing the same combination of event and listener will result in the listener being added multiple times.",
+            "example": [
+                "\n\tserver.on('connection', function (stream) {\n\t  console.log('someone connected!');\n\t});\n\t\nReturns emitter, so calls can be chained."
+            ],
+            "itemtype": "method",
+            "name": "on",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier of the event to subscribe to",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "Callback function to receive the event",
+                    "type": "Function"
+                }
+            ],
+            "chainable": 1,
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 59,
+            "description": "Adds a one time listener for the event. This listener is invoked only the next time the event is fired, after which it is removed.",
+            "example": [
+                "\n\tserver.once('connection', function (stream) {\n\t  console.log('Ah, we have our first user!');\n\t});\n\t\nReturns emitter, so calls can be chained."
+            ],
+            "itemtype": "method",
+            "name": "once",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier of the event to subscribe to",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "Callback function to receive the event",
+                    "type": "Function"
+                }
+            ],
+            "chainable": 1,
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 74,
+            "description": "Remove a listener from the listener array for the specified event. Caution: changes array indices in the listener array behind the listener.",
+            "example": [
+                "\n\tvar callback = function(stream) {\n\t  console.log('someone connected!');\n\t};\n\tserver.on('connection', callback);\n\t// ...\n\tserver.removeListener('connection', callback);\n\t\nremoveListener will remove, at most, one instance of a listener from the listener array. If any single listener has been added multiple times to the listener array for the specified event, then removeListener must be called multiple times to remove each instance.\n\nReturns emitter, so calls can be chained."
+            ],
+            "itemtype": "method",
+            "name": "removeListener",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "identifier of the event to remove",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "callback that handled the event",
+                    "type": "Function"
+                }
+            ],
+            "chainable": 1,
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 93,
+            "description": "Removes all listeners, or those of the specified event. It's not a good idea to remove listeners that were added elsewhere in the code, especially when it's on an emitter that you didn't create (e.g. sockets or file streams).\n\nReturns emitter, so calls can be chained.",
+            "itemtype": "method",
+            "name": "removeAllListeners",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "identifier of the events to be removed",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "chainable": 1,
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 101,
+            "description": "By default EventEmitters will print a warning if more than 10 listeners are added for a particular event. This is a useful default which helps finding memory leaks. Obviously not all Emitters should be limited to 10. This function allows that to be increased. Set to zero for unlimited.\n\nReturns emitter, so calls can be chained.",
+            "itemtype": "method",
+            "name": "setMaxListeners",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "maximum number of listeners to accept",
+                    "type": "Number"
+                }
+            ],
+            "chainable": 1,
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 110,
+            "description": "`setMaxListeners(n)` sets the maximum on a per-instance basis. This class property lets you set it for all EventEmitter instances, current and future, effective immediately. Use with care.\n\nNote that emitter.setMaxListeners(n) still has precedence over EventEmitter.defaultMaxListeners.",
+            "itemtype": "property",
+            "name": "defaultMaxListeners",
+            "static": 1,
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 118,
+            "description": "Returns an array of listeners for the specified event.",
+            "example": [
+                "\n\tserver.on('connection', function (stream) {\n\t  console.log('someone connected!');\n\t});\n\tconsole.log(util.inspect(server.listeners('connection'))); // [ [Function] ]"
+            ],
+            "itemtype": "method",
+            "name": "listeners",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the listeners to count",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Number of listeners",
+                "type": "Number"
+            },
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 131,
+            "description": "Execute each of the listeners in order with the supplied arguments.\n\nReturns true if event had listeners, false otherwise.",
+            "itemtype": "method",
+            "name": "emit",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier of the event being emitted",
+                    "type": "String"
+                },
+                {
+                    "name": "arg*",
+                    "description": "Arguments to be provided to the listeners",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "true if event had listeners subscribed to it",
+                "type": "Boolean"
+            },
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 141,
+            "description": "Return the number of listeners for a given event.",
+            "itemtype": "method",
+            "name": "ListenerCount",
+            "static": 1,
+            "params": [
+                {
+                    "name": "emitter",
+                    "description": "instance of a EventEmitter to check",
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "name",
+                    "description": "identifier of the event",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "number of listeners",
+                "type": "Number"
+            },
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 150,
+            "description": "This event is emitted any time a listener is added. When this event is triggered, the listener may not yet have been added to the array of listeners for the event.",
+            "itemtype": "event",
+            "name": "newListener",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier of the event being subscribed",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "the listener",
+                    "type": "Function"
+                }
+            ],
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/EventEmitter.js",
+            "line": 157,
+            "description": "This event is emitted any time someone removes a listener. When this event is triggered, the listener may not yet have been removed from the array of listeners for the event.",
+            "itemtype": "event",
+            "name": "removeListener",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier of the event being subscribed",
+                    "type": "String"
+                },
+                {
+                    "name": "listener",
+                    "description": "the listener",
+                    "type": "Function"
+                }
+            ],
+            "class": "EventEmitter",
+            "module": "Browserify",
+            "submodule": "Events"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 32,
+            "description": "Type of DOM element that will be created to serve as a container for this Parcel.\nDefaults to a `DIV`",
+            "itemtype": "property",
+            "name": "containerType",
+            "type": "String",
+            "default": "DIV",
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 43,
+            "description": "CSS className to add to the container for this parcel.\nThis is in addition to the className of `parcel` which is\nautomatically added to all Parcel containers.",
+            "itemtype": "property",
+            "name": "className",
+            "type": "String",
+            "default": "''",
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 54,
+            "description": "Hash map of attributes for the container element",
+            "itemtype": "property",
+            "name": "attributes",
+            "type": "Object",
+            "default": ":null",
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 63,
+            "description": "String to be shown within the container.  \n\nThis is used, mostly, for initial testing of layouts, \nto have something to show within the parcel.  \nIt is rarely used in the final product.",
+            "itemtype": "property",
+            "name": "text",
+            "type": "String",
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 75,
+            "description": "Destructor.  \n\nThe provided method checks all the instance properties and if any of them are \ninstances of Parcel or arrays of Parcel instances, \nit will call the `destructor` method on each of the child parcels.\n\nIt is a last-resort tactic to avoid leaving stuff behind.\nIn practice, it should be overriden to destroy only what each parcel has created.",
+            "itemtype": "method",
+            "name": "destructor",
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 107,
+            "description": "Called by the renderer before this Parcel is shown for the first time.\nIt is a good place to activate resources that are only usefull while the \nparcel is visible such as animations.\n\nThe provided method is empty, it can be overriden by each Parcela app.",
+            "itemtype": "method",
+            "name": "preView",
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 118,
+            "description": "Called by the renderer after this Parcel is hidden.\n\nIt is a good place to deactivate resources that are only usefull while the \nparcel is visible such as animations.\n\nThe provided method is empty, it can be overriden by each Parcela app.",
+            "itemtype": "method",
+            "name": "postView",
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 131,
+            "description": "Returns the virtual DOM for this parcel.\n\nMust be overriden by each Parcela app.  By default, it returns the value of the [text](#property_text) property.\n\nA virtual DOM node is composed of the following elements:\n\n* `tag` {String}:  Name of the HTML tag for the node to be created.\n* `attrs` {Object}: Collection of HTML attributes to be added to the node.\n* `children` {Array}: Array of virtual DOM nodes that will become children of the created node.\n\nAs a convenience, this method receives a reference to the [`vDOM.vNode`](vDOM.html#method_vNode)\nhelper function to produce the virtual DOM node, however it may be ignored as long as a\nvirtual DOM node is somehow returned.",
+            "example": [
+                "\n\tview: function (v) {\n\t\treturn v('div', [\n\t\t\tv('p.joyful','Hello Workd!'),\n\t\t\tv('hr'),\n\t\t\tv('p','(Not very original, really)')\n\t\t]);\n\t}\n\n\t// Equivalent to:\n\tview: function (v) {\n\t\treturn {tag:'div', attrs:{},children: [\n\t\t\t{tag:'p', attrs:{className:'joyful'}, children:['Hellow World!']},\n\t\t\t{tag:'hr', attrs: {}, children: []},\n\t\t\t{tag:'p', attrs:{}, children:['(Not very original, really)']}\n\t\t]};\n\t}"
+            ],
+            "itemtype": "method",
+            "name": "view",
+            "params": [
+                {
+                    "name": "v",
+                    "description": "Reference to the [`vDOM.vNode`](vDOM.html#method_vNode) helper function.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "The expected virtual DOM node for this parcel.",
+                "type": "VNode"
+            },
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcel.js",
+            "line": 171,
+            "description": "Returns a value representative of the state of this parcel.\nThe system will compare it with the previous state and if they match,\nit will assume the view has not changed.\n\nThe default function returns `NaN` which is always different than itself.\nIt may be overriden for optimization purposes.",
+            "itemtype": "method",
+            "name": "stamp",
+            "return": {
+                "description": "any simple value (no objects or such) that reflects the state of this view",
+                "type": "Value"
+            },
+            "class": "Parcel",
+            "module": "Parcela",
+            "submodule": "parcel"
+        },
+        {
+            "file": "js/component/parcelEv.js",
+            "line": 92,
+            "description": "Overrides the original (empty) [preView](Parcel.html#method_preView) to set the event listeners",
+            "itemtype": "method",
+            "name": "preView",
+            "class": "ParcelEv",
+            "module": "Parcela",
+            "submodule": "parcelEv"
+        },
+        {
+            "file": "js/component/parcelEv.js",
+            "line": 119,
+            "description": "Overrides the original (empty) [postView](Parcel.html#method_postView)\nto detach the event listeners.",
+            "itemtype": "method",
+            "name": "postView",
+            "class": "ParcelEv",
+            "module": "Parcela",
+            "submodule": "parcelEv"
+        },
+        {
+            "file": "js/component/parcelEv.js",
+            "line": 132,
+            "description": "Extends the original destructor method so as to detach all the event listeners",
+            "itemtype": "method",
+            "name": "destructor",
+            "class": "ParcelEv",
+            "module": "Parcela",
+            "submodule": "parcelEv"
+        },
+        {
+            "file": "js/component/radio.js",
+            "line": 63,
+            "description": "Emitted when a button is clicked.  It reports the `value` of the radio selected",
+            "itemtype": "event",
+            "name": "click",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "value of the option seleted",
+                    "type": "String"
+                },
+                {
+                    "name": "ev",
+                    "description": "original DOM event",
+                    "type": "DOMEvent"
+                }
+            ],
+            "class": "Radio",
+            "module": "Components",
+            "submodule": "radio"
+        },
+        {
+            "file": "js/component/radio.js",
+            "line": 71,
+            "description": "Overrides Parcel's [view](Parcel.html#method_view) method to generate the set of radio buttons",
+            "itemtype": "method",
+            "name": "view",
+            "access": "private",
+            "tagname": "",
+            "class": "Radio",
+            "module": "Components",
+            "submodule": "radio"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 26,
+            "description": "Hash of special `tagNames` that imply change in the XML namespacing.",
+            "itemtype": "property",
+            "name": "_xmlNS",
+            "type": "hash",
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 38,
+            "description": "The virtual DOM for the application.",
+            "itemtype": "property",
+            "name": "_vDOM",
+            "type": "vNode",
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 47,
+            "description": "Helper function to build [vNodes](vNode.html).\n\nIt takes the name of the `tag` to be created.\nIt supports the following four modifiers, following the rules of CSS selectors:\n\n* A `namespace` prefix followed by a colon:  `svg:line` (not needed, see note below)\n* One or more CSS classes, each preceeded by a dot: `div.list`\n* An `id` preceeded by a pound: `div#a1`\n* One or more attribute assignments, each enclosed in square brackets: `input[type=checkbox]`\n\nThough the last three modifiers can be set via the `attrs` argument,\nfor performance reasons, if they won't change during the application\nit is better to set them via the above modifiers and reserve\nthe attributes for variable parts.\n\nIf modifiers are used, the tagName itself can be omitter and a `div` will be assumed.\nThus, `#a1` is the same as `div#al`.\n\nAttributes `className` (or `class`) and `style` have special treatment.\n\nThe `className` attribute can be given as a string or as an array of values, the last being preferable.\n\nThe `style` attribute should be set with an object containing a hash map of style names to values.\nThe style names should be in JavaScript format, not CSS format that is, `backgroundColor` not `background-color`.\n\n*Pending:* Neither the `svg:` or the `math:` namespaces are required.  The renderer will add the corresponding\n`xmlns` attribute upon detecting the `<svg>` or `<math>` elements.  All elements contained within\nany of those will be properly namespaced.",
+            "example": [
+                "\n```\n\nvar v = vDOM.vNode;\n\nv('br');\n// produces:\n{tag: 'br', attrs:{}, children:[]}\n// Which will result in: <br/>\n\nv('ul.list', options.map(function (option) {\n\treturn v('li', {'data-key': option.key}, option.text);\n}));\n// produces:\n{tag:'ul', attrs: {className:'list'}, children: [\n\t{tag:'li', attrs: {'data-key': 'k1'}, children: ['first value']},\n\t{tag:'li', attrs: {'data-key': 'k2'}, children: ['second value']}\n}\n// Which would result in:\n//<ul class=\"list\">\n//    <li data-key=\"k1\">first value</li>\n//    <li data-key=\"k2\">second value</li>\n//</ul>\n\nv('a#google.external[href=\"http://google.com\"]\", 'Google');\n// would eventually result in:\n// <a id=\"google\" class=\"external\" href=\"http://google.com\">Google</a>\n```\nIt is recommended that unchanging classNames, IDs and attributes be encoded into the `tag` to improve\nefficiency, as these can be cached.   Use the `attrs` object for variable attributes."
+            ],
+            "itemtype": "method",
+            "name": "vNode",
+            "static": 1,
+            "params": [
+                {
+                    "name": "tag",
+                    "description": "Name of the tag to be created.\n Much like with a CSS selector,\n it can be followed by a `#` and an ID,\n any number of CSS classNames each preceded by a `.`\n and attribute assignments enclosed in square brackets (see example above).",
+                    "type": "String"
+                },
+                {
+                    "name": "attrs",
+                    "description": "Collection of attributes to be set on the node.\n Any value assigned to the `className` attribute will be appended to those provided along the tag.",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "children",
+                    "description": "It can be a further virtual DOM node, a parcel,\na simple value which will result in a text string or an array of either.",
+                    "type": "Any",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "virtual DOM node.",
+                "type": "Object"
+            },
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 203,
+            "description": "Triggers the rendering process for the page or a specific parcel.\n\nThe rendering process starts with the production of a new virtual DOM for the page or component\nand a comparisson of the newly created *expected* DOM against the *existing* DOM.\nThe render process will only change those nodes in the actual DOM that differ in between the two.\n\nCalled without any arguments, it will start the process at the root of the virtual DOM.\nIf provided with an argument it will start the process at the branch of the virtual DOM\ncontrolled by the given Parcel instance.",
+            "itemtype": "method",
+            "name": "render",
+            "params": [
+                {
+                    "name": "parcel",
+                    "description": "Instance of Parcel in control of a section of a page.",
+                    "type": "Parcel",
+                    "optional": true
+                }
+            ],
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 225,
+            "description": "Determines which [Parcel](Parcel.html) is the root app for this page\nand which is the DOM element it corresponds to and renders the app.\n\nIf the root app controls the whole screen, the corresponding DOM element is going to be\n`document.body`, which is the default when omitted.",
+            "itemtype": "method",
+            "name": "rootApp",
+            "params": [
+                {
+                    "name": "Parcel",
+                    "description": "instance of [Parcel](Parcel.html) that is the root of the app.",
+                    "type": "Parcel"
+                },
+                {
+                    "name": "element",
+                    "description": "DOM element that is the root of the app.",
+                    "type": "DOM element",
+                    "optional": true,
+                    "optdefault": "document.body"
+                },
+                {
+                    "name": "parcelConfig",
+                    "description": "optional arguments to provide to Parcel when intantiating it.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "the root parcel just created (available in the [rootParcel](#property_rootParcel) property).",
+                "type": "Parcel"
+            },
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 266,
+            "description": "Warns the rendering system that a redraw will be required, \nbut it should hold on until the operation about to be performed \n(usually an async one) is finished,\n[redrawReady](#method_redrawReady) should then be called.",
+            "itemtype": "method",
+            "name": "redrawPending",
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 279,
+            "description": "Signals that the operation that would require a redraw has been finished\nand that, if no further async operations are pending, it may now proceed.\nOptionally, it may cancel the rendering.\nIt should be used paired with [redrawPending](#method_redrawPending).",
+            "itemtype": "method",
+            "name": "redrawReady",
+            "params": [
+                {
+                    "name": "cancel",
+                    "description": "If present and truish, the redraw will be cancelled.",
+                    "type": "Boolean",
+                    "optional": true
+                }
+            ],
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 295,
+            "description": "Executes the given function `fn` on all parcels in the vDOM\nstarting from the given `parcel`.",
+            "itemtype": "method",
+            "name": "_forAllPNodes",
+            "params": [
+                {
+                    "name": "parcel",
+                    "description": "parcel to start executing from",
+                    "type": "Parcel"
+                },
+                {
+                    "name": "fn",
+                    "description": "function to execute on each parcel",
+                    "type": "Function"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 312,
+            "description": "Calls `postView` on all the parcels in the branch starting\nat the given `parcel`",
+            "itemtype": "method",
+            "name": "_postViews",
+            "params": [
+                {
+                    "name": "parcel",
+                    "description": "parcel to start calling `postView` on.",
+                    "type": "Parcel"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 325,
+            "description": "Returns a new `pNode` based on the given parcel and namspace.",
+            "itemtype": "method",
+            "name": "_buildPNode",
+            "params": [
+                {
+                    "name": "parcel",
+                    "description": "Parcel instance that serves as the basis for this parcel",
+                    "type": "Parcel"
+                },
+                {
+                    "name": "namespace",
+                    "description": "current XML namespace URL",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "parentPNode",
+                    "description": "The pNode that is the ancestor of this one.",
+                    "type": "PNode",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "a new `pNode` based on the given parcel",
+                "type": "PNode"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 347,
+            "description": "Returns a new `vNode` based on the given `tag` and `namespace`",
+            "itemtype": "method",
+            "name": "_buildVNode",
+            "params": [
+                {
+                    "name": "tag",
+                    "description": "nodeName of the DOM node to be created.",
+                    "type": "String"
+                },
+                {
+                    "name": "namespace",
+                    "description": "current XML namespace URL",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "a new `vNode`.",
+                "type": "VNode"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 371,
+            "description": "Returns a string node.",
+            "itemtype": "method",
+            "name": "_buildStringNode",
+            "params": [
+                {
+                    "name": "Text",
+                    "description": "to make the string node of",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "StringNode"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 384,
+            "description": "Skips over Parcels whose stamp has not changed, looking for nested parcels within",
+            "itemtype": "method",
+            "name": "_skipPNode",
+            "params": [
+                {
+                    "name": "children",
+                    "description": "Array of children to lookk into",
+                    "type": "[vNode | pNode]"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 402,
+            "description": "Runs the differences in between an existing and the expected `pNodes`",
+            "itemtype": "method",
+            "name": "_diffPNode",
+            "params": [
+                {
+                    "name": "existing",
+                    "description": "The existing `pNode`",
+                    "type": "PNode"
+                },
+                {
+                    "name": "parcel",
+                    "description": "parcel that will supply the new pNode to compare against",
+                    "type": "Parcel"
+                },
+                {
+                    "name": "parentPNode",
+                    "description": "The pNode that is the ancestor of this one.",
+                    "type": "PNode",
+                    "optional": true
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 428,
+            "description": "Runs the difference between an existing and the expected `vNode`\nand makes the necessaty changes on the DOM based on the differences.\nAt the end, the existing should match the expected.",
+            "itemtype": "method",
+            "name": "_diffVNodes",
+            "params": [
+                {
+                    "name": "existing",
+                    "description": "Branch of the virtual DOM that represents the actual, current DOM",
+                    "type": "VNode"
+                },
+                {
+                    "name": "expected",
+                    "description": "The same branch as it should become",
+                    "type": "VNode"
+                },
+                {
+                    "name": "namespace",
+                    "description": "current XML namespace URL",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "parentPNode",
+                    "description": "The pNode that is the ancestor of this one.",
+                    "type": "PNode",
+                    "optional": true
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 447,
+            "description": "Compares the children of the existing and the expected vDOM and makes the necessary\nchanges so it updates to the expected.",
+            "itemtype": "method",
+            "name": "_diffChildren",
+            "params": [
+                {
+                    "name": "parentEl",
+                    "description": "Element that contains the children represented by the existing vNode",
+                    "type": "DOMElement"
+                },
+                {
+                    "name": "existing",
+                    "description": "virtual representation of the actual DOM",
+                    "type": "VNode"
+                },
+                {
+                    "name": "expected",
+                    "description": "virtual representation of how it should be",
+                    "type": "VNode"
+                },
+                {
+                    "name": "namespace",
+                    "description": "current XML namespace URL",
+                    "type": "String",
+                    "optional": true
+                },
+                {
+                    "name": "parentPNode",
+                    "description": "The pNode that is the ancestor of this one.",
+                    "type": "PNode",
+                    "optional": true
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 639,
+            "description": "Compares the attributes of the existing virtual DOM and the expected\nand makes the differences.",
+            "itemtype": "method",
+            "name": "_diffAttrs",
+            "params": [
+                {
+                    "name": "existing",
+                    "description": "vNode whose attributes represent the current state",
+                    "type": "VNode"
+                },
+                {
+                    "name": "expected",
+                    "description": "vNode whose attributes are the new expected state",
+                    "type": "VNode"
+                },
+                {
+                    "name": "namespace",
+                    "description": "current XML namespace URL",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "access": "protected",
+            "tagname": "",
+            "static": 1,
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 736,
+            "description": "Compares the new and old list of classNames and\nif there is any difference, it sets the whole thing at once.",
+            "itemtype": "method",
+            "name": "_diffClassNames",
+            "params": [
+                {
+                    "name": "existing",
+                    "description": "virtual DOM node to apply this classNames to",
+                    "type": "VDOM"
+                },
+                {
+                    "name": "value",
+                    "description": "Object literal containing the current values",
+                    "type": "Array"
+                },
+                {
+                    "name": "newValue",
+                    "description": "Object literal containin the new values",
+                    "type": "Array"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 758,
+            "description": "Compares the new and old styles and fixes the differences in the DOM",
+            "itemtype": "method",
+            "name": "_diffStyles",
+            "params": [
+                {
+                    "name": "existing",
+                    "description": "virtual DOM node to apply this styles to",
+                    "type": "VDOM"
+                },
+                {
+                    "name": "value",
+                    "description": "Object literal containing the current values",
+                    "type": "Object"
+                },
+                {
+                    "name": "newValue",
+                    "description": "Object literal containin the new values",
+                    "type": "Object"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "vDOM",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 815,
+            "description": "Represents the DOM `tagName` or node type.\nCorresponds to the HTML element type.",
+            "itemtype": "property",
+            "name": "tag",
+            "type": "String",
+            "default": "\"DIV\"",
+            "static": 1,
+            "class": "vNode",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 824,
+            "description": "The value of the `xmlns` attribute for namespaced elements\nsuch as `svg`.",
+            "itemtype": "property",
+            "name": "namespace",
+            "type": "String",
+            "default": "undefined",
+            "static": 1,
+            "class": "vNode",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 833,
+            "description": "DOM node corresponding to the virtual node.\nIt is only present in the internal vDOM and only assigned\nafter the DOM has been rendered.",
+            "itemtype": "property",
+            "name": "node",
+            "type": "DOM element",
+            "access": "private",
+            "tagname": "",
+            "static": 1,
+            "class": "vNode",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 843,
+            "description": "Collection of the attributes of the DOM element.\nIt is an hash map of attribute names to attribute values.",
+            "itemtype": "property",
+            "name": "attrs",
+            "type": "Object",
+            "default": "{}",
+            "static": 1,
+            "class": "vNode",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 853,
+            "description": "Array of children nodes of this node.\nThe children can be either\n* further vNodes,\n* pNodes\n* plain values which will be converted to strings or tNodes",
+            "itemtype": "property",
+            "name": "children",
+            "type": "Array",
+            "default": "undefined",
+            "static": 1,
+            "class": "vNode",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 865,
+            "description": "Reference to the [Parcel](Parcel.html) instance that has produced this pNode\nand its descendants.",
+            "itemtype": "property",
+            "name": "parcel",
+            "type": "Parcel",
+            "static": 1,
+            "class": "vNode",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/component/virtual-dom.js",
+            "line": 873,
+            "description": "Value returned by the [`stamp()`](Parcel.html#method_stamp) method\nto compare whether the parcel contents has changed",
+            "itemtype": "property",
+            "name": "stamp",
+            "type": "Any",
+            "default": "NaN",
+            "static": 1,
+            "class": "vNode",
+            "module": "Parcela",
+            "submodule": "virtual-DOM"
+        }
+    ],
+    "warnings": []
+}

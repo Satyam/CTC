@@ -69,6 +69,18 @@ module.exports = function (grunt) {
 				dest: 'dist/',
 			}
 		},
+		yuidoc: {
+			main: {
+				name: '<%= pkg.name %>',
+				description: '<%= pkg.description %>',
+				version: '<%= pkg.version %>',
+				url: '<%= pkg.repository.url %>',
+				options: {
+					paths: 'js',
+					outdir: 'doc'
+				}
+			}
+		},
 		watch: {
 			scripts: {
 				files: 'js/**/*.js',
@@ -89,11 +101,12 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-babel');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-concat');
-
+	grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint', 'browserify', 'less','concat']);
+	grunt.registerTask('default', ['jshint', 'browserify', 'less', 'concat']);
 	grunt.registerTask('js', ['jshint', 'browserify']);
 	grunt.registerTask('css', ['less', 'concat']);
+	grunt.registerTask('docs',['yuidoc']);
 
 };

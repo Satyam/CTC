@@ -4,22 +4,25 @@
 var _ = require('lodash');
 
 /**
-@module core
+@module Parcela
 @submodule parcel
 */
 
 /**
+Represents a section of real state in the HTML page.
+
 All Parcela apps should inherit from this class.
 
-The constructor ensures the `config` argument exists and is an object.
-It merges the values from the [`defaultConfig`](#property_defaultConfig) property into it and
-sets the properties of the instance to the resulting values.
-It then calls the `init` method with all its arguments, including the defaults.
-The [`init`](#method_init) might be considered the true constructor of the parcel.
+Several properties might be configured on instantiation:
 
-
+* [containerType](#property_containerType)
+* [className](#property_className)
+* [attributes](#property_attributes)
+* [text](#property_text)
 
 @class Parcel
+@param [config] {Object}  Initial configuration.
+
 @constructor
 */
 export default class Parcel {
@@ -36,6 +39,7 @@ export default class Parcel {
 
 		*/
 		this.containerType = config.containerType || 'DIV';
+
 		/**
 		CSS className to add to the container for this parcel.
 		This is in addition to the className of `parcel` which is
@@ -46,6 +50,7 @@ export default class Parcel {
 		@default ''
 		*/
 		this.className= config.className || '';
+
 		/**
 		Hash map of attributes for the container element
 
@@ -55,6 +60,16 @@ export default class Parcel {
 		*/
 		this.attributes=config.attribute || null;
 
+		/**
+		String to be shown within the container.
+
+		This is used, mostly, for initial testing of layouts,
+		to have something to show within the parcel.
+		It is rarely used in the final product.
+
+		@property text
+		@type String
+		*/
 		if (config.text) this._text = config.text;
 	}
 	/**
@@ -63,6 +78,9 @@ export default class Parcel {
 	The provided method checks all the instance properties and if any of them are 
 	instances of Parcel or arrays of Parcel instances, 
 	it will call the `destructor` method on each of the child parcels.
+
+	It is a last-resort tactic to avoid leaving stuff behind.
+	In practice, it should be overriden to destroy only what each parcel has created.
 
 	@method destructor
 	*/
@@ -113,7 +131,7 @@ export default class Parcel {
 	/**
 	Returns the virtual DOM for this parcel.
 
-	Must be overriden by each Parcela app.
+	Must be overriden by each Parcela app.  By default, it returns the value of the [text](#property_text) property.
 
 	A virtual DOM node is composed of the following elements:
 
@@ -121,12 +139,12 @@ export default class Parcel {
 	* `attrs` {Object}: Collection of HTML attributes to be added to the node.
 	* `children` {Array}: Array of virtual DOM nodes that will become children of the created node.
 
-	This method will usually use the [`ITSA.vNode`](ITSA.html#method_vNode)
-	helper function to produce the virtual DOM node.
+	As a convenience, this method receives a reference to the [`vDOM.vNode`](vDOM.html#method_vNode)
+	helper function to produce the virtual DOM node, however it may be ignored as long as a
+	virtual DOM node is somehow returned.
 
 	@example
-		view: function () {
-			var v = I.Parcel.vNode;
+		view: function (v) {
 			return v('div', [
 				v('p.joyful','Hello Workd!'),
 				v('hr'),
@@ -135,7 +153,7 @@ export default class Parcel {
 		}
 
 		// Equivalent to:
-		view: function () {
+		view: function (v) {
 			return {tag:'div', attrs:{},children: [
 				{tag:'p', attrs:{className:'joyful'}, children:['Hellow World!']},
 				{tag:'hr', attrs: {}, children: []},
@@ -143,9 +161,10 @@ export default class Parcel {
 			]};
 		}
 	@method view
-	@return {vNode} The expected virtual DOM for this parcel.
+	@param v {function} Reference to the [`vDOM.vNode`](vDOM.html#method_vNode) helper function.
+	@return {vNode} The expected virtual DOM node for this parcel.
 	*/
-	view () {
+	view (v) {
 		return this._text || '';
 	}
 

@@ -1,0 +1,1699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>vDOM - ctc</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="ctc" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/EventEmitter.html">EventEmitter</a></li>
+                                <li><a href="../classes/Parcel.html">Parcel</a></li>
+                                <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
+                                <li><a href="../classes/Radio.html">Radio</a></li>
+                                <li><a href="../classes/vDOM.html">vDOM</a></li>
+                                <li><a href="../classes/vNode.html">vNode</a></li>
+                            </ul>
+
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/Browserify.html">Browserify</a></li>
+                                <li><a href="../modules/Components.html">Components</a></li>
+                                <li><a href="../modules/Events.html">Events</a></li>
+                                <li><a href="../modules/parcel.html">parcel</a></li>
+                                <li><a href="../modules/Parcela.html">Parcela</a></li>
+                                <li><a href="../modules/parcelEv.html">parcelEv</a></li>
+                                <li><a href="../modules/radio.html">radio</a></li>
+                                <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+
+                </div>
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1>vDOM Class</h1>
+<div class="box meta">
+
+
+        <div class="foundat">
+            Defined in: <a href="../files/js_component_virtual-dom.js.html#l12"><code>js&#x2F;component&#x2F;virtual-dom.js:12</code></a>
+        </div>
+
+            Module: <a href="../modules/virtual-DOM.html">virtual-DOM</a><br>
+            Parent Module: <a href="../modules/Parcela.html">Parcela</a>
+
+</div>
+
+
+<div class="box intro">
+    <p>Contains the virtual DOM handling methods and properties</p>
+
+</div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods">
+                            <li class="index-item method private">
+                                <a href="#method__buildPNode">_buildPNode</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__buildStringNode">_buildStringNode</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__buildVNode">_buildVNode</a>
+
+                            </li>
+                            <li class="index-item method protected">
+                                <a href="#method__diffAttrs">_diffAttrs</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method protected">
+                                <a href="#method__diffChildren">_diffChildren</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__diffClassNames">_diffClassNames</a>
+
+                            </li>
+                            <li class="index-item method protected">
+                                <a href="#method__diffPNode">_diffPNode</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__diffStyles">_diffStyles</a>
+
+                            </li>
+                            <li class="index-item method protected">
+                                <a href="#method__diffVNodes">_diffVNodes</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__forAllPNodes">_forAllPNodes</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__postViews">_postViews</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__skipPNode">_skipPNode</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_redrawPending">redrawPending</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_redrawReady">redrawReady</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_render">render</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rootApp">rootApp</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_vNode">vNode</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property private">
+                                <a href="#property__vDOM">_vDOM</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property__xmlNS">_xmlNS</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method__buildPNode" class="method item private">
+    <h3 class="name"><code>_buildPNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>parcel</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[namespace]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[parentPNode]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">PNode</span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l325"><code>js&#x2F;component&#x2F;virtual-dom.js:325</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a new <code>pNode</code> based on the given parcel and namspace.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">parcel</code>
+                        <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+
+
+                    <div class="param-description">
+                        <p>Parcel instance that serves as the basis for this parcel</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[namespace]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>current XML namespace URL</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[parentPNode]</code>
+                        <span class="type">PNode</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The pNode that is the ancestor of this one.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">PNode</span>:
+                    <p>a new <code>pNode</code> based on the given parcel</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method__buildStringNode" class="method item private">
+    <h3 class="name"><code>_buildStringNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>Text</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">StringNode</span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l371"><code>js&#x2F;component&#x2F;virtual-dom.js:371</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a string node.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">Text</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>to make the string node of</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">StringNode</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method__buildVNode" class="method item private">
+    <h3 class="name"><code>_buildVNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>tag</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[namespace]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">VNode</span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l347"><code>js&#x2F;component&#x2F;virtual-dom.js:347</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns a new <code>vNode</code> based on the given <code>tag</code> and <code>namespace</code></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">tag</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>nodeName of the DOM node to be created.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[namespace]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>current XML namespace URL</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">VNode</span>:
+                    <p>a new <code>vNode</code>.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method__diffAttrs" class="method item protected">
+    <h3 class="name"><code>_diffAttrs</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>existing</code>
+                </li>
+                <li class="arg">
+                        <code>expected</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[namespace]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l639"><code>js&#x2F;component&#x2F;virtual-dom.js:639</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Compares the attributes of the existing virtual DOM and the expected
+and makes the differences.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">existing</code>
+                        <span class="type">VNode</span>
+
+
+                    <div class="param-description">
+                        <p>vNode whose attributes represent the current state</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">expected</code>
+                        <span class="type">VNode</span>
+
+
+                    <div class="param-description">
+                        <p>vNode whose attributes are the new expected state</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[namespace]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>current XML namespace URL</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__diffChildren" class="method item protected">
+    <h3 class="name"><code>_diffChildren</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>parentEl</code>
+                </li>
+                <li class="arg">
+                        <code>existing</code>
+                </li>
+                <li class="arg">
+                        <code>expected</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[namespace]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[parentPNode]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l447"><code>js&#x2F;component&#x2F;virtual-dom.js:447</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Compares the children of the existing and the expected vDOM and makes the necessary
+changes so it updates to the expected.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">parentEl</code>
+                        <span class="type">DOMElement</span>
+
+
+                    <div class="param-description">
+                        <p>Element that contains the children represented by the existing vNode</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">existing</code>
+                        <span class="type">VNode</span>
+
+
+                    <div class="param-description">
+                        <p>virtual representation of the actual DOM</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">expected</code>
+                        <span class="type">VNode</span>
+
+
+                    <div class="param-description">
+                        <p>virtual representation of how it should be</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[namespace]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>current XML namespace URL</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[parentPNode]</code>
+                        <span class="type">PNode</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The pNode that is the ancestor of this one.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__diffClassNames" class="method item private">
+    <h3 class="name"><code>_diffClassNames</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>existing</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+                <li class="arg">
+                        <code>newValue</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l736"><code>js&#x2F;component&#x2F;virtual-dom.js:736</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Compares the new and old list of classNames and
+if there is any difference, it sets the whole thing at once.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">existing</code>
+                        <span class="type">VDOM</span>
+
+
+                    <div class="param-description">
+                        <p>virtual DOM node to apply this classNames to</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>Object literal containing the current values</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">newValue</code>
+                        <span class="type">Array</span>
+
+
+                    <div class="param-description">
+                        <p>Object literal containin the new values</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__diffPNode" class="method item protected">
+    <h3 class="name"><code>_diffPNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>existing</code>
+                </li>
+                <li class="arg">
+                        <code>parcel</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[parentPNode]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l402"><code>js&#x2F;component&#x2F;virtual-dom.js:402</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Runs the differences in between an existing and the expected <code>pNodes</code></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">existing</code>
+                        <span class="type">PNode</span>
+
+
+                    <div class="param-description">
+                        <p>The existing <code>pNode</code></p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">parcel</code>
+                        <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+
+
+                    <div class="param-description">
+                        <p>parcel that will supply the new pNode to compare against</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[parentPNode]</code>
+                        <span class="type">PNode</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The pNode that is the ancestor of this one.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__diffStyles" class="method item private">
+    <h3 class="name"><code>_diffStyles</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>existing</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+                <li class="arg">
+                        <code>newValue</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l758"><code>js&#x2F;component&#x2F;virtual-dom.js:758</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Compares the new and old styles and fixes the differences in the DOM</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">existing</code>
+                        <span class="type">VDOM</span>
+
+
+                    <div class="param-description">
+                        <p>virtual DOM node to apply this styles to</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object literal containing the current values</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">newValue</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Object literal containin the new values</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__diffVNodes" class="method item protected">
+    <h3 class="name"><code>_diffVNodes</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>existing</code>
+                </li>
+                <li class="arg">
+                        <code>expected</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[namespace]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[parentPNode]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l428"><code>js&#x2F;component&#x2F;virtual-dom.js:428</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Runs the difference between an existing and the expected <code>vNode</code>
+and makes the necessaty changes on the DOM based on the differences.
+At the end, the existing should match the expected.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">existing</code>
+                        <span class="type">VNode</span>
+
+
+                    <div class="param-description">
+                        <p>Branch of the virtual DOM that represents the actual, current DOM</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">expected</code>
+                        <span class="type">VNode</span>
+
+
+                    <div class="param-description">
+                        <p>The same branch as it should become</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[namespace]</code>
+                        <span class="type">String</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>current XML namespace URL</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[parentPNode]</code>
+                        <span class="type">PNode</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>The pNode that is the ancestor of this one.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__forAllPNodes" class="method item private">
+    <h3 class="name"><code>_forAllPNodes</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>parcel</code>
+                </li>
+                <li class="arg">
+                        <code>fn</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l295"><code>js&#x2F;component&#x2F;virtual-dom.js:295</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Executes the given function <code>fn</code> on all parcels in the vDOM
+starting from the given <code>parcel</code>.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">parcel</code>
+                        <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+
+
+                    <div class="param-description">
+                        <p>parcel to start executing from</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">fn</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                        <p>function to execute on each parcel</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__postViews" class="method item private">
+    <h3 class="name"><code>_postViews</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>parcel</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l312"><code>js&#x2F;component&#x2F;virtual-dom.js:312</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Calls <code>postView</code> on all the parcels in the branch starting
+at the given <code>parcel</code></p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">parcel</code>
+                        <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+
+
+                    <div class="param-description">
+                        <p>parcel to start calling <code>postView</code> on.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__skipPNode" class="method item private">
+    <h3 class="name"><code>_skipPNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>children</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l384"><code>js&#x2F;component&#x2F;virtual-dom.js:384</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Skips over Parcels whose stamp has not changed, looking for nested parcels within</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">children</code>
+                        <span class="type"><a href="../classes/vNode.html" class="crosslink">[vNode</a> | pNode</span>
+
+
+                    <div class="param-description">
+                        <p>Array of children to lookk into</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_redrawPending" class="method item">
+    <h3 class="name"><code>redrawPending</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l266"><code>js&#x2F;component&#x2F;virtual-dom.js:266</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Warns the rendering system that a redraw will be required,
+but it should hold on until the operation about to be performed
+(usually an async one) is finished,
+<a href="#method_redrawReady">redrawReady</a> should then be called.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_redrawReady" class="method item">
+    <h3 class="name"><code>redrawReady</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[cancel]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l279"><code>js&#x2F;component&#x2F;virtual-dom.js:279</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Signals that the operation that would require a redraw has been finished
+and that, if no further async operations are pending, it may now proceed.
+Optionally, it may cancel the rendering.
+It should be used paired with <a href="#method_redrawPending">redrawPending</a>.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[cancel]</code>
+                        <span class="type">Boolean</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>If present and truish, the redraw will be cancelled.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_render" class="method item">
+    <h3 class="name"><code>render</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code class="optional">[parcel]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l203"><code>js&#x2F;component&#x2F;virtual-dom.js:203</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Triggers the rendering process for the page or a specific parcel.</p>
+<p>The rendering process starts with the production of a new virtual DOM for the page or component
+and a comparisson of the newly created <em>expected</em> DOM against the <em>existing</em> DOM.
+The render process will only change those nodes in the actual DOM that differ in between the two.</p>
+<p>Called without any arguments, it will start the process at the root of the virtual DOM.
+If provided with an argument it will start the process at the branch of the virtual DOM
+controlled by the given Parcel instance.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name optional">[parcel]</code>
+                        <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Instance of Parcel in control of a section of a page.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_rootApp" class="method item">
+    <h3 class="name"><code>rootApp</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>Parcel</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[element=document.body]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[parcelConfig]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l225"><code>js&#x2F;component&#x2F;virtual-dom.js:225</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Determines which <a href="Parcel.html">Parcel</a> is the root app for this page
+and which is the DOM element it corresponds to and renders the app.</p>
+<p>If the root app controls the whole screen, the corresponding DOM element is going to be
+<code>document.body</code>, which is the default when omitted.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">Parcel</code>
+                        <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+
+
+                    <div class="param-description">
+                        <p>instance of <a href="Parcel.html">Parcel</a> that is the root of the app.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[element=document.body]</code>
+                        <span class="type">DOM element</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>DOM element that is the root of the app.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[parcelConfig]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>optional arguments to provide to Parcel when intantiating it.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>:
+                    <p>the root parcel just created (available in the <a href="#property_rootParcel">rootParcel</a> property).</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_vNode" class="method item">
+    <h3 class="name"><code>vNode</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>tag</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[attrs]</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[children]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_virtual-dom.js.html#l47"><code>js&#x2F;component&#x2F;virtual-dom.js:47</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Helper function to build <a href="vNode.html">vNodes</a>.</p>
+<p>It takes the name of the <code>tag</code> to be created.
+It supports the following four modifiers, following the rules of CSS selectors:</p>
+<ul>
+<li>A <code>namespace</code> prefix followed by a colon:  <code>svg:line</code> (not needed, see note below)</li>
+<li>One or more CSS classes, each preceeded by a dot: <code>div.list</code></li>
+<li>An <code>id</code> preceeded by a pound: <code>div#a1</code></li>
+<li>One or more attribute assignments, each enclosed in square brackets: <code>input[type=checkbox]</code></li>
+</ul>
+<p>Though the last three modifiers can be set via the <code>attrs</code> argument,
+for performance reasons, if they won&#39;t change during the application
+it is better to set them via the above modifiers and reserve
+the attributes for variable parts.</p>
+<p>If modifiers are used, the tagName itself can be omitter and a <code>div</code> will be assumed.
+Thus, <code>#a1</code> is the same as <code>div#al</code>.</p>
+<p>Attributes <code>className</code> (or <code>class</code>) and <code>style</code> have special treatment.</p>
+<p>The <code>className</code> attribute can be given as a string or as an array of values, the last being preferable.</p>
+<p>The <code>style</code> attribute should be set with an object containing a hash map of style names to values.
+The style names should be in JavaScript format, not CSS format that is, <code>backgroundColor</code> not <code>background-color</code>.</p>
+<p><em>Pending:</em> Neither the <code>svg:</code> or the <code>math:</code> namespaces are required.  The renderer will add the corresponding
+<code>xmlns</code> attribute upon detecting the <code>&lt;svg&gt;</code> or <code>&lt;math&gt;</code> elements.  All elements contained within
+any of those will be properly namespaced.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">tag</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Name of the tag to be created.
+ Much like with a CSS selector,
+ it can be followed by a <code>#</code> and an ID,
+ any number of CSS classNames each preceded by a <code>.</code>
+ and attribute assignments enclosed in square brackets (see example above).</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[attrs]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Collection of attributes to be set on the node.
+ Any value assigned to the <code>className</code> attribute will be appended to those provided along the tag.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[children]</code>
+                        <span class="type">Any</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>It can be a further virtual DOM node, a parcel,
+a simple value which will result in a text string or an array of either.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>virtual DOM node.</p>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>
+var v = vDOM.vNode;
+
+v(&#39;br&#39;);
+// produces:
+{tag: &#39;br&#39;, attrs:{}, children:[]}
+// Which will result in: &lt;br/&gt;
+
+v(&#39;ul.list&#39;, options.map(function (option) {
+    return v(&#39;li&#39;, {&#39;data-key&#39;: option.key}, option.text);
+}));
+// produces:
+{tag:&#39;ul&#39;, attrs: {className:&#39;list&#39;}, children: [
+    {tag:&#39;li&#39;, attrs: {&#39;data-key&#39;: &#39;k1&#39;}, children: [&#39;first value&#39;]},
+    {tag:&#39;li&#39;, attrs: {&#39;data-key&#39;: &#39;k2&#39;}, children: [&#39;second value&#39;]}
+}
+// Which would result in:
+//&lt;ul class=&quot;list&quot;&gt;
+//    &lt;li data-key=&quot;k1&quot;&gt;first value&lt;/li&gt;
+//    &lt;li data-key=&quot;k2&quot;&gt;second value&lt;/li&gt;
+//&lt;/ul&gt;
+
+v(&#39;a#google.external[href=&quot;http://google.com&quot;]&quot;, &#39;Google&#39;);
+// would eventually result in:
+// &lt;a id=&quot;google&quot; class=&quot;external&quot; href=&quot;http://google.com&quot;&gt;Google&lt;/a&gt;
+</code></pre><p>It is recommended that unchanging classNames, IDs and attributes be encoded into the <code>tag</code> to improve
+efficiency, as these can be cached.   Use the <code>attrs</code> object for variable attributes.</p>
+
+            </div>
+        </div>
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                    <div id="property__vDOM" class="property item private">
+                        <h3 class="name"><code>_vDOM</code></h3>
+                        <span class="type">VNode</span>
+
+
+                            <span class="flag private">private</span>
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_virtual-dom.js.html#l38"><code>js&#x2F;component&#x2F;virtual-dom.js:38</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>The virtual DOM for the application.</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property__xmlNS" class="property item private">
+                        <h3 class="name"><code>_xmlNS</code></h3>
+                        <span class="type">Hash</span>
+
+
+                            <span class="flag private">private</span>
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_virtual-dom.js.html#l26"><code>js&#x2F;component&#x2F;virtual-dom.js:26</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Hash of special <code>tagNames</code> that imply change in the XML namespacing.</p>
+
+                        </div>
+
+
+
+                    </div>
+            </div>
+
+
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

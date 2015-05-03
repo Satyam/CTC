@@ -58,7 +58,7 @@ export default class Parcel {
 		@type Object
 		@default:null
 		*/
-		this.attributes=config.attribute || null;
+		this.attributes=config.attributes || null;
 
 		/**
 		String to be shown within the container.

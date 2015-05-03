@@ -4,7 +4,8 @@
   "description": "Control de tráfico centralizado",
   "main": "mimico.js",
   "scripts": {
-    "brw": "browserify js/mimico.js -t babelify -o dist/ctc.js"
+    "brw": "browserify js/mimico.js -t babelify -o dist/ctc.js",
+    "test": "mocha --compilers js:babel/register ./tests/*.js"
   },
   "author": [
     {
@@ -30,7 +31,10 @@
     "xhr": "^2.0.1"
   },
   "devDependencies": {
+    "babel": "^5.1.13",
     "babelify": "^6.0.1",
+    "chai": "^2.3.0",
+    "fake-dom": "git://github.com/Parcela/fake-dom",
     "grunt": "^0.4.5",
     "grunt-babel": "^5.0.0",
     "grunt-browserify": "^3.6.0",
@@ -40,7 +44,8 @@
     "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-uglify": "^0.8.1",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-contrib-yuidoc": "^0.7.0"
+    "grunt-contrib-yuidoc": "^0.7.0",
+    "mocha": "^2.2.4"
   },
   "repository": {
     "type": "git",

@@ -187,14 +187,14 @@ var v = {
 				vAttrs.className = vAttrs.className.concat(attrs.className);
 				break;
 			case 'style':
-				_.merge(vAttrs.style, attrs.style, vAttrs.style); // the new styles should prevail
-				if (_.isEmpty(vAttrs.style)) delete vAttrs.style;
+				_.merge(vAttrs.style, attrs.style); // the new styles should prevail
 				break;
 			default:
 				vAttrs[attrName] = attrs[attrName];
 			}
 		}
 
+		if (_.isEmpty(vAttrs.style)) delete vAttrs.style;
 		if (!vAttrs.className.length) delete vAttrs.className;
 		if (!_.isEmpty(vAttrs)) vNode.attrs = vAttrs;
 		return vNode;
@@ -239,7 +239,7 @@ var v = {
 	rootApp: function (Parcel, rootNode, parcelConfig) {
 		if (rootParcel) {
 			v._postViews(rootParcel);
-			rootParcel.destroy();
+			rootParcel.destructor();
 			rootParcel._pNode.node.parentNode.removeChild(rootParcel._pNode.node);
 		}
 
@@ -744,7 +744,7 @@ var v = {
 	@private
 	*/
 	_diffClassNames: function (existing, value, newValue) {
-		value = (value || []); // the current one should already been sorted from the previous round.
+		value = (value || []).sort();
 		newValue = (newValue || []).sort();
 
 		var l = value.length, i = 0;

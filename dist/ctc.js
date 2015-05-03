@@ -475,16 +475,14 @@ var Parcel = (function () {
   @type Object
   @default:null
   */
-		this.attributes = config.attribute || null;
+		this.attributes = config.attributes || null;
 
 		/**
   String to be shown within the container.
-
-  This is used, mostly, for initial testing of layouts,
+  	This is used, mostly, for initial testing of layouts,
   to have something to show within the parcel.
   It is rarely used in the final product.
-
-  @property text
+  	@property text
   @type String
   */
 		if (config.text) this._text = config.text;
@@ -498,8 +496,7 @@ var Parcel = (function () {
   	The provided method checks all the instance properties and if any of them are 
   instances of Parcel or arrays of Parcel instances, 
   it will call the `destructor` method on each of the child parcels.
-
-  It is a last-resort tactic to avoid leaving stuff behind.
+  	It is a last-resort tactic to avoid leaving stuff behind.
   In practice, it should be overriden to destroy only what each parcel has created.
   	@method destructor
   */
@@ -648,12 +645,13 @@ var simpleEventListener = function simpleEventListener(listener, ev) {
     pickyEventListener = function pickyEventListener(cbOrSel, ev) {
 	var _this = this;
 
+	var target = ev.target;
 	vDOM.redrawPending();
 	vDOM.redrawReady(!_.every(cbOrSel, function (listener, cssSel) {
-		if (ev.target.matches(cssSel)) {
+		if (target.matches(cssSel)) {
 			return !(typeof listener == 'string' ? _this[listener] : listener).call(_this, ev);
 		}
-		return true;
+		return true; // Otherwise, cancel the redraw
 	}));
 };
 
@@ -729,8 +727,7 @@ var ParcelEv = (function (_Parcel) {
 
 		/**
   Overrides the original (empty) [preView](Parcel.html#method_preView) to set the event listeners
-
-  @method preView
+  	@method preView
   */
 		value: function preView() {
 			var _this2 = this;
@@ -761,8 +758,7 @@ var ParcelEv = (function (_Parcel) {
 		/**
   Overrides the original (empty) [postView](Parcel.html#method_postView)
   to detach the event listeners.
-
-  @method postView
+  	@method postView
   */
 		value: function postView() {
 			var _this3 = this;
@@ -777,8 +773,7 @@ var ParcelEv = (function (_Parcel) {
 
 		/**
   Extends the original destructor method so as to detach all the event listeners
-
-  @method destructor
+  	@method destructor
   */
 
 		value: function destructor() {
@@ -893,16 +888,14 @@ var Radio = (function (_ParcelEv) {
 
 		/**
   Emitted when a button is clicked.  It reports the `value` of the radio selected
-
-  @event click
+  	@event click
   @param value {String} value of the option seleted
   @param ev {DOMEvent} original DOM event
   */
 
 		/**
   Overrides Parcel's [view](Parcel.html#method_view) method to generate the set of radio buttons
-
-  @method view
+  	@method view
   @private
   */
 
@@ -1149,8 +1142,7 @@ var _ = require("lodash"),
 
 var v = {
 	/**
-
- Hash of special `tagNames` that imply change in the XML namespacing.
+ 	Hash of special `tagNames` that imply change in the XML namespacing.
  	@property _xmlNS
  @type hash
  @private
@@ -1190,8 +1182,7 @@ var v = {
  any of those will be properly namespaced.
  	@example
  ```
-
- var v = vDOM.vNode;
+ 	var v = vDOM.vNode;
  	v('br');
  // produces:
  {tag: 'br', attrs:{}, children:[]}
@@ -1297,14 +1288,14 @@ var v = {
 					vAttrs.className = vAttrs.className.concat(attrs.className);
 					break;
 				case "style":
-					_.merge(vAttrs.style, attrs.style, vAttrs.style); // the new styles should prevail
-					if (_.isEmpty(vAttrs.style)) delete vAttrs.style;
+					_.merge(vAttrs.style, attrs.style); // the new styles should prevail
 					break;
 				default:
 					vAttrs[attrName] = attrs[attrName];
 			}
 		}
 
+		if (_.isEmpty(vAttrs.style)) delete vAttrs.style;
 		if (!vAttrs.className.length) delete vAttrs.className;
 		if (!_.isEmpty(vAttrs)) vNode.attrs = vAttrs;
 		return vNode;
@@ -1343,7 +1334,7 @@ var v = {
 	rootApp: function rootApp(Parcel, rootNode, parcelConfig) {
 		if (rootParcel) {
 			v._postViews(rootParcel);
-			rootParcel.destroy();
+			rootParcel.destructor();
 			rootParcel._pNode.node.parentNode.removeChild(rootParcel._pNode.node);
 		}
 
@@ -1844,7 +1835,7 @@ var v = {
  @private
  */
 	_diffClassNames: function _diffClassNames(existing, value, newValue) {
-		value = value || []; // the current one should already been sorted from the previous round.
+		value = (value || []).sort();
 		newValue = (newValue || []).sort();
 
 		var l = value.length,

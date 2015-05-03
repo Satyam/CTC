@@ -354,7 +354,7 @@ var v = {
 	@private
 	*/
 	_buildVNode: function (tag, namespace) {
-		var xmlns = v._xmlNS[tag];
+		var xmlns = v._xmlNS[tag.toLowerCase()];
 
 		namespace =  xmlns || namespace;
 

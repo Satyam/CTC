@@ -8,20 +8,9 @@
 import ParcelEv from './parcelEv.js';
 
 var count = 0;
-/*
-{ 
-	opts: [
-		{value: text},
-		....
-	],
-	selected: name,
-	title: text,
-	groupName: text
-}
-*/
 
 /**
-Provides a set of HTML radio buttons optionally enclosed in a `&lt;fieldset&gt;`.
+Provides a set of HTML radio buttons optionally enclosed in a `<fieldset>`.
 Emits the [`click`](#event_click) when clicked.
 
 @example
@@ -41,7 +30,7 @@ Emits the [`click`](#event_click) when clicked.
 @param config {Object} configuration options
 @param config.opts {Array of Objects} Set of options to choose from.  Each is an object with the value to identify each option as its key and the text to be shown as its value.	It has to be an array to ensure the order of the buttons.
 @param [config.selected] {String} value of the radio selected
-@param [config.title] {String} If present, a `&lt;fieldset&gt;` will enclose the buttons and this set as its legend
+@param [config.title] {String} If present, a `<fieldset>` will enclose the buttons and this set as its legend
 @param [config.groupName] {String} A `name` to be assigned to the set of radios.  If not provided, a unique name will be generated.
 */
 export default class Radio extends ParcelEv {

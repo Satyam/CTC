@@ -50,6 +50,17 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/component/tabView.js": {
+            "name": "js/component/tabView.js",
+            "modules": {
+                "TabView": 1
+            },
+            "classes": {
+                "TabView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "js/component/virtual-dom.js": {
             "name": "js/component/virtual-dom.js",
             "modules": {
@@ -90,7 +101,7 @@
             "namespace": "",
             "file": "js/component/EventEmitter.js",
             "line": 18,
-            "description": "Browserify implementation of NodeJS Events module.\n\nThis is for *documentation purposes only*. \n\nThe information herein was taken from NodeJS documentation and reformatted in JSDoc format.\n\nMany objects in Node emit events: a net.Server emits an event each time a peer connects to it, a fs.readStream emits an event when the file is opened. All objects which emit events are instances of events.EventEmitter. You can access this module by doing: require(\"events\");\n\nTypically, event names are represented by a camel-cased string, however, there aren't any strict restrictions on that, as any string will be accepted.\n\nFunctions can then be attached to objects, to be executed when an event is emitted. These functions are called listeners. Inside a listener function, this refers to the EventEmitter that the listener was attached to."
+            "description": "Browserify implementation of NodeJS Events module.\n\nThis is for *documentation purposes only*.\n\nThe information herein was taken from NodeJS documentation and reformatted in JSDoc format.\n\nMany objects in Node emit events: a net.Server emits an event each time a peer connects to it, a fs.readStream emits an event when the file is opened. All objects which emit events are instances of events.EventEmitter. You can access this module by doing: require(\"events\");\n\nTypically, event names are represented by a camel-cased string, however, there aren't any strict restrictions on that, as any string will be accepted.\n\nFunctions can then be attached to objects, to be executed when an event is emitted. These functions are called listeners. Inside a listener function, this refers to the EventEmitter that the listener was attached to."
         },
         "Parcela": {
             "name": "Parcela",
@@ -137,21 +148,23 @@
             "module": "Parcela",
             "namespace": "",
             "file": "js/component/parcelEv.js",
-            "line": 31,
-            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html), \n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.   \n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.  \n  This limits the kind of DOM element or elements whose events you want to listen to.  \n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)"
+            "line": 32,
+            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html),\n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.\n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.\n  This limits the kind of DOM element or elements whose events you want to listen to.\n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)"
         },
         "Components": {
             "name": "Components",
             "submodules": {
-                "radio": 1
+                "radio": 1,
+                "TabView": 1
             },
             "classes": {
-                "Radio": 1
+                "Radio": 1,
+                "TabView": 1
             },
             "fors": {},
             "namespaces": {},
-            "file": "js/component/radio.js",
-            "line": 23
+            "file": "js/component/tabView.js",
+            "line": 13
         },
         "radio": {
             "name": "radio",
@@ -165,8 +178,23 @@
             "module": "Components",
             "namespace": "",
             "file": "js/component/radio.js",
-            "line": 23,
-            "description": "Provides a set of HTML radio buttons optionally enclosed in a `&lt;fieldset&gt;`.\nEmits the [`click`](#event_click) when clicked."
+            "line": 12,
+            "description": "Provides a set of HTML radio buttons optionally enclosed in a `<fieldset>`.\nEmits the [`click`](#event_click) when clicked."
+        },
+        "TabView": {
+            "name": "TabView",
+            "submodules": {},
+            "classes": {
+                "TabView": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "Components",
+            "namespace": "",
+            "file": "js/component/tabView.js",
+            "line": 13,
+            "description": "Provides a set of tabs to show alternate content on the screen.\n\nIndividual tabs can be left-justified or right-justified.  \nThe left-justified are usually the variable ones, \nnew tabs can be added to them and existing ones removed.\nThe right-justified, if present, are usually fixed in number.\nEach entry is described by an object within an array in the initial configuration.  \nThe array is required to ensure the order of the tabs.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.  \nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the configuration, a separator marks the split point in between them.\nThe separator can be anything that is not an object.  \nIf it is a string, it will be displayed.\nIf it is a simple `+` sign, the corresponding icon from Font Awesome will be shown instead.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab.\nIf it is not a string (usually `null`) it will not be displayed and thus cannot be clicked."
         },
         "virtual-DOM": {
             "name": "virtual-DOM",
@@ -239,8 +267,8 @@
             "submodule": "parcelEv",
             "namespace": "",
             "file": "js/component/parcelEv.js",
-            "line": 31,
-            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html), \n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.   \n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.  \n  This limits the kind of DOM element or elements whose events you want to listen to.  \n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)",
+            "line": 32,
+            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html),\n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.\n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.\n  This limits the kind of DOM element or elements whose events you want to listen to.\n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)",
             "example": [
                 "\n      class MyDialogBox extends ParcelEv {\n\t  \t\tconstructor(config) {\n\t\t\t\tsuper({\n\t\t\t\t\tEVENTS: {\n\t\t\t\t\t\t// Listening to keypresses anywhere within this Parcel\n\t\t\t\t\t\t'keypress': this.onKeyPress\n\t\t\t\t\t\t// Listening to clicks on specific elements within the Parcel\n\t\t\t\t\t\t'click': {\n\t\t\t\t\t\t\t// only on a button with the className `ok` on it.\n\t\t\t\t\t\t\t'button.ok': this.onOk,\n\t\t\t\t\t\t\t// The function reference is given as a string which translates to `this.onCancel`\n\t\t\t\t\t\t\t'button.cancel':'onCancel'\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t// Other configuration options will be passed to the Parcel constructor\n\t\t\t\t\tclassName: 'dialog'\n\t\t\t\t});\n\t\t\t}\n\t\t\t// Methods handling the functions, will receive the original DOM event object.\n\t\t\t// Their `this` will be that of the instance of ParcelEv.\n\t\t\tonKeyPress (ev) {}\n\t\t\tonOk (ev) {}\n\t\t\tonCancel (ev) {}\n\t\t}"
             ],
@@ -270,8 +298,8 @@
             "submodule": "radio",
             "namespace": "",
             "file": "js/component/radio.js",
-            "line": 23,
-            "description": "Provides a set of HTML radio buttons optionally enclosed in a `&lt;fieldset&gt;`.\nEmits the [`click`](#event_click) when clicked.",
+            "line": 12,
+            "description": "Provides a set of HTML radio buttons optionally enclosed in a `<fieldset>`.\nEmits the [`click`](#event_click) when clicked.",
             "example": [
                 "\n\tvar desviado = new Radios({\n\t\ttitle:'Desvío',\n\t\tselected: celda.desviado?'desviado':'normal',\n\t\topts: [\n\t\t\t{normal: 'Normal'},\n\t\t\t{desviado: 'Desviado'}\n\t\t]\n\t}).on('click', this.cambiar.bind(this));"
             ],
@@ -296,7 +324,7 @@
                         },
                         {
                             "name": "title",
-                            "description": "If present, a `&lt;fieldset&gt;` will enclose the buttons and this set as its legend",
+                            "description": "If present, a `<fieldset>` will enclose the buttons and this set as its legend",
                             "type": "String",
                             "optional": true
                         },
@@ -304,6 +332,68 @@
                             "name": "groupName",
                             "description": "A `name` to be assigned to the set of radios.  If not provided, a unique name will be generated.",
                             "type": "String",
+                            "optional": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "TabView": {
+            "name": "TabView",
+            "shortname": "TabView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Components",
+            "submodule": "TabView",
+            "namespace": "",
+            "file": "js/component/tabView.js",
+            "line": 13,
+            "description": "Provides a set of tabs to show alternate content on the screen.\n\nIndividual tabs can be left-justified or right-justified.  \nThe left-justified are usually the variable ones, \nnew tabs can be added to them and existing ones removed.\nThe right-justified, if present, are usually fixed in number.\nEach entry is described by an object within an array in the initial configuration.  \nThe array is required to ensure the order of the tabs.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.  \nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the configuration, a separator marks the split point in between them.\nThe separator can be anything that is not an object.  \nIf it is a string, it will be displayed.\nIf it is a simple `+` sign, the corresponding icon from Font Awesome will be shown instead.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab.\nIf it is not a string (usually `null`) it will not be displayed and thus cannot be clicked.",
+            "example": [
+                "\n\t{\n\t\ttabs: [\n\t\t\t{\n\t\t\t\tname: 'firstTab'\n\t\t\t\tlabel: 'First Tab to the Left',\n\t\t\t\tcontent: new Parcel('whatever')\n\t\t\t},\n\t\t\t....\n\t\t\tnull,  // separator\n\t\t\t{\n\t\t\t\tname: 'firstRightTab'\n\t\t\t\tlabel: 'First Tab to the right of the separator',\n\t\t\t\tcontent: new Parcel('something else')\n\t\t\t},\n\t\t\t...\n\t\t],\n\t\tselected: 'firstTab'\n\t}"
+            ],
+            "extends": "ParcelEv",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "configuration options",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "tabs",
+                            "description": "Set of tabs to display. It has to be an array to ensure the order of the tabs. Each entry can be:\n\t\n* `null`: It acts as an invisible separator.  The tabs before it will be left-justified, the ones after, right justified.  The `null` will not take any space.\n* A string: It acts as a separator, just as null, plus it is shown and, when clicked, it emits the [add](#event_add) event. It is meant to be used as a cue to add extra tabs.\n* An object, containing the following properties",
+                            "type": "Array of Objects OR String"
+                        },
+                        {
+                            "name": "tabs[n].name",
+                            "description": "Internal identifier for the tab.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "tabs[n].label",
+                            "description": "Label to be shown on the tab, defaults to its `name`.",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "tabs[n].content",
+                            "description": "Instance of Parcel to be shown when this tab is selected.",
+                            "type": "Parcel"
+                        },
+                        {
+                            "name": "selected",
+                            "description": "name of the tab to be shown, defaults to the first.",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "canClose",
+                            "description": "adds a close icon to each of the left-justified tabs.",
+                            "type": "Boolean",
                             "optional": true
                         }
                     ]
@@ -376,7 +466,7 @@
             "line": 44,
             "description": "Adds a listener to the end of the listeners array for the specified event. No checks are made to see if the listener has already been added. Multiple calls passing the same combination of event and listener will result in the listener being added multiple times.",
             "example": [
-                "\n\tserver.on('connection', function (stream) {\n\t  console.log('someone connected!');\n\t});\n\t\nReturns emitter, so calls can be chained."
+                "\n\tserver.on('connection', function (stream) {\n\t  console.log('someone connected!');\n\t});\n\nReturns emitter, so calls can be chained."
             ],
             "itemtype": "method",
             "name": "on",
@@ -402,7 +492,7 @@
             "line": 59,
             "description": "Adds a one time listener for the event. This listener is invoked only the next time the event is fired, after which it is removed.",
             "example": [
-                "\n\tserver.once('connection', function (stream) {\n\t  console.log('Ah, we have our first user!');\n\t});\n\t\nReturns emitter, so calls can be chained."
+                "\n\tserver.once('connection', function (stream) {\n\t  console.log('Ah, we have our first user!');\n\t});\n\nReturns emitter, so calls can be chained."
             ],
             "itemtype": "method",
             "name": "once",
@@ -428,7 +518,7 @@
             "line": 74,
             "description": "Remove a listener from the listener array for the specified event. Caution: changes array indices in the listener array behind the listener.",
             "example": [
-                "\n\tvar callback = function(stream) {\n\t  console.log('someone connected!');\n\t};\n\tserver.on('connection', callback);\n\t// ...\n\tserver.removeListener('connection', callback);\n\t\nremoveListener will remove, at most, one instance of a listener from the listener array. If any single listener has been added multiple times to the listener array for the specified event, then removeListener must be called multiple times to remove each instance.\n\nReturns emitter, so calls can be chained."
+                "\n\tvar callback = function(stream) {\n\t  console.log('someone connected!');\n\t};\n\tserver.on('connection', callback);\n\t// ...\n\tserver.removeListener('connection', callback);\n\nremoveListener will remove, at most, one instance of a listener from the listener array. If any single listener has been added multiple times to the listener array for the specified event, then removeListener must be called multiple times to remove each instance.\n\nReturns emitter, so calls can be chained."
             ],
             "itemtype": "method",
             "name": "removeListener",
@@ -657,7 +747,7 @@
         {
             "file": "js/component/parcel.js",
             "line": 63,
-            "description": "String to be shown within the container.  \n\nThis is used, mostly, for initial testing of layouts, \nto have something to show within the parcel.  \nIt is rarely used in the final product.",
+            "description": "String to be shown within the container.\n\nThis is used, mostly, for initial testing of layouts,\nto have something to show within the parcel.\nIt is rarely used in the final product.",
             "itemtype": "property",
             "name": "text",
             "type": "String",
@@ -735,7 +825,7 @@
         },
         {
             "file": "js/component/parcelEv.js",
-            "line": 92,
+            "line": 93,
             "description": "Overrides the original (empty) [preView](Parcel.html#method_preView) to set the event listeners",
             "itemtype": "method",
             "name": "preView",
@@ -745,7 +835,7 @@
         },
         {
             "file": "js/component/parcelEv.js",
-            "line": 119,
+            "line": 120,
             "description": "Overrides the original (empty) [postView](Parcel.html#method_postView)\nto detach the event listeners.",
             "itemtype": "method",
             "name": "postView",
@@ -755,7 +845,7 @@
         },
         {
             "file": "js/component/parcelEv.js",
-            "line": 132,
+            "line": 133,
             "description": "Extends the original destructor method so as to detach all the event listeners",
             "itemtype": "method",
             "name": "destructor",
@@ -765,7 +855,7 @@
         },
         {
             "file": "js/component/radio.js",
-            "line": 63,
+            "line": 52,
             "description": "Emitted when a button is clicked.  It reports the `value` of the radio selected",
             "itemtype": "event",
             "name": "click",
@@ -787,7 +877,7 @@
         },
         {
             "file": "js/component/radio.js",
-            "line": 71,
+            "line": 60,
             "description": "Overrides Parcel's [view](Parcel.html#method_view) method to generate the set of radio buttons",
             "itemtype": "method",
             "name": "view",
@@ -796,6 +886,301 @@
             "class": "Radio",
             "module": "Components",
             "submodule": "radio"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 87,
+            "description": "Array of tab configuration entries.",
+            "itemtype": "property",
+            "name": "_tabs",
+            "type": "Array",
+            "access": "private",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 96,
+            "description": "Reference to the active tab.",
+            "itemtype": "property",
+            "name": "_selected",
+            "type": "Object",
+            "default": "first available tab",
+            "access": "private",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 106,
+            "description": "Defines whether a close icon will be added to the left-justified tabs.",
+            "itemtype": "property",
+            "name": "_canClose",
+            "type": "Boolean",
+            "default": "true",
+            "access": "private",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 118,
+            "description": "Responds to clicks on the visible separator emitting the [more](#event_more).\nPropagation and default action of the event is halted.",
+            "itemtype": "method",
+            "name": "_onMore",
+            "params": [
+                {
+                    "name": "ev",
+                    "description": "",
+                    "type": "DOMEvent"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 126,
+            "description": "Fired when the separator in between the left-justified tabs and the right-justified ones is clicked.\nIt is presumed that the purpose of this separator is to add more tabs to the set, hence its name.",
+            "itemtype": "event",
+            "name": "more",
+            "params": [
+                {
+                    "name": "ev",
+                    "description": "original click event as received from the browser.",
+                    "type": "DOMEvent"
+                }
+            ],
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 140,
+            "description": "Responds to clicks on the regular tabs (not the separator) by \ncalling setting the [selected](#property_selected) property.",
+            "itemtype": "method",
+            "name": "_onClick",
+            "params": [
+                {
+                    "name": "ev",
+                    "description": "",
+                    "type": "DOMEvent"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 164,
+            "description": "Responds to a click on the close **`x`** mini-icon on the tab by calling\nthe [remove](#method_remove) method.",
+            "itemtype": "method",
+            "name": "_onClose",
+            "params": [
+                {
+                    "name": "ev",
+                    "description": "",
+                    "type": "DOMEvent"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 182,
+            "description": "Sets/gets the name of the tab currently active.\n\nWhen setting, if the selected tab is not already selected, \nit shows the seleted tab and fires the [selected](#event_selected) event.",
+            "itemtype": "property",
+            "name": "selected",
+            "type": "String",
+            "default": "first tab",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 193,
+            "description": "Fires when a new tab is selected and becomes active. \nIt does not fire if the tab is already selected.",
+            "itemtype": "event",
+            "name": "selected",
+            "params": [
+                {
+                    "name": "newTab",
+                    "description": "Name of the tab selected",
+                    "type": "String"
+                },
+                {
+                    "name": "oldTab",
+                    "description": "Name of the previously selected tab",
+                    "type": "String"
+                }
+            ],
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 219,
+            "description": "Returns the first tab that is not a separator.",
+            "itemtype": "method",
+            "name": "_firstAvailable",
+            "return": {
+                "description": "configuration entry of the first tab that is not a separator"
+            },
+            "access": "private",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 232,
+            "description": "Adds a new tab to the right-most position of the left-justified set.\nEmits the [added](#event_added) event.",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "Tab configuration:",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "name",
+                            "description": "Identifier for this tab.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "label",
+                            "description": "Label to be shown in the tab.",
+                            "type": "String",
+                            "optional": true,
+                            "optdefault": "tab.name"
+                        },
+                        {
+                            "name": "content",
+                            "description": "Parcel to show when the tab is selected.",
+                            "type": "Parcel"
+                        }
+                    ]
+                },
+                {
+                    "name": "select",
+                    "description": "Whether the added tab becomes active, defaults to true.",
+                    "optional": true,
+                    "optdefault": "true"
+                }
+            ],
+            "chainable": 1,
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 244,
+            "description": "Fires when a tab is added.",
+            "itemtype": "event",
+            "name": "added",
+            "params": [
+                {
+                    "name": "tab",
+                    "description": "configuration setting for the new tab.",
+                    "type": "Object"
+                }
+            ],
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 262,
+            "description": "Returns the configuration entry for the given tab.",
+            "itemtype": "method",
+            "name": "getTab",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Name of the tab information sought.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Configuration entry for the tab or `null`of not found.",
+                "type": "Object"
+            },
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 280,
+            "description": "Removes the named tab. \nIf the tab removed is active, the first available tab will be selected.\nFires the [remove](#event_remove) event.",
+            "itemtype": "method",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier for the tab to be removed",
+                    "type": "String"
+                }
+            ],
+            "chainable": 1,
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 289,
+            "description": "Fires when a tab is removed.",
+            "itemtype": "event",
+            "name": "remove",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "Identifier of the tab removed",
+                    "type": "String"
+                },
+                {
+                    "name": "tab",
+                    "description": "Configuration entry of the removed tab",
+                    "type": "Object"
+                }
+            ],
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 314,
+            "description": "Shows the TabView.  \nOverride of `Parcel` [view](Parcel.html#method_view).",
+            "access": "protected",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
         },
         {
             "file": "js/component/virtual-dom.js",
@@ -1384,5 +1769,10 @@
             "submodule": "virtual-DOM"
         }
     ],
-    "warnings": []
+    "warnings": [
+        {
+            "message": "Missing item type\nShows the TabView.  \nOverride of `Parcel` [view](Parcel.html#method_view).",
+            "line": " js/component/tabView.js:314"
+        }
+    ]
 }

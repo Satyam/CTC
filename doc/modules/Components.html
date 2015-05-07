@@ -42,6 +42,7 @@
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
+                                <li><a href="../classes/TabView.html">TabView</a></li>
                                 <li><a href="../classes/vDOM.html">vDOM</a></li>
                                 <li><a href="../classes/vNode.html">vNode</a></li>
                             </ul>
@@ -54,6 +55,7 @@
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
+                                <li><a href="../modules/TabView.html">TabView</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
                             </ul>
                         </div>
@@ -93,7 +95,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/js_component_radio.js.html#l23"><code>js&#x2F;component&#x2F;radio.js:23</code></a>
+            Defined in: <a href="../files/js_component_tabView.js.html#l13"><code>js&#x2F;component&#x2F;tabView.js:13</code></a>
         </div>
 
 </div>
@@ -114,6 +116,11 @@
                         Radio
                     </a>
                 </li>
+                <li class="module-class">
+                    <a href="../classes/TabView.html">
+                        TabView
+                    </a>
+                </li>
             </ul>
     </div>
 
@@ -127,8 +134,36 @@
                     </a>
 
                     <div class="module-submodule-description">
-                        Provides a set of HTML radio buttons optionally enclosed in a <code>&amp;lt;fieldset&amp;gt;</code>.
+                        Provides a set of HTML radio buttons optionally enclosed in a <code>&lt;fieldset&gt;</code>.
 Emits the [<code>click</code>](#event_click) when clicked.
+                    </div>
+                </li>
+                <li class="module-submodule">
+                    <a href="../modules/TabView.html">
+                        TabView
+                    </a>
+
+                    <div class="module-submodule-description">
+                        Provides a set of tabs to show alternate content on the screen.
+
+Individual tabs can be left-justified or right-justified.
+The left-justified are usually the variable ones,
+new tabs can be added to them and existing ones removed.
+The right-justified, if present, are usually fixed in number.
+Each entry is described by an object within an array in the initial configuration.
+The array is required to ensure the order of the tabs.
+
+Each tab is identified by a <code>name</code> that should be unique within the TabView.
+The <code>label</code> property provides the text to be shown in the tab.
+This can be localized and if missing, it defaults to the <code>name</code>.
+The <code>content</code> should be an instance of [Parcel](Parcel.html),
+
+In the configuration, a separator marks the split point in between them.
+The separator can be anything that is not an object.
+If it is a string, it will be displayed.
+If it is a simple <code>+</code> sign, the corresponding icon from Font Awesome will be shown instead.
+When clicked the [more](#event_more) event is emitted for the application to add a new tab.
+If it is not a string (usually <code>null</code>) it will not be displayed and thus cannot be clicked.
                     </div>
                 </li>
             </ul>

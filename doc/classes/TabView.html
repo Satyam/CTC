@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>ParcelEv - ctc</title>
+    <title>TabView - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -90,58 +90,49 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>ParcelEv Class</h1>
+<h1>TabView Class</h1>
 <div class="box meta">
-        <div class="uses">
-            Uses
-            <ul class="inline commas">
-                    <li><a href="EventEmitter.html">EventEmitter</a></li>
-            </ul>
-        </div>
 
         <div class="extends">
-            Extends <a href="../classes/Parcel.html" class="crosslink">Parcel</a>
+            Extends <a href="../classes/ParcelEv.html" class="crosslink">ParcelEv</a>
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/js_component_parcelEv.js.html#l32"><code>js&#x2F;component&#x2F;parcelEv.js:32</code></a>
+            Defined in: <a href="../files/js_component_tabView.js.html#l13"><code>js&#x2F;component&#x2F;tabView.js:13</code></a>
         </div>
 
-            Module: <a href="../modules/parcelEv.html">parcelEv</a><br>
-            Parent Module: <a href="../modules/Parcela.html">Parcela</a>
+            Module: <a href="../modules/TabView.html">TabView</a><br>
+            Parent Module: <a href="../modules/Components.html">Components</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Subclass of <a href="Parcel.html">Parcel</a> capable of listening and
-relaying DOM events.</p>
-<p>Besides the configuration attributes used by <a href="Parcel.html">Parcel</a>,
-<code>ParcelEv</code> accepts the <code>EVENTS</code> property which is a hash map of DOM events to listen to.</p>
-<p>Each entry into <code>EVENTS</code> must contain the name of a DOM event (i.e.: <code>click</code>, <code>keypress</code>)
-followed either by a listener function or a further object.</p>
-<ul>
-<li>A function can be given as a reference or as a string with the name of the method within this class
-that handles it.  The function will be called whenever that event is fired.</li>
-<li>If an object, it should be a hash map of CSS selectors and functions.
-This limits the kind of DOM element or elements whose events you want to listen to.
-The function will then be called only when the element generating it satisfies the condition.</li>
-</ul>
-<p><code>ParcelEv</code> will queue a request to redraw the page unless any of the listeners cancels it by returning a <strong>truish</strong> value.</p>
-<p><code>ParcelEv</code> is also an <code>EventEmitter</code> thus, it will have methods to deal with custom events.
-See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitter</a></p>
+    <p>Provides a set of tabs to show alternate content on the screen.</p>
+<p>Individual tabs can be left-justified or right-justified.<br>The left-justified are usually the variable ones,
+new tabs can be added to them and existing ones removed.
+The right-justified, if present, are usually fixed in number.
+Each entry is described by an object within an array in the initial configuration.<br>The array is required to ensure the order of the tabs.</p>
+<p>Each tab is identified by a <code>name</code> that should be unique within the TabView.
+The <code>label</code> property provides the text to be shown in the tab.<br>This can be localized and if missing, it defaults to the <code>name</code>.
+The <code>content</code> should be an instance of <a href="Parcel.html">Parcel</a>,</p>
+<p>In the configuration, a separator marks the split point in between them.
+The separator can be anything that is not an object.<br>If it is a string, it will be displayed.
+If it is a simple <code>+</code> sign, the corresponding icon from Font Awesome will be shown instead.
+When clicked the <a href="#event_more">more</a> event is emitted for the application to add a new tab.
+If it is not a string (usually <code>null</code>) it will not be displayed and thus cannot be clicked.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_ParcelEv" class="method item">
-            <h3 class="name"><code>ParcelEv</code></h3>
+        <div id="method_TabView" class="method item">
+            <h3 class="name"><code>TabView</code></h3>
 
                 <div class="args">
                     <span class="paren">(</span><ul class="args-list inline commas">
                         <li class="arg">
-                                <code class="optional">[config]</code>
+                                <code>config</code>
                         </li>
                     </ul><span class="paren">)</span>
                 </div>
@@ -156,7 +147,7 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/js_component_parcelEv.js.html#l32"><code>js&#x2F;component&#x2F;parcelEv.js:32</code></a>
+                <a href="../files/js_component_tabView.js.html#l13"><code>js&#x2F;component&#x2F;tabView.js:13</code></a>
                 </p>
 
 
@@ -172,16 +163,85 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
 
                     <ul class="params-list">
                         <li class="param">
-                                <code class="param-name optional">[config]</code>
+                                <code class="param-name">config</code>
                                 <span class="type">Object</span>
-                                <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                             <div class="param-description">
-                                <p>Initial configuration</p>
+                                <p>configuration options</p>
 
                             </div>
 
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">tabs</code>
+                                            <span class="type">Array of Objects OR String</span>
+
+                                        <div class="param-description">
+                                            <p>Set of tabs to display. It has to be an array to ensure the order of the tabs. Each entry can be:</p>
+        <ul>
+        <li><code>null</code>: It acts as an invisible separator.  The tabs before it will be left-justified, the ones after, right justified.  The <code>null</code> will not take any space.</li>
+        <li>A string: It acts as a separator, just as null, plus it is shown and, when clicked, it emits the <a href="#event_add">add</a> event. It is meant to be used as a cue to add extra tabs.</li>
+        <li>An object, containing the following properties</li>
+        </ul>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">tabs[n].name</code>
+                                            <span class="type">String</span>
+
+                                        <div class="param-description">
+                                            <p>Internal identifier for the tab.</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name optional">[tabs[n].label]</code>
+                                            <span class="type">String</span>
+                                            <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                        <div class="param-description">
+                                            <p>Label to be shown on the tab, defaults to its <code>name</code>.</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">tabs[n].content</code>
+                                            <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+
+                                        <div class="param-description">
+                                            <p>Instance of Parcel to be shown when this tab is selected.</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name optional">[selected]</code>
+                                            <span class="type">String</span>
+                                            <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                        <div class="param-description">
+                                            <p>name of the tab to be shown, defaults to the first.</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name optional">[canClose]</code>
+                                            <span class="type">Boolean</span>
+                                            <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                        <div class="param-description">
+                                            <p>adds a close icon to each of the left-justified tabs.</p>
+
+                                        </div>
+
+                                    </li>
+                                </ul>
                         </li>
                     </ul>
                 </div>
@@ -192,30 +252,24 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
                     <h4>Example:</h4>
 
                     <div class="example-content">
-                        <pre class="code prettyprint"><code>  class MyDialogBox extends ParcelEv {
-                  constructor(config) {
-                    super({
-                        EVENTS: {
-                            // Listening to keypresses anywhere within this Parcel
-                            &#39;keypress&#39;: this.onKeyPress
-                            // Listening to clicks on specific elements within the Parcel
-                            &#39;click&#39;: {
-                                // only on a button with the className <code>ok</code> on it.
-                                &#39;button.ok&#39;: this.onOk,
-                                // The function reference is given as a string which translates to <code>this.onCancel</code>
-                                &#39;button.cancel&#39;:&#39;onCancel&#39;
-                            }
-                        },
-                        // Other configuration options will be passed to the Parcel constructor
-                        className: &#39;dialog&#39;
-                    });
-                }
-                // Methods handling the functions, will receive the original DOM event object.
-                // Their <code>this</code> will be that of the instance of ParcelEv.
-                onKeyPress (ev) {}
-                onOk (ev) {}
-                onCancel (ev) {}
-            }
+                        <pre class="code prettyprint"><code>{
+            tabs: [
+                {
+                    name: &#39;firstTab&#39;
+                    label: &#39;First Tab to the Left&#39;,
+                    content: new Parcel(&#39;whatever&#39;)
+                },
+                ....
+                null,  // separator
+                {
+                    name: &#39;firstRightTab&#39;
+                    label: &#39;First Tab to the right of the separator&#39;,
+                    content: new Parcel(&#39;something else&#39;)
+                },
+                ...
+            ],
+            selected: &#39;firstTab&#39;
+        }
         </code></pre>
                     </div>
                 </div>
@@ -239,16 +293,40 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
+                            <li class="index-item method private">
+                                <a href="#method__firstAvailable">_firstAvailable</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__onClick">_onClick</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__onClose">_onClose</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__onMore">_onMore</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_add">add</a>
+
+                            </li>
                             <li class="index-item method inherited">
                                 <a href="#method_addListener">addListener</a>
 
                             </li>
-                            <li class="index-item method inherited">
+                            <li class="index-item method inherited inherited">
                                 <a href="#method_destructor">destructor</a>
 
                             </li>
                             <li class="index-item method inherited">
                                 <a href="#method_emit">emit</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getTab">getTab</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -263,12 +341,16 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
                                 <a href="#method_once">once</a>
 
                             </li>
-                            <li class="index-item method inherited">
+                            <li class="index-item method inherited inherited">
                                 <a href="#method_postView">postView</a>
 
                             </li>
-                            <li class="index-item method inherited">
+                            <li class="index-item method inherited inherited">
                                 <a href="#method_preView">preView</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_remove">remove</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -298,6 +380,18 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
                     <h3>Properties</h3>
 
                     <ul class="index-list properties extends">
+                            <li class="index-item property private">
+                                <a href="#property__canClose">_canClose</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property__selected">_selected</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property__tabs">_tabs</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_attributes">attributes</a>
 
@@ -308,6 +402,10 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_containerType">containerType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_selected">selected</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -322,12 +420,28 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
                     <h3>Events</h3>
 
                     <ul class="index-list events extends">
+                            <li class="index-item event">
+                                <a href="#event_added">added</a>
+
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_more">more</a>
+
+                            </li>
                             <li class="index-item event inherited">
                                 <a href="#event_newListener">newListener</a>
 
                             </li>
+                            <li class="index-item event">
+                                <a href="#event_remove">remove</a>
+
+                            </li>
                             <li class="index-item event inherited">
                                 <a href="#event_removeListener">removeListener</a>
+
+                            </li>
+                            <li class="index-item event">
+                                <a href="#event_selected">selected</a>
 
                             </li>
                     </ul>
@@ -337,6 +451,318 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method__firstAvailable" class="method item private">
+    <h3 class="name"><code>_firstAvailable</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"></span>
+        </span>
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_tabView.js.html#l219"><code>js&#x2F;component&#x2F;tabView.js:219</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the first tab that is not a separator.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                    <p>configuration entry of the first tab that is not a separator</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method__onClick" class="method item private">
+    <h3 class="name"><code>_onClick</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ev</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_tabView.js.html#l140"><code>js&#x2F;component&#x2F;tabView.js:140</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Responds to clicks on the regular tabs (not the separator) by
+calling setting the <a href="#property_selected">selected</a> property.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ev</code>
+                        <span class="type">DOMEvent</span>
+
+
+                    <div class="param-description">
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__onClose" class="method item private">
+    <h3 class="name"><code>_onClose</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ev</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_tabView.js.html#l164"><code>js&#x2F;component&#x2F;tabView.js:164</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Responds to a click on the close <strong><code>x</code></strong> mini-icon on the tab by calling
+the <a href="#method_remove">remove</a> method.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ev</code>
+                        <span class="type">DOMEvent</span>
+
+
+                    <div class="param-description">
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method__onMore" class="method item private">
+    <h3 class="name"><code>_onMore</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ev</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_tabView.js.html#l118"><code>js&#x2F;component&#x2F;tabView.js:118</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Responds to clicks on the visible separator emitting the <a href="#event_more">more</a>.
+Propagation and default action of the event is halted.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ev</code>
+                        <span class="type">DOMEvent</span>
+
+
+                    <div class="param-description">
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_add" class="method item">
+    <h3 class="name"><code>add</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>tab</code>
+                </li>
+                <li class="arg">
+                        <code class="optional">[select=true]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_tabView.js.html#l232"><code>js&#x2F;component&#x2F;tabView.js:232</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Adds a new tab to the right-most position of the left-justified set.
+Emits the <a href="#event_added">added</a> event.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">tab</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>Tab configuration:</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">name</code>
+                                    <span class="type">String</span>
+
+                                <div class="param-description">
+                                    <p>Identifier for this tab.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name optional">[label=tab.name]</code>
+                                    <span class="type">String</span>
+                                    <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                <div class="param-description">
+                                    <p>Label to be shown in the tab.</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">content</code>
+                                    <span class="type"><a href="../classes/Parcel.html" class="crosslink">Parcel</a></span>
+
+                                <div class="param-description">
+                                    <p>Parcel to show when the tab is selected.</p>
+
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+                <li class="param">
+                        <code class="param-name optional">[select=true]</code>
+                        <span class="type">Object</span>
+                        <span class="flag optional" title="This parameter is optional.">optional</span>
+
+
+                    <div class="param-description">
+                        <p>Whether the added tab becomes active, defaults to true.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_addListener" class="method item inherited">
     <h3 class="name"><code>addListener</code></h3>
 
@@ -417,7 +843,7 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
             </div>
         </div>
 </div>
-<div id="method_destructor" class="method item">
+<div id="method_destructor" class="method item inherited">
     <h3 class="name"><code>destructor</code></h3>
 
         <span class="paren">()</span>
@@ -527,6 +953,72 @@ See: <a href="https://nodejs.org/docs/latest/api/events.html">NodeJS EventEmitte
             <div class="returns-description">
                         <span class="type">Boolean</span>:
                     <p>true if event had listeners subscribed to it</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getTab" class="method item">
+    <h3 class="name"><code>getTab</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_tabView.js.html#l262"><code>js&#x2F;component&#x2F;tabView.js:262</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Returns the configuration entry for the given tab.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Name of the tab information sought.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Object</span>:
+                    <p>Configuration entry for the tab or <code>null</code>of not found.</p>
 
             </div>
         </div>
@@ -770,7 +1262,7 @@ console.log(util.inspect(server.listeners(&#39;connection&#39;))); // [ [Functio
             </div>
         </div>
 </div>
-<div id="method_postView" class="method item">
+<div id="method_postView" class="method item inherited">
     <h3 class="name"><code>postView</code></h3>
 
         <span class="paren">()</span>
@@ -805,7 +1297,7 @@ to detach the event listeners.</p>
 
 
 </div>
-<div id="method_preView" class="method item">
+<div id="method_preView" class="method item inherited">
     <h3 class="name"><code>preView</code></h3>
 
         <span class="paren">()</span>
@@ -835,6 +1327,63 @@ to detach the event listeners.</p>
 
     </div>
 
+
+
+
+</div>
+<div id="method_remove" class="method item">
+    <h3 class="name"><code>remove</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/js_component_tabView.js.html#l280"><code>js&#x2F;component&#x2F;tabView.js:280</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Removes the named tab.
+If the tab removed is active, the first available tab will be selected.
+Fires the <a href="#event_remove">remove</a> event.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                        <p>Identifier for the tab to be removed</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -1187,6 +1736,86 @@ view: function (v) {
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
+                    <div id="property__canClose" class="property item private">
+                        <h3 class="name"><code>_canClose</code></h3>
+                        <span class="type">Boolean</span>
+
+
+                            <span class="flag private">private</span>
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l106"><code>js&#x2F;component&#x2F;tabView.js:106</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Defines whether a close icon will be added to the left-justified tabs.</p>
+
+                        </div>
+
+                            <p><strong>Default:</strong> true</p>
+
+
+                    </div>
+                    <div id="property__selected" class="property item private">
+                        <h3 class="name"><code>_selected</code></h3>
+                        <span class="type">Object</span>
+
+
+                            <span class="flag private">private</span>
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l96"><code>js&#x2F;component&#x2F;tabView.js:96</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Reference to the active tab.</p>
+
+                        </div>
+
+                            <p><strong>Default:</strong> first available tab</p>
+
+
+                    </div>
+                    <div id="property__tabs" class="property item private">
+                        <h3 class="name"><code>_tabs</code></h3>
+                        <span class="type">Array</span>
+
+
+                            <span class="flag private">private</span>
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l87"><code>js&#x2F;component&#x2F;tabView.js:87</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Array of tab configuration entries.</p>
+
+                        </div>
+
+
+
+                    </div>
                     <div id="property_attributes" class="property item inherited">
                         <h3 class="name"><code>attributes</code></h3>
                         <span class="type">Object</span>
@@ -1268,6 +1897,34 @@ view: function (v) {
 
 
                     </div>
+                    <div id="property_selected" class="property item">
+                        <h3 class="name"><code>selected</code></h3>
+                        <span class="type">String</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l182"><code>js&#x2F;component&#x2F;tabView.js:182</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Sets/gets the name of the tab currently active.</p>
+                    <p>When setting, if the selected tab is not already selected,
+                    it shows the seleted tab and fires the <a href="#event_selected">selected</a> event.</p>
+
+                        </div>
+
+                            <p><strong>Default:</strong> first tab</p>
+
+
+                    </div>
                     <div id="property_text" class="property item inherited">
                         <h3 class="name"><code>text</code></h3>
                         <span class="type">String</span>
@@ -1302,6 +1959,91 @@ view: function (v) {
             <div id="events" class="api-class-tabpanel">
                 <h2 class="off-left">Events</h2>
 
+                    <div id="event_added" class="events item">
+                        <h3 class="name"><code>added</code></h3>
+                        <span class="type"></span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l244"><code>js&#x2F;component&#x2F;tabView.js:244</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Fires when a tab is added.</p>
+
+                        </div>
+
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">tab</code>
+                                            <span class="type">Object</span>
+
+
+                                        <div class="param-description">
+                                            <p>configuration setting for the new tab.</p>
+
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                    </div>
+                    <div id="event_more" class="events item">
+                        <h3 class="name"><code>more</code></h3>
+                        <span class="type"></span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l126"><code>js&#x2F;component&#x2F;tabView.js:126</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Fired when the separator in between the left-justified tabs and the right-justified ones is clicked.
+                    It is presumed that the purpose of this separator is to add more tabs to the set, hence its name.</p>
+
+                        </div>
+
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">ev</code>
+                                            <span class="type">DOMEvent</span>
+
+
+                                        <div class="param-description">
+                                            <p>original click event as received from the browser.</p>
+
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                    </div>
                     <div id="event_newListener" class="events item inherited">
                         <h3 class="name"><code>newListener</code></h3>
                         <span class="type"></span>
@@ -1355,6 +2097,59 @@ view: function (v) {
 
 
                     </div>
+                    <div id="event_remove" class="events item">
+                        <h3 class="name"><code>remove</code></h3>
+                        <span class="type"></span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l289"><code>js&#x2F;component&#x2F;tabView.js:289</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Fires when a tab is removed.</p>
+
+                        </div>
+
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">name</code>
+                                            <span class="type">String</span>
+
+
+                                        <div class="param-description">
+                                            <p>Identifier of the tab removed</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">tab</code>
+                                            <span class="type">Object</span>
+
+
+                                        <div class="param-description">
+                                            <p>Configuration entry of the removed tab</p>
+
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                    </div>
                     <div id="event_removeListener" class="events item inherited">
                         <h3 class="name"><code>removeListener</code></h3>
                         <span class="type"></span>
@@ -1399,6 +2194,60 @@ view: function (v) {
 
                                         <div class="param-description">
                                             <p>the listener</p>
+
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                    </div>
+                    <div id="event_selected" class="events item">
+                        <h3 class="name"><code>selected</code></h3>
+                        <span class="type"></span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l193"><code>js&#x2F;component&#x2F;tabView.js:193</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Fires when a new tab is selected and becomes active.
+                    It does not fire if the tab is already selected.</p>
+
+                        </div>
+
+                            <div class="params">
+                                <h4>Event Payload:</h4>
+
+                                <ul class="params-list">
+                                    <li class="param">
+                                            <code class="param-name">newTab</code>
+                                            <span class="type">String</span>
+
+
+                                        <div class="param-description">
+                                            <p>Name of the tab selected</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name">oldTab</code>
+                                            <span class="type">String</span>
+
+
+                                        <div class="param-description">
+                                            <p>Name of the previously selected tab</p>
 
                                         </div>
 

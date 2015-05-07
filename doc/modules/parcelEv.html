@@ -42,6 +42,7 @@
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
+                                <li><a href="../classes/TabView.html">TabView</a></li>
                                 <li><a href="../classes/vDOM.html">vDOM</a></li>
                                 <li><a href="../classes/vNode.html">vNode</a></li>
                             </ul>
@@ -54,6 +55,7 @@
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
+                                <li><a href="../modules/TabView.html">TabView</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
                             </ul>
                         </div>
@@ -93,7 +95,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/js_component_parcelEv.js.html#l31"><code>js&#x2F;component&#x2F;parcelEv.js:31</code></a>
+            Defined in: <a href="../files/js_component_parcelEv.js.html#l32"><code>js&#x2F;component&#x2F;parcelEv.js:32</code></a>
         </div>
 
 </div>
@@ -105,11 +107,13 @@ relaying DOM events.</p>
 <p>Besides the configuration attributes used by <a href="Parcel.html">Parcel</a>,
 <code>ParcelEv</code> accepts the <code>EVENTS</code> property which is a hash map of DOM events to listen to.</p>
 <p>Each entry into <code>EVENTS</code> must contain the name of a DOM event (i.e.: <code>click</code>, <code>keypress</code>)
-followed either by a listener function or a further object.   </p>
+followed either by a listener function or a further object.</p>
 <ul>
 <li>A function can be given as a reference or as a string with the name of the method within this class
 that handles it.  The function will be called whenever that event is fired.</li>
-<li>If an object, it should be a hash map of CSS selectors and functions.<br>This limits the kind of DOM element or elements whose events you want to listen to.<br>The function will then be called only when the element generating it satisfies the condition.</li>
+<li>If an object, it should be a hash map of CSS selectors and functions.
+This limits the kind of DOM element or elements whose events you want to listen to.
+The function will then be called only when the element generating it satisfies the condition.</li>
 </ul>
 <p><code>ParcelEv</code> will queue a request to redraw the page unless any of the listeners cancels it by returning a <strong>truish</strong> value.</p>
 <p><code>ParcelEv</code> is also an <code>EventEmitter</code> thus, it will have methods to deal with custom events.

@@ -53,7 +53,7 @@ class Mimico extends Parcel {
 				}
 			])
 		});
-		Mimico.sectTabs.on('add', () => {
+		Mimico.sectTabs.on('more', () => {
 			Mimico.sectTabs.add( {
 				name:'nuevo',
 				label: 'Seleccionar:',

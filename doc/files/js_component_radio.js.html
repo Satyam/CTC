@@ -42,6 +42,7 @@
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
+                                <li><a href="../classes/TabView.html">TabView</a></li>
                                 <li><a href="../classes/vDOM.html">vDOM</a></li>
                                 <li><a href="../classes/vNode.html">vNode</a></li>
                             </ul>
@@ -54,6 +55,7 @@
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
+                                <li><a href="../modules/TabView.html">TabView</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
                             </ul>
                         </div>
@@ -102,20 +104,9 @@
 import ParcelEv from &#x27;./parcelEv.js&#x27;;
 
 var count = 0;
-/*
-{
-	opts: [
-		{value: text},
-		....
-	],
-	selected: name,
-	title: text,
-	groupName: text
-}
-*/
 
 /**
-Provides a set of HTML radio buttons optionally enclosed in a &#x60;&amp;lt;fieldset&amp;gt;&#x60;.
+Provides a set of HTML radio buttons optionally enclosed in a &#x60;&lt;fieldset&gt;&#x60;.
 Emits the [&#x60;click&#x60;](#event_click) when clicked.
 
 @example
@@ -135,7 +126,7 @@ Emits the [&#x60;click&#x60;](#event_click) when clicked.
 @param config {Object} configuration options
 @param config.opts {Array of Objects} Set of options to choose from.  Each is an object with the value to identify each option as its key and the text to be shown as its value.	It has to be an array to ensure the order of the buttons.
 @param [config.selected] {String} value of the radio selected
-@param [config.title] {String} If present, a &#x60;&amp;lt;fieldset&amp;gt;&#x60; will enclose the buttons and this set as its legend
+@param [config.title] {String} If present, a &#x60;&lt;fieldset&gt;&#x60; will enclose the buttons and this set as its legend
 @param [config.groupName] {String} A &#x60;name&#x60; to be assigned to the set of radios.  If not provided, a unique name will be generated.
 */
 export default class Radio extends ParcelEv {

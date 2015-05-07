@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>parcel - ctc</title>
+    <title>TabView - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -90,27 +90,31 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>parcel Module</h1>
+<h1>TabView Module</h1>
 <div class="box clearfix meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/js_component_parcel.js.html#l11"><code>js&#x2F;component&#x2F;parcel.js:11</code></a>
+            Defined in: <a href="../files/js_component_tabView.js.html#l13"><code>js&#x2F;component&#x2F;tabView.js:13</code></a>
         </div>
 
 </div>
 
 
 <div class="box intro">
-    <p>Represents a section of real state in the HTML page.</p>
-<p>All Parcela apps should inherit from this class.</p>
-<p>Several properties might be configured on instantiation:</p>
-<ul>
-<li><a href="#property_containerType">containerType</a></li>
-<li><a href="#property_className">className</a></li>
-<li><a href="#property_attributes">attributes</a></li>
-<li><a href="#property_text">text</a></li>
-</ul>
+    <p>Provides a set of tabs to show alternate content on the screen.</p>
+<p>Individual tabs can be left-justified or right-justified.<br>The left-justified are usually the variable ones,
+new tabs can be added to them and existing ones removed.
+The right-justified, if present, are usually fixed in number.
+Each entry is described by an object within an array in the initial configuration.<br>The array is required to ensure the order of the tabs.</p>
+<p>Each tab is identified by a <code>name</code> that should be unique within the TabView.
+The <code>label</code> property provides the text to be shown in the tab.<br>This can be localized and if missing, it defaults to the <code>name</code>.
+The <code>content</code> should be an instance of <a href="Parcel.html">Parcel</a>,</p>
+<p>In the configuration, a separator marks the split point in between them.
+The separator can be anything that is not an object.<br>If it is a string, it will be displayed.
+If it is a simple <code>+</code> sign, the corresponding icon from Font Awesome will be shown instead.
+When clicked the <a href="#event_more">more</a> event is emitted for the application to add a new tab.
+If it is not a string (usually <code>null</code>) it will not be displayed and thus cannot be clicked.</p>
 
 </div>
 
@@ -121,8 +125,8 @@
 
             <ul class="module-classes">
                 <li class="module-class">
-                    <a href="../classes/Parcel.html">
-                        Parcel
+                    <a href="../classes/TabView.html">
+                        TabView
                     </a>
                 </li>
             </ul>

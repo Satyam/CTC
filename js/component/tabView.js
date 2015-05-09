@@ -384,8 +384,6 @@ export default class TabView extends ParcelEv {
 	@protected
 	*/
 	destructor () {
-		delete this._tabs;
-		delete this._selected;
 		super.destructor();
 	}
 }

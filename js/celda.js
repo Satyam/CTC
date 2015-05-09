@@ -64,6 +64,11 @@ class Celda extends ParcelEv {
 		return this.x + ',' + this.y;
 	}
 
+	destructor () {
+		_.each(this.senales, senal => senal.destructor());
+		super.destructor();
+	}
+
 }
 
 var lineaA = function (v, dest, estilo) {

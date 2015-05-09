@@ -13,11 +13,6 @@ class Estado extends Parcel {
 	view(v) {
 		return v('pre', this.celda.toString());
 	}
-	destructor () {
-		this.celda = null;
-		this.sector = null;
-		super.destructor();
-	}
 }
 
 var Estados = {
@@ -56,6 +51,11 @@ var Estados = {
 		cambiarManual (value) {
 			this.celda.manual = value == 'manual';
 		}
+		destructor () {
+			this.desviado.destructor();
+			this.manual.destructor();
+			super.destructor();
+		}
 	},
 	paragolpe: class Paragolpe extends Estado {},
 
@@ -92,6 +92,11 @@ var Estados = {
 				this.posicion,
 				this.manual
 			];
+		}
+		destructor () {
+			this.posicion.destructor();
+			this.manual.destructor();
+			super.destructor();
 		}
 	},
 	cruce: class Cruce extends Estado {}

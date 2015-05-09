@@ -24,10 +24,7 @@ class Enclavamiento {
 	toString () {
 		return JSON.stringify(this.toJSON(), null, 2);
 	}
-
-	destructor () {
-		delete this.sector;
-	}
+	destructor () {}
 }
 
 var Enclavamientos = {
@@ -75,17 +72,17 @@ var Enclavamientos = {
 			});
 		}
 		destructor () {
-			super.destructor();
 			this.celdas.forEach((coord) => {
-				this.sector.getCelda(coord).removeEventListener('cambio',this._boundCambioListener);
+				this.sector.getCelda(coord).removeListener('cambio',this._boundCambioListener);
 			});
+			super.destructor();
 		}
 	},
 	senalCambio: class SenalCambio extends Enclavamiento {
 		constructor (config, sector) {
 			super(config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
-			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 		}
 		onCambio (celda, estado) {
 			var senal = this.sector.getSenal(this.senal),
@@ -102,8 +99,7 @@ var Enclavamientos = {
 		}
 
 		inicial () {
-			var celda = this.sector.getCelda(this.celda);
-			return this.onCambio (celda, celda.desviado);
+			return this.onCambio (this.celda, this.celda.desviado);
 		}
 		toJSON () {
 			return _.merge(super.toJSON(), {
@@ -114,8 +110,8 @@ var Enclavamientos = {
 			});
 		}
 		destructor () {
+			this.celda.removeListener('cambio', this._boundCambioListener);
 			super.destructor();
-			this.celda.removeEventListener('cambio', this._boundCambioListener);
 		}
 
 	},
@@ -123,7 +119,7 @@ var Enclavamientos = {
 		constructor (config, sector) {
 			super(config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
-			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 		}
 		onCambio (celda, estado) {
 			var senal = this.sector.getSenal(this.senal),
@@ -141,8 +137,7 @@ var Enclavamientos = {
 		}
 
 		inicial () {
-			var celda = this.sector.getCelda(this.celda);
-			return this.onCambio (celda, celda.posicion);
+			return this.onCambio (this.celda, this.celda.posicion);
 		}
 		toJSON () {
 			return _.merge(super.toJSON(), {
@@ -154,8 +149,8 @@ var Enclavamientos = {
 			});
 		}
 		destructor () {
+			this.celda.removeListener('cambio', this._boundCambioListener);
 			super.destructor();
-			this.celda.removeEventListener('cambio', this._boundCambioListener);
 		}
 
 	}

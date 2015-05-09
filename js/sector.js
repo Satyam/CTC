@@ -117,4 +117,12 @@ export default class Sector extends ParcelEv {
 		return JSON.stringify(this.toJSON(), null, 2);
 	}
 
+	destructor () {
+		if (this.estado.destructor) {
+			this.estado.destructor();
+		}
+		_.each(this.enclavamientos,  enclavamiento => enclavamiento.destructor());
+		_.each(this.celdas, celda => celda.destructor());
+		super.destructor();
+	}
 }

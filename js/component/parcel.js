@@ -73,36 +73,11 @@ export default class Parcel {
 		if (config.text) this._text = config.text;
 	}
 	/**
-	Destructor.  
-
-	The provided method checks all the instance properties and if any of them are 
-	instances of Parcel or arrays of Parcel instances, 
-	it will call the `destructor` method on each of the child parcels.
-
-	It is a last-resort tactic to avoid leaving stuff behind.
-	In practice, it should be overriden to destroy only what each parcel has created.
+	Destructor.  The existing implementation does nothing.
 
 	@method destructor
 	*/
-	destructor () {
-		_.each(this, (member) => {
-			if (member instanceof Parcel) member.destructor();
-			if (_.isArray(member)) {
-				_.some(member, item => {
-					if (item) {
-						if (item instanceof Parcel) {
-							item.destructor();
-						} else {
-							// If the first non-emtpy item is not a Parcel instance, 
-							// it doesn't bother checking the rest.
-							return true;
-						}
-					}
-				});
-			}
-						
-		});
-	}
+	destructor () {}
 
 	/**
 	Called by the renderer before this Parcel is shown for the first time.

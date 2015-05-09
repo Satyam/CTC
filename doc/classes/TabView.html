@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/EventEmitter.html">EventEmitter</a></li>
+                                <li><a href="../classes/http.html">http</a></li>
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
@@ -51,11 +52,13 @@
                                 <li><a href="../modules/Browserify.html">Browserify</a></li>
                                 <li><a href="../modules/Components.html">Components</a></li>
                                 <li><a href="../modules/Events.html">Events</a></li>
+                                <li><a href="../modules/http.html">http</a></li>
                                 <li><a href="../modules/parcel.html">parcel</a></li>
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
                                 <li><a href="../modules/TabView.html">TabView</a></li>
+                                <li><a href="../modules/utilities.html">utilities</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
                             </ul>
                         </div>
@@ -109,18 +112,23 @@
 
 <div class="box intro">
     <p>Provides a set of tabs to show alternate content on the screen.</p>
-<p>Individual tabs can be left-justified or right-justified.<br>The left-justified are usually the variable ones,
+<p>Each tab is described by an object within the <code>tabs</code> array in the initial configuration.
+The array is required to ensure the order of the tabs.</p>
+<p>Individual tabs can be left-justified or right-justified.
+The left-justified are usually the variable ones,
 new tabs can be added to them and existing ones removed.
-The right-justified, if present, are usually fixed in number.
-Each entry is described by an object within an array in the initial configuration.<br>The array is required to ensure the order of the tabs.</p>
+If the <code>canClose</code> configuration property is true or missing,
+the markup in the <a href="#property_closeTag">closeTag</a> will be shown
+by the label.</p>
+<p>The right-justified, if present, are usually fixed in number.</p>
 <p>Each tab is identified by a <code>name</code> that should be unique within the TabView.
-The <code>label</code> property provides the text to be shown in the tab.<br>This can be localized and if missing, it defaults to the <code>name</code>.
+The <code>label</code> property provides the text to be shown in the tab.
+This can be localized and if missing, it defaults to the <code>name</code>.
 The <code>content</code> should be an instance of <a href="Parcel.html">Parcel</a>,</p>
-<p>In the configuration, a separator marks the split point in between them.
-The separator can be anything that is not an object.<br>If it is a string, it will be displayed.
-If it is a simple <code>+</code> sign, the corresponding icon from Font Awesome will be shown instead.
-When clicked the <a href="#event_more">more</a> event is emitted for the application to add a new tab.
-If it is not a string (usually <code>null</code>) it will not be displayed and thus cannot be clicked.</p>
+<p>In the tabs configuration, a separator marks the split point in between the sets of left and right justified tabs.
+A <code>null</code> will not be displayed.  Any other thing will produce a tab with no contents
+and its label given by the markup in the <a href="#property_moreTag">moreTag</a> property.
+When clicked the <a href="#event_more">more</a> event is emitted for the application to add a new tab.</p>
 
 </div>
 
@@ -174,6 +182,28 @@ If it is not a string (usually <code>null</code>) it will not be displayed and t
 
                                 <ul class="params-list">
                                     <li class="param">
+                                            <code class="param-name optional">[selected]</code>
+                                            <span class="type">String</span>
+                                            <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                        <div class="param-description">
+                                            <p>name of the tab to be shown, defaults to the first.</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
+                                            <code class="param-name optional">[canClose]</code>
+                                            <span class="type">Boolean</span>
+                                            <span class="flag optional" title="This parameter is optional.">optional</span>
+
+                                        <div class="param-description">
+                                            <p>adds a close icon to each of the left-justified tabs.</p>
+
+                                        </div>
+
+                                    </li>
+                                    <li class="param">
                                             <code class="param-name">tabs</code>
                                             <span class="type">Array of Objects OR String</span>
 
@@ -181,7 +211,7 @@ If it is not a string (usually <code>null</code>) it will not be displayed and t
                                             <p>Set of tabs to display. It has to be an array to ensure the order of the tabs. Each entry can be:</p>
         <ul>
         <li><code>null</code>: It acts as an invisible separator.  The tabs before it will be left-justified, the ones after, right justified.  The <code>null</code> will not take any space.</li>
-        <li>A string: It acts as a separator, just as null, plus it is shown and, when clicked, it emits the <a href="#event_add">add</a> event. It is meant to be used as a cue to add extra tabs.</li>
+        <li>Anything not an object or <code>null</code>: It acts as a separator, just as <code>null</code> but a tab with no content will be shown, containing the markup produced by <a href="#property_moreTag">moreTag</a>. When clicked, it emits the <a href="#event_more">more</a> event. It is meant to be used as a cue to add extra tabs.</li>
         <li>An object, containing the following properties</li>
         </ul>
 
@@ -215,28 +245,6 @@ If it is not a string (usually <code>null</code>) it will not be displayed and t
 
                                         <div class="param-description">
                                             <p>Instance of Parcel to be shown when this tab is selected.</p>
-
-                                        </div>
-
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[selected]</code>
-                                            <span class="type">String</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                        <div class="param-description">
-                                            <p>name of the tab to be shown, defaults to the first.</p>
-
-                                        </div>
-
-                                    </li>
-                                    <li class="param">
-                                            <code class="param-name optional">[canClose]</code>
-                                            <span class="type">Boolean</span>
-                                            <span class="flag optional" title="This parameter is optional.">optional</span>
-
-                                        <div class="param-description">
-                                            <p>adds a close icon to each of the left-justified tabs.</p>
 
                                         </div>
 
@@ -317,7 +325,7 @@ If it is not a string (usually <code>null</code>) it will not be displayed and t
                                 <a href="#method_addListener">addListener</a>
 
                             </li>
-                            <li class="index-item method inherited inherited">
+                            <li class="index-item method protected inherited">
                                 <a href="#method_destructor">destructor</a>
 
                             </li>
@@ -400,8 +408,16 @@ If it is not a string (usually <code>null</code>) it will not be displayed and t
                                 <a href="#property_className">className</a>
 
                             </li>
+                            <li class="index-item property">
+                                <a href="#property_closeTag">closeTag</a>
+
+                            </li>
                             <li class="index-item property inherited">
                                 <a href="#property_containerType">containerType</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_moreTag">moreTag</a>
 
                             </li>
                             <li class="index-item property">
@@ -470,7 +486,7 @@ If it is not a string (usually <code>null</code>) it will not be displayed and t
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_tabView.js.html#l219"><code>js&#x2F;component&#x2F;tabView.js:219</code></a>
+        <a href="../files/js_component_tabView.js.html#l240"><code>js&#x2F;component&#x2F;tabView.js:240</code></a>
         </p>
 
 
@@ -516,7 +532,7 @@ If it is not a string (usually <code>null</code>) it will not be displayed and t
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_tabView.js.html#l140"><code>js&#x2F;component&#x2F;tabView.js:140</code></a>
+        <a href="../files/js_component_tabView.js.html#l161"><code>js&#x2F;component&#x2F;tabView.js:161</code></a>
         </p>
 
 
@@ -571,7 +587,7 @@ calling setting the <a href="#property_selected">selected</a> property.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_tabView.js.html#l164"><code>js&#x2F;component&#x2F;tabView.js:164</code></a>
+        <a href="../files/js_component_tabView.js.html#l185"><code>js&#x2F;component&#x2F;tabView.js:185</code></a>
         </p>
 
 
@@ -626,7 +642,7 @@ the <a href="#method_remove">remove</a> method.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_tabView.js.html#l118"><code>js&#x2F;component&#x2F;tabView.js:118</code></a>
+        <a href="../files/js_component_tabView.js.html#l139"><code>js&#x2F;component&#x2F;tabView.js:139</code></a>
         </p>
 
 
@@ -684,7 +700,7 @@ Propagation and default action of the event is halted.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_tabView.js.html#l232"><code>js&#x2F;component&#x2F;tabView.js:232</code></a>
+        <a href="../files/js_component_tabView.js.html#l253"><code>js&#x2F;component&#x2F;tabView.js:253</code></a>
         </p>
 
 
@@ -843,13 +859,14 @@ Emits the <a href="#event_added">added</a> event.</p>
             </div>
         </div>
 </div>
-<div id="method_destructor" class="method item inherited">
+<div id="method_destructor" class="method item protected">
     <h3 class="name"><code>destructor</code></h3>
 
         <span class="paren">()</span>
 
 
 
+        <span class="flag protected">protected</span>
 
 
 
@@ -861,7 +878,7 @@ Emits the <a href="#event_added">added</a> event.</p>
                 Parcel
             </a>
             but overwritten in
-        <a href="../files/js_component_parcelEv.js.html#l133"><code>js&#x2F;component&#x2F;parcelEv.js:133</code></a>
+        <a href="../files/js_component_tabView.js.html#l378"><code>js&#x2F;component&#x2F;tabView.js:378</code></a>
         </p>
 
 
@@ -869,7 +886,9 @@ Emits the <a href="#event_added">added</a> event.</p>
     </div>
 
     <div class="description">
-        <p>Extends the original destructor method so as to detach all the event listeners</p>
+        <p>Drops the references to the tab contents.
+It does not call the destructors of the Parcels that make up that content,
+it simply drops the references to them.</p>
 
     </div>
 
@@ -983,7 +1002,7 @@ Emits the <a href="#event_added">added</a> event.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_tabView.js.html#l262"><code>js&#x2F;component&#x2F;tabView.js:262</code></a>
+        <a href="../files/js_component_tabView.js.html#l283"><code>js&#x2F;component&#x2F;tabView.js:283</code></a>
         </p>
 
 
@@ -1018,7 +1037,7 @@ Emits the <a href="#event_added">added</a> event.</p>
 
             <div class="returns-description">
                         <span class="type">Object</span>:
-                    <p>Configuration entry for the tab or <code>null</code>of not found.</p>
+                    <p>Configuration entry for the tab or <code>null</code> if not found.</p>
 
             </div>
         </div>
@@ -1353,7 +1372,7 @@ to detach the event listeners.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_tabView.js.html#l280"><code>js&#x2F;component&#x2F;tabView.js:280</code></a>
+        <a href="../files/js_component_tabView.js.html#l301"><code>js&#x2F;component&#x2F;tabView.js:301</code></a>
         </p>
 
 
@@ -1748,7 +1767,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l106"><code>js&#x2F;component&#x2F;tabView.js:106</code></a>
+                            <a href="../files/js_component_tabView.js.html#l107"><code>js&#x2F;component&#x2F;tabView.js:107</code></a>
                             </p>
 
 
@@ -1775,7 +1794,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l96"><code>js&#x2F;component&#x2F;tabView.js:96</code></a>
+                            <a href="../files/js_component_tabView.js.html#l97"><code>js&#x2F;component&#x2F;tabView.js:97</code></a>
                             </p>
 
 
@@ -1802,7 +1821,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l87"><code>js&#x2F;component&#x2F;tabView.js:87</code></a>
+                            <a href="../files/js_component_tabView.js.html#l88"><code>js&#x2F;component&#x2F;tabView.js:88</code></a>
                             </p>
 
 
@@ -1870,6 +1889,33 @@ view: function (v) {
 
 
                     </div>
+                    <div id="property_closeTag" class="property item">
+                        <h3 class="name"><code>closeTag</code></h3>
+                        <span class="type">String</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l117"><code>js&#x2F;component&#x2F;tabView.js:117</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>vNode tag argument for the icon to be used as a close symbol in the tab.
+                    The default is the <a href="http://fortawesome.github.io/Font-Awesome/icon/times/">close</a> icon from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>.   It could be replaced by an <code>img</code> tag or a <code>div</code> with a suitable className.</p>
+
+                        </div>
+
+                            <p><strong>Default:</strong> &#x27;i.fa.fa-close&#x27;</p>
+
+
+                    </div>
                     <div id="property_containerType" class="property item inherited">
                         <h3 class="name"><code>containerType</code></h3>
                         <span class="type">String</span>
@@ -1897,6 +1943,33 @@ view: function (v) {
 
 
                     </div>
+                    <div id="property_moreTag" class="property item">
+                        <h3 class="name"><code>moreTag</code></h3>
+                        <span class="type">String</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_component_tabView.js.html#l127"><code>js&#x2F;component&#x2F;tabView.js:127</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>vNode tag argument for the icon to be used to label the tab to add more tabs.
+                    The default is the <a href="http://fortawesome.github.io/Font-Awesome/icon/plus/">plus</a> icon from <a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>.   It could be replaced by an <code>img</code> tag or a <code>div</code> with a suitable className.</p>
+
+                        </div>
+
+                            <p><strong>Default:</strong> &#x27;i.fa.fa-plus&#x27;</p>
+
+
+                    </div>
                     <div id="property_selected" class="property item">
                         <h3 class="name"><code>selected</code></h3>
                         <span class="type">String</span>
@@ -1908,7 +1981,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l182"><code>js&#x2F;component&#x2F;tabView.js:182</code></a>
+                            <a href="../files/js_component_tabView.js.html#l203"><code>js&#x2F;component&#x2F;tabView.js:203</code></a>
                             </p>
 
 
@@ -1970,7 +2043,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l244"><code>js&#x2F;component&#x2F;tabView.js:244</code></a>
+                            <a href="../files/js_component_tabView.js.html#l265"><code>js&#x2F;component&#x2F;tabView.js:265</code></a>
                             </p>
 
 
@@ -2012,7 +2085,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l126"><code>js&#x2F;component&#x2F;tabView.js:126</code></a>
+                            <a href="../files/js_component_tabView.js.html#l147"><code>js&#x2F;component&#x2F;tabView.js:147</code></a>
                             </p>
 
 
@@ -2108,7 +2181,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l289"><code>js&#x2F;component&#x2F;tabView.js:289</code></a>
+                            <a href="../files/js_component_tabView.js.html#l310"><code>js&#x2F;component&#x2F;tabView.js:310</code></a>
                             </p>
 
 
@@ -2214,7 +2287,7 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_tabView.js.html#l193"><code>js&#x2F;component&#x2F;tabView.js:193</code></a>
+                            <a href="../files/js_component_tabView.js.html#l214"><code>js&#x2F;component&#x2F;tabView.js:214</code></a>
                             </p>
 
 

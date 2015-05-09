@@ -18,14 +18,13 @@ export default class ListaSectores extends ParcelEv {
 
 		this.className = 'lista-sectores';
 
-		http.get(
-			'data/lista.json',
-			(response, body) => {
-				if (response.statusCode == 200) {
-					this.lista = body;
-				}
-			}
-		);
+		http.get('data/lista.json')
+		.then(response => {
+			this.lista = response.body;
+		})
+		.catch(response => {
+			global.window.alert(response.message || (response.statusCode + ': ' + response.body));
+		});
 	}
 
 	onClick (ev) {

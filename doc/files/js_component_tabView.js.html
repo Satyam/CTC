@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/EventEmitter.html">EventEmitter</a></li>
+                                <li><a href="../classes/http.html">http</a></li>
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
@@ -51,11 +52,13 @@
                                 <li><a href="../modules/Browserify.html">Browserify</a></li>
                                 <li><a href="../modules/Components.html">Components</a></li>
                                 <li><a href="../modules/Events.html">Events</a></li>
+                                <li><a href="../modules/http.html">http</a></li>
                                 <li><a href="../modules/parcel.html">parcel</a></li>
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
                                 <li><a href="../modules/TabView.html">TabView</a></li>
+                                <li><a href="../modules/utilities.html">utilities</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
                             </ul>
                         </div>
@@ -109,26 +112,27 @@ import ParcelEv from &#x27;./parcelEv.js&#x27;;
 /**
 Provides a set of tabs to show alternate content on the screen.
 
+Each tab is described by an object within the &#x60;tabs&#x60; array in the initial configuration.
+The array is required to ensure the order of the tabs.
+
 Individual tabs can be left-justified or right-justified.
 The left-justified are usually the variable ones,
 new tabs can be added to them and existing ones removed.
+If the &#x60;canClose&#x60; configuration property is true or missing,
+the markup in the [closeTag](#property_closeTag) will be shown
+by the label.
+
 The right-justified, if present, are usually fixed in number.
-Each entry is described by an object within an array in the initial configuration.
-The array is required to ensure the order of the tabs.
 
 Each tab is identified by a &#x60;name&#x60; that should be unique within the TabView.
 The &#x60;label&#x60; property provides the text to be shown in the tab.
 This can be localized and if missing, it defaults to the &#x60;name&#x60;.
 The &#x60;content&#x60; should be an instance of [Parcel](Parcel.html),
 
-In the configuration, a separator marks the split point in between them.
-The separator can be anything that is not an object.
-If it is a string, it will be displayed.
-If it is a simple &#x60;+&#x60; sign, the corresponding icon from Font Awesome will be shown instead.
+In the tabs configuration, a separator marks the split point in between the sets of left and right justified tabs.
+A &#x60;null&#x60; will not be displayed.  Any other thing will produce a tab with no contents
+and its label given by the markup in the [moreTag](#property_moreTag) property.
 When clicked the [more](#event_more) event is emitted for the application to add a new tab.
-If it is not a string (usually &#x60;null&#x60;) it will not be displayed and thus cannot be clicked.
-
-
 
 @example
 	{
@@ -155,17 +159,17 @@ If it is not a string (usually &#x60;null&#x60;) it will not be displayed and th
 @extends ParcelEv
 @constructor
 @param config {Object} configuration options
+@param [config.selected] {String} name of the tab to be shown, defaults to the first.
+@param [config.canClose] {Boolean} adds a close icon to each of the left-justified tabs.
 @param config.tabs {Array of Objects OR String} Set of tabs to display. It has to be an array to ensure the order of the tabs. Each entry can be:
 
 * &#x60;null&#x60;: It acts as an invisible separator.  The tabs before it will be left-justified, the ones after, right justified.  The &#x60;null&#x60; will not take any space.
-* A string: It acts as a separator, just as null, plus it is shown and, when clicked, it emits the [add](#event_add) event. It is meant to be used as a cue to add extra tabs.
+* Anything not an object or &#x60;null&#x60;: It acts as a separator, just as &#x60;null&#x60; but a tab with no content will be shown, containing the markup produced by [moreTag](#property_moreTag). When clicked, it emits the [more](#event_more) event. It is meant to be used as a cue to add extra tabs.
 * An object, containing the following properties
 
 @param config.tabs[n].name {String} Internal identifier for the tab.
 @param [config.tabs[n].label] {String} Label to be shown on the tab, defaults to its &#x60;name&#x60;.
 @param config.tabs[n].content {Parcel} Instance of Parcel to be shown when this tab is selected.
-@param [config.selected] {String} name of the tab to be shown, defaults to the first.
-@param [config.canClose] {Boolean} adds a close icon to each of the left-justified tabs.
 */
 export default class TabView extends ParcelEv {
 	constructor (config) {
@@ -174,7 +178,7 @@ export default class TabView extends ParcelEv {
 				click: {
 					&#x27;li.more *&#x27;: this._onMore,
 					&#x27;li.tab, li.tab a&#x27;: this._onClick,
-					&#x27;li.tab i.fa&#x27;: this._onClose
+					&#x27;li.tab a span.close *&#x27;: this._onClose
 				}
 			}
 		});
@@ -197,7 +201,7 @@ export default class TabView extends ParcelEv {
 		@default first available tab
 		@private
 		*/
-		this._selected = this._firstAvailable;
+		this._selected = this._firstAvailable();
 
 		/**
 		Defines whether a close icon will be added to the left-justified tabs.
@@ -208,6 +212,26 @@ export default class TabView extends ParcelEv {
 		@private
 		*/
 		this._canClose = config.canClose !== false;
+
+		/**
+		vNode tag argument for the icon to be used as a close symbol in the tab.
+		The default is the [close](http://fortawesome.github.io/Font-Awesome/icon/times/) icon from [Font Awesome](http://fortawesome.github.io/Font-Awesome/).   It could be replaced by an &#x60;img&#x60; tag or a &#x60;div&#x60; with a suitable className.
+
+		@property closeTag
+		@type String
+		@default &#x27;i.fa.fa-close&#x27;
+		*/
+		this.closeTag = &#x27;i.fa.fa-close&#x27;;
+
+		/**
+		vNode tag argument for the icon to be used to label the tab to add more tabs.
+		The default is the [plus](http://fortawesome.github.io/Font-Awesome/icon/plus/) icon from [Font Awesome](http://fortawesome.github.io/Font-Awesome/).   It could be replaced by an &#x60;img&#x60; tag or a &#x60;div&#x60; with a suitable className.
+
+		@property moreTag
+		@type String
+		@default &#x27;i.fa.fa-plus&#x27;
+		*/
+		this.moreTag = &#x27;i.fa.fa-plus&#x27;;
 
 		this.selected = config.selected;
 	}
@@ -271,7 +295,7 @@ export default class TabView extends ParcelEv {
 		ev.preventDefault();
 		ev.stopPropagation();
 
-		var hash = ev.target.parentNode.hash.substr(1);
+		var hash = ev.target.closest(&#x27;a&#x27;).hash.substr(1);
 		this.remove(hash);
 	}
 
@@ -320,7 +344,7 @@ export default class TabView extends ParcelEv {
 	@private
 	*/
 	_firstAvailable () {
-		for (var index = 0, l = this._tabs.length; i &lt; l; i++) {
+		for (var index = 0, l = this._tabs.length; index &lt; l; index++) {
 			if (_.isObject(this._tabs[index])) return this._tabs[index];
 		}
 		return {};
@@ -351,7 +375,7 @@ export default class TabView extends ParcelEv {
 			}
 		})) this._tabs.push(tab);
 		this.emit(&#x27;added&#x27;, tab);
-		if (select !== false) this.selected = tab;
+		if (select !== false) this.selected = tab.name;
 		return this;
 	}
 
@@ -360,7 +384,7 @@ export default class TabView extends ParcelEv {
 
 	@method getTab
 	@param name {String} Name of the tab information sought.
-	@return {Object} Configuration entry for the tab or &#x60;null&#x60;of not found.
+	@return {Object} Configuration entry for the tab or &#x60;null&#x60; if not found.
 	*/
 	getTab (name) {
 		var tab = null;
@@ -413,10 +437,10 @@ export default class TabView extends ParcelEv {
 	@protected
 	*/
 	view (v) {
-		var tabs = this._tabs, tab, ts = [], i, l = this._tabs.length;
+		var tabs = this._tabs, tab, ts = [], i , l = this._tabs.length;
 		for (i = 0; i &lt; l; i++) {
 			tab = tabs[i];
-			if (_.isObject(tab)) {
+			if (_.isPlainObject(tab)) {
 				ts.push(v(
 					&#x27;li.tab.tab-left&#x27;,
 					{
@@ -424,14 +448,14 @@ export default class TabView extends ParcelEv {
 					},
 					v(&#x27;a&#x27;, {href:&#x27;#&#x27; + tab.name}, [
 						tab.label || tab.name,
-						(this._canClose? v(&#x27;i.fa.fa-close&#x27;) : &#x27;&#x27;)
+						(this._canClose? v(&#x27;span.close&#x27;, v(this.closeTag)) : &#x27;&#x27;)
 					])
 				));
 			} else break;
 		}
 
-		if (_.isString(tab)) {
-			ts.push(v(&#x27;li.more.tab-left&#x27;, (tab == &#x27;+&#x27;? v(&#x27;i.fa.fa-plus&#x27;):tab)));
+		if (i &lt; l &amp;&amp; !_.isNull(tab)) {
+			ts.push(v(&#x27;li.more.tab-left&#x27;, v(this.moreTag)));
 			i++;
 		}
 
@@ -449,6 +473,19 @@ export default class TabView extends ParcelEv {
 			v(&#x27;ul.tabs&#x27;, ts),
 			v(&#x27;.tab-content&#x27;, this._selected.content)
 		];
+	}
+	/**
+	Drops the references to the tab contents.
+	It does not call the destructors of the Parcels that make up that content,
+	it simply drops the references to them.
+
+	@method destructor
+	@protected
+	*/
+	destructor () {
+		delete this._tabs;
+		delete this._selected;
+		super.destructor();
 	}
 }
 

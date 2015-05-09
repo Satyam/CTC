@@ -6,6 +6,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "ParcelEv",
         "Radio",
         "TabView",
+        "http",
         "vDOM",
         "vNode"
     ],
@@ -15,9 +16,11 @@ YUI.add("yuidoc-meta", function(Y) {
         "Events",
         "Parcela",
         "TabView",
+        "http",
         "parcel",
         "parcelEv",
         "radio",
+        "utilities",
         "virtual-DOM"
     ],
     "allModules": [
@@ -33,6 +36,11 @@ YUI.add("yuidoc-meta", function(Y) {
             "displayName": "Events",
             "name": "Events",
             "description": "Browserify implementation of NodeJS Events module.\n\nThis is for *documentation purposes only*.\n\nThe information herein was taken from NodeJS documentation and reformatted in JSDoc format.\n\nMany objects in Node emit events: a net.Server emits an event each time a peer connects to it, a fs.readStream emits an event when the file is opened. All objects which emit events are instances of events.EventEmitter. You can access this module by doing: require(\"events\");\n\nTypically, event names are represented by a camel-cased string, however, there aren't any strict restrictions on that, as any string will be accepted.\n\nFunctions can then be attached to objects, to be executed when an event is emitted. These functions are called listeners. Inside a listener function, this refers to the EventEmitter that the listener was attached to."
+        },
+        {
+            "displayName": "http",
+            "name": "http",
+            "description": "Helper functions to generate standard HTTP requests using the \n[xhr](https://www.npmjs.com/package/xhr) npm module.\n\nIt is integrated with the rendering engine so that upon completion of a request,\na redraw is requested."
         },
         {
             "displayName": "parcel",
@@ -56,7 +64,11 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "TabView",
             "name": "TabView",
-            "description": "Provides a set of tabs to show alternate content on the screen.\n\nIndividual tabs can be left-justified or right-justified.  \nThe left-justified are usually the variable ones, \nnew tabs can be added to them and existing ones removed.\nThe right-justified, if present, are usually fixed in number.\nEach entry is described by an object within an array in the initial configuration.  \nThe array is required to ensure the order of the tabs.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.  \nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the configuration, a separator marks the split point in between them.\nThe separator can be anything that is not an object.  \nIf it is a string, it will be displayed.\nIf it is a simple `+` sign, the corresponding icon from Font Awesome will be shown instead.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab.\nIf it is not a string (usually `null`) it will not be displayed and thus cannot be clicked."
+            "description": "Provides a set of tabs to show alternate content on the screen.\n\nEach tab is described by an object within the `tabs` array in the initial configuration.\nThe array is required to ensure the order of the tabs.\n\nIndividual tabs can be left-justified or right-justified.\nThe left-justified are usually the variable ones,\nnew tabs can be added to them and existing ones removed.\nIf the `canClose` configuration property is true or missing,\nthe markup in the [closeTag](#property_closeTag) will be shown\nby the label.\n\nThe right-justified, if present, are usually fixed in number.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.\nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the tabs configuration, a separator marks the split point in between the sets of left and right justified tabs.\nA `null` will not be displayed.  Any other thing will produce a tab with no contents\nand its label given by the markup in the [moreTag](#property_moreTag) property.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab."
+        },
+        {
+            "displayName": "utilities",
+            "name": "utilities"
         },
         {
             "displayName": "virtual-DOM",

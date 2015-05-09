@@ -27,38 +27,36 @@ export default class Sector extends ParcelEv {
 		this.estado = '';
 		this.name = config.sector;
 		
-		http.get(
-			'data/' + config.sector + '.json',
-			(response, body) => {
-				if (response.statusCode == 200) {
-					this.alto = body.alto;
-					this.ancho = body.ancho;
-					this.descr = body.descr;
-					_.forEach(body.celdas, (celda, coords) => {
-						this.celdas[coords] = new CeldaFactory(celda, coords).on('click', this.onClick.bind(this));
-					});
-					if (body.enclavamientos) {
-						body.enclavamientos.forEach((enclavamiento) => {
-							this.enclavamientos.push(new EnclavamientoFactory(enclavamiento, this));
-						});
-						let reintentos = 10;
-						while (reintentos--) {
-							if (this.enclavamientos.reduce((prevVal, enclavamiento) => {
-								return prevVal + enclavamiento.inicial()?1:0;
-							},0) === 0) break;
-						}
-						if (reintentos == -1) {
-							alert("El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones");
-						}
-					}
+		http.get('data/' + config.sector + '.json')
+		.then(response => {
+			var body = response.body;
 
-
-				} else {
-					this.fail = response.statusCode + ': ' + response.body;
+			this.alto = body.alto;
+			this.ancho = body.ancho;
+			this.descr = body.descr;
+			_.forEach(body.celdas, (celda, coords) => {
+				this.celdas[coords] = new CeldaFactory(celda, coords).on('click', this.onClick.bind(this));
+			});
+			if (body.enclavamientos) {
+				body.enclavamientos.forEach((enclavamiento) => {
+					this.enclavamientos.push(new EnclavamientoFactory(enclavamiento, this));
+				});
+				let reintentos = 10;
+				while (reintentos--) {
+					if (this.enclavamientos.reduce((prevVal, enclavamiento) => {
+						return prevVal + enclavamiento.inicial()?1:0;
+					},0) === 0) break;
 				}
-				this.emit('loaded');
+				if (reintentos == -1) {
+					alert("El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones");
+				}
 			}
-		);
+			this.emit('loaded');
+		})
+		.catch(response => {
+			this.fail = response.message || (response.statusCode + ': ' + response.body);
+			this.emit('failed', this.fail);
+		});
 	}
 	onClick (celda) {
 		if (this.seleccionada) {

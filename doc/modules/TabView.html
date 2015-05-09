@@ -39,6 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/EventEmitter.html">EventEmitter</a></li>
+                                <li><a href="../classes/http.html">http</a></li>
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
@@ -51,11 +52,13 @@
                                 <li><a href="../modules/Browserify.html">Browserify</a></li>
                                 <li><a href="../modules/Components.html">Components</a></li>
                                 <li><a href="../modules/Events.html">Events</a></li>
+                                <li><a href="../modules/http.html">http</a></li>
                                 <li><a href="../modules/parcel.html">parcel</a></li>
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
                                 <li><a href="../modules/TabView.html">TabView</a></li>
+                                <li><a href="../modules/utilities.html">utilities</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
                             </ul>
                         </div>
@@ -103,18 +106,23 @@
 
 <div class="box intro">
     <p>Provides a set of tabs to show alternate content on the screen.</p>
-<p>Individual tabs can be left-justified or right-justified.<br>The left-justified are usually the variable ones,
+<p>Each tab is described by an object within the <code>tabs</code> array in the initial configuration.
+The array is required to ensure the order of the tabs.</p>
+<p>Individual tabs can be left-justified or right-justified.
+The left-justified are usually the variable ones,
 new tabs can be added to them and existing ones removed.
-The right-justified, if present, are usually fixed in number.
-Each entry is described by an object within an array in the initial configuration.<br>The array is required to ensure the order of the tabs.</p>
+If the <code>canClose</code> configuration property is true or missing,
+the markup in the <a href="#property_closeTag">closeTag</a> will be shown
+by the label.</p>
+<p>The right-justified, if present, are usually fixed in number.</p>
 <p>Each tab is identified by a <code>name</code> that should be unique within the TabView.
-The <code>label</code> property provides the text to be shown in the tab.<br>This can be localized and if missing, it defaults to the <code>name</code>.
+The <code>label</code> property provides the text to be shown in the tab.
+This can be localized and if missing, it defaults to the <code>name</code>.
 The <code>content</code> should be an instance of <a href="Parcel.html">Parcel</a>,</p>
-<p>In the configuration, a separator marks the split point in between them.
-The separator can be anything that is not an object.<br>If it is a string, it will be displayed.
-If it is a simple <code>+</code> sign, the corresponding icon from Font Awesome will be shown instead.
-When clicked the <a href="#event_more">more</a> event is emitted for the application to add a new tab.
-If it is not a string (usually <code>null</code>) it will not be displayed and thus cannot be clicked.</p>
+<p>In the tabs configuration, a separator marks the split point in between the sets of left and right justified tabs.
+A <code>null</code> will not be displayed.  Any other thing will produce a tab with no contents
+and its label given by the markup in the <a href="#property_moreTag">moreTag</a> property.
+When clicked the <a href="#event_more">more</a> event is emitted for the application to add a new tab.</p>
 
 </div>
 

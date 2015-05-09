@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js/component/parcelEv.js - ctc</title>
+    <title>utilities - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -93,157 +93,54 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: js/component/parcelEv.js</h1>
-
-<div class="file">
-    <pre class="code prettyprint linenums">
-/* jshint esnext:true */
-
-&quot;use strict&quot;;
-/**
-@module Parcela
-@submodule parcelEv
-*/
-
-var vDOM = require(&#x27;./virtual-dom.js&#x27;);
-import Parcel from &#x27;./parcel.js&#x27;;
-
-var EventEmitter = require(&#x27;events&#x27;).EventEmitter,
-	_ = require(&#x27;lodash&#x27;);
+<h1>utilities Module</h1>
+<div class="box clearfix meta">
 
 
-var simpleEventListener = function (listener, ev) {
-		vDOM.redrawPending();
-		vDOM.redrawReady((typeof listener == &#x27;string&#x27; ? this[listener] : listener).call(this, ev));
-	},
-	pickyEventListener = function (cbOrSel, ev) {
-		var target = ev.target;
-		vDOM.redrawPending();
-		vDOM.redrawReady(!_.every(cbOrSel, (listener, cssSel) =&gt; {
-			if (target.matches(cssSel)) {
-				return !(typeof listener == &#x27;string&#x27; ? this[listener] : listener).call(this, ev);
-			}
-			return true; // Otherwise, cancel the redraw
-		}));
-	};
+        <div class="foundat">
+            Defined in: <a href="../files/js_component_http.js.html#l9"><code>js&#x2F;component&#x2F;http.js:9</code></a>
+        </div>
+
+</div>
 
 
-/**
-Subclass of [Parcel](Parcel.html) capable of listening and
-relaying DOM events.
+<div class="box intro">
 
-Besides the configuration attributes used by [Parcel](Parcel.html),
-&#x60;ParcelEv&#x60; accepts the &#x60;EVENTS&#x60; property which is a hash map of DOM events to listen to.
+</div>
 
-Each entry into &#x60;EVENTS&#x60; must contain the name of a DOM event (i.e.: &#x60;click&#x60;, &#x60;keypress&#x60;)
-followed either by a listener function or a further object.
 
-* A function can be given as a reference or as a string with the name of the method within this class
-  that handles it.  The function will be called whenever that event is fired.
-* If an object, it should be a hash map of CSS selectors and functions.
-  This limits the kind of DOM element or elements whose events you want to listen to.
-  The function will then be called only when the element generating it satisfies the condition.
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+            <p>This module provides the following classes:</p>
 
-&#x60;ParcelEv&#x60; will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.
+            <ul class="module-classes">
+                <li class="module-class">
+                    <a href="../classes/http.html">
+                        http
+                    </a>
+                </li>
+            </ul>
+    </div>
 
-&#x60;ParcelEv&#x60; is also an &#x60;EventEmitter&#x60; thus, it will have methods to deal with custom events.
-See: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)
+    <div class="yui3-u-1-2">
+            <p>This module is a rollup of the following modules:</p>
 
-@example
-      class MyDialogBox extends ParcelEv {
-	  		constructor(config) {
-				super({
-					EVENTS: {
-						// Listening to keypresses anywhere within this Parcel
-						&#x27;keypress&#x27;: this.onKeyPress
-						// Listening to clicks on specific elements within the Parcel
-						&#x27;click&#x27;: {
-							// only on a button with the className &#x60;ok&#x60; on it.
-							&#x27;button.ok&#x27;: this.onOk,
-							// The function reference is given as a string which translates to &#x60;this.onCancel&#x60;
-							&#x27;button.cancel&#x27;:&#x27;onCancel&#x27;
-						}
-					},
-					// Other configuration options will be passed to the Parcel constructor
-					className: &#x27;dialog&#x27;
-				});
-			}
-			// Methods handling the functions, will receive the original DOM event object.
-			// Their &#x60;this&#x60; will be that of the instance of ParcelEv.
-			onKeyPress (ev) {}
-			onOk (ev) {}
-			onCancel (ev) {}
-		}
+            <ul class="module-submodules">
+                <li class="module-submodule">
+                    <a href="../modules/http.html">
+                        http
+                    </a>
 
-@class ParcelEv
-@extends Parcel
-@uses EventEmitter
-@constructor
-@param [config] {Object}  Initial configuration
-*/
-export default class ParcelEv extends Parcel {
-	constructor(config) {
-		super(config);
-		this._cfgEvts = (typeof config == &#x27;object&#x27;?config.EVENTS || {}:{});
-		this._eventsToDetach = {};
-		EventEmitter.call(this);
-		_.merge(this,EventEmitter.prototype);
-	}
-	/**
-	Overrides the original (empty) [preView](Parcel.html#method_preView) to set the event listeners
+                    <div class="module-submodule-description">
+                        Helper functions to generate standard HTTP requests using the
+[xhr](https://www.npmjs.com/package/xhr) npm module.
 
-	@method preView
-	*/
-	preView() {
-		var self = this,
-			listener;
-
-		_.each(self._cfgEvts, (cbOrSel, eventType) =&gt; {
-			switch (typeof cbOrSel) {
-			case &#x27;function&#x27;:
-			case &#x27;string&#x27;:
-				listener = simpleEventListener.bind(self, cbOrSel);
-				this._eventsToDetach[eventType] = listener;
-				self._pNode.node.addEventListener(eventType, listener);
-				break;
-			case &#x27;object&#x27;:
-				listener = pickyEventListener.bind(self, cbOrSel);
-				this._eventsToDetach[eventType] = listener;
-				self._pNode.node.addEventListener(eventType, listener);
-				break;
-			}
-
-		});
-		super.preView.apply(self, arguments);
-	}
-	/**
-	Overrides the original (empty) [postView](Parcel.html#method_postView)
-	to detach the event listeners.
-
-	@method postView
-	*/
-	postView() {
-		_.each(this._eventsToDetach, (listener, eventType) =&gt; {
-			this._pNode.node.removeEventListener(eventType, listener);
-		});
-		super.postView.apply(this, arguments);
-	}
-
-	/**
-	Extends the original destructor method so as to detach all the event listeners
-
-	@method destructor
-	*/
-
-	destructor () {
-		_.each(this._eventsToDetach,  (listener, type) =&gt; {
-			this._pNode.node.removeEventListener(type, listener);
-		});
-		super.destructor();
-	}
-}
-
-    </pre>
+It is integrated with the rendering engine so that upon completion of a request,
+a redraw is requested.
+                    </div>
+                </li>
+            </ul>
+    </div>
 </div>
                     </div>
                 </div>

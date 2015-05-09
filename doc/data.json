@@ -17,6 +17,17 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/component/http.js": {
+            "name": "js/component/http.js",
+            "modules": {
+                "http": 1
+            },
+            "classes": {
+                "http": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "js/component/parcel.js": {
             "name": "js/component/parcel.js",
             "modules": {
@@ -102,6 +113,34 @@
             "file": "js/component/EventEmitter.js",
             "line": 18,
             "description": "Browserify implementation of NodeJS Events module.\n\nThis is for *documentation purposes only*.\n\nThe information herein was taken from NodeJS documentation and reformatted in JSDoc format.\n\nMany objects in Node emit events: a net.Server emits an event each time a peer connects to it, a fs.readStream emits an event when the file is opened. All objects which emit events are instances of events.EventEmitter. You can access this module by doing: require(\"events\");\n\nTypically, event names are represented by a camel-cased string, however, there aren't any strict restrictions on that, as any string will be accepted.\n\nFunctions can then be attached to objects, to be executed when an event is emitted. These functions are called listeners. Inside a listener function, this refers to the EventEmitter that the listener was attached to."
+        },
+        "utilities": {
+            "name": "utilities",
+            "submodules": {
+                "http": 1
+            },
+            "classes": {
+                "http": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "file": "js/component/http.js",
+            "line": 9
+        },
+        "http": {
+            "name": "http",
+            "submodules": {},
+            "classes": {
+                "http": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "utilities",
+            "namespace": "",
+            "file": "js/component/http.js",
+            "line": 9,
+            "description": "Helper functions to generate standard HTTP requests using the \n[xhr](https://www.npmjs.com/package/xhr) npm module.\n\nIt is integrated with the rendering engine so that upon completion of a request,\na redraw is requested."
         },
         "Parcela": {
             "name": "Parcela",
@@ -194,7 +233,7 @@
             "namespace": "",
             "file": "js/component/tabView.js",
             "line": 13,
-            "description": "Provides a set of tabs to show alternate content on the screen.\n\nIndividual tabs can be left-justified or right-justified.  \nThe left-justified are usually the variable ones, \nnew tabs can be added to them and existing ones removed.\nThe right-justified, if present, are usually fixed in number.\nEach entry is described by an object within an array in the initial configuration.  \nThe array is required to ensure the order of the tabs.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.  \nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the configuration, a separator marks the split point in between them.\nThe separator can be anything that is not an object.  \nIf it is a string, it will be displayed.\nIf it is a simple `+` sign, the corresponding icon from Font Awesome will be shown instead.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab.\nIf it is not a string (usually `null`) it will not be displayed and thus cannot be clicked."
+            "description": "Provides a set of tabs to show alternate content on the screen.\n\nEach tab is described by an object within the `tabs` array in the initial configuration.\nThe array is required to ensure the order of the tabs.\n\nIndividual tabs can be left-justified or right-justified.\nThe left-justified are usually the variable ones,\nnew tabs can be added to them and existing ones removed.\nIf the `canClose` configuration property is true or missing,\nthe markup in the [closeTag](#property_closeTag) will be shown\nby the label.\n\nThe right-justified, if present, are usually fixed in number.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.\nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the tabs configuration, a separator marks the split point in between the sets of left and right justified tabs.\nA `null` will not be displayed.  Any other thing will produce a tab with no contents\nand its label given by the markup in the [moreTag](#property_moreTag) property.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab."
         },
         "virtual-DOM": {
             "name": "virtual-DOM",
@@ -230,6 +269,22 @@
             "file": "js/component/EventEmitter.js",
             "line": 18,
             "description": "To access the EventEmitter class, require('events').EventEmitter.\n\nWhen an EventEmitter instance experiences an error, the typical action is to emit an 'error' event. Error events are treated as a special case in node. If there is no listener for it, then the default action is to print a stack trace and exit the program.\n\nAll EventEmitters emit the event 'newListener' when new listeners are added and 'removeListener' when a listener is removed."
+        },
+        "http": {
+            "name": "http",
+            "shortname": "http",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "utilities",
+            "submodule": "http",
+            "namespace": "",
+            "file": "js/component/http.js",
+            "line": 9,
+            "description": "Helper functions to generate standard HTTP requests using the \n[xhr](https://www.npmjs.com/package/xhr) npm module.\n\nIt is integrated with the rendering engine so that upon completion of a request,\na redraw is requested.",
+            "static": 1
         },
         "Parcel": {
             "name": "Parcel",
@@ -351,7 +406,7 @@
             "namespace": "",
             "file": "js/component/tabView.js",
             "line": 13,
-            "description": "Provides a set of tabs to show alternate content on the screen.\n\nIndividual tabs can be left-justified or right-justified.  \nThe left-justified are usually the variable ones, \nnew tabs can be added to them and existing ones removed.\nThe right-justified, if present, are usually fixed in number.\nEach entry is described by an object within an array in the initial configuration.  \nThe array is required to ensure the order of the tabs.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.  \nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the configuration, a separator marks the split point in between them.\nThe separator can be anything that is not an object.  \nIf it is a string, it will be displayed.\nIf it is a simple `+` sign, the corresponding icon from Font Awesome will be shown instead.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab.\nIf it is not a string (usually `null`) it will not be displayed and thus cannot be clicked.",
+            "description": "Provides a set of tabs to show alternate content on the screen.\n\nEach tab is described by an object within the `tabs` array in the initial configuration.\nThe array is required to ensure the order of the tabs.\n\nIndividual tabs can be left-justified or right-justified.\nThe left-justified are usually the variable ones,\nnew tabs can be added to them and existing ones removed.\nIf the `canClose` configuration property is true or missing,\nthe markup in the [closeTag](#property_closeTag) will be shown\nby the label.\n\nThe right-justified, if present, are usually fixed in number.\n\nEach tab is identified by a `name` that should be unique within the TabView.\nThe `label` property provides the text to be shown in the tab.\nThis can be localized and if missing, it defaults to the `name`.\nThe `content` should be an instance of [Parcel](Parcel.html),\n\nIn the tabs configuration, a separator marks the split point in between the sets of left and right justified tabs.\nA `null` will not be displayed.  Any other thing will produce a tab with no contents\nand its label given by the markup in the [moreTag](#property_moreTag) property.\nWhen clicked the [more](#event_more) event is emitted for the application to add a new tab.",
             "example": [
                 "\n\t{\n\t\ttabs: [\n\t\t\t{\n\t\t\t\tname: 'firstTab'\n\t\t\t\tlabel: 'First Tab to the Left',\n\t\t\t\tcontent: new Parcel('whatever')\n\t\t\t},\n\t\t\t....\n\t\t\tnull,  // separator\n\t\t\t{\n\t\t\t\tname: 'firstRightTab'\n\t\t\t\tlabel: 'First Tab to the right of the separator',\n\t\t\t\tcontent: new Parcel('something else')\n\t\t\t},\n\t\t\t...\n\t\t],\n\t\tselected: 'firstTab'\n\t}"
             ],
@@ -364,8 +419,20 @@
                     "type": "Object",
                     "props": [
                         {
+                            "name": "selected",
+                            "description": "name of the tab to be shown, defaults to the first.",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "canClose",
+                            "description": "adds a close icon to each of the left-justified tabs.",
+                            "type": "Boolean",
+                            "optional": true
+                        },
+                        {
                             "name": "tabs",
-                            "description": "Set of tabs to display. It has to be an array to ensure the order of the tabs. Each entry can be:\n\t\n* `null`: It acts as an invisible separator.  The tabs before it will be left-justified, the ones after, right justified.  The `null` will not take any space.\n* A string: It acts as a separator, just as null, plus it is shown and, when clicked, it emits the [add](#event_add) event. It is meant to be used as a cue to add extra tabs.\n* An object, containing the following properties",
+                            "description": "Set of tabs to display. It has to be an array to ensure the order of the tabs. Each entry can be:\n\n* `null`: It acts as an invisible separator.  The tabs before it will be left-justified, the ones after, right justified.  The `null` will not take any space.\n* Anything not an object or `null`: It acts as a separator, just as `null` but a tab with no content will be shown, containing the markup produced by [moreTag](#property_moreTag). When clicked, it emits the [more](#event_more) event. It is meant to be used as a cue to add extra tabs.\n* An object, containing the following properties",
                             "type": "Array of Objects OR String"
                         },
                         {
@@ -383,18 +450,6 @@
                             "name": "tabs[n].content",
                             "description": "Instance of Parcel to be shown when this tab is selected.",
                             "type": "Parcel"
-                        },
-                        {
-                            "name": "selected",
-                            "description": "name of the tab to be shown, defaults to the first.",
-                            "type": "String",
-                            "optional": true
-                        },
-                        {
-                            "name": "canClose",
-                            "description": "adds a close icon to each of the left-justified tabs.",
-                            "type": "Boolean",
-                            "optional": true
                         }
                     ]
                 }
@@ -709,6 +764,176 @@
             "submodule": "Events"
         },
         {
+            "file": "js/component/http.js",
+            "line": 24,
+            "description": "Generic entry point for HTTP requests.  \nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object||String} It the request was for JSON data, it will be returned as an object, otherwise, the plain XHR `responseText`.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The HTTP method that had been requested \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "itemtype": "method",
+            "name": "http",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "See [xhr](https://www.npmjs.com/package/xhr)",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "as described above.",
+                "type": "Promise"
+            },
+            "static": 1,
+            "class": "http",
+            "module": "utilities",
+            "submodule": "http"
+        },
+        {
+            "file": "js/component/http.js",
+            "line": 62,
+            "description": "Produces an HTTP GET request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `GET` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "itemtype": "method",
+            "name": "get",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL for the request",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "as described above.",
+                "type": "Promise"
+            },
+            "static": 1,
+            "class": "http",
+            "module": "utilities",
+            "submodule": "http"
+        },
+        {
+            "file": "js/component/http.js",
+            "line": 90,
+            "description": "Produces an HTTP POST (create) request sending and accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `POST` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "itemtype": "method",
+            "name": "post",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL for the request",
+                    "type": "String"
+                },
+                {
+                    "name": "body",
+                    "description": "Data to be sent.  It will be turned into JSON before sending",
+                    "type": "Object"
+                }
+            ],
+            "static": 1,
+            "class": "http",
+            "module": "utilities",
+            "submodule": "http"
+        },
+        {
+            "file": "js/component/http.js",
+            "line": 121,
+            "description": "Alias of [post](#method_post).\nProduces an HTTP POST (create) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `POST` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "itemtype": "method",
+            "name": "create",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL for the request",
+                    "type": "String"
+                },
+                {
+                    "name": "body",
+                    "description": "Data to be sent.  It will be turned into JSON before sending",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "as described above.",
+                "type": "Promise"
+            },
+            "static": 1,
+            "class": "http",
+            "module": "utilities",
+            "submodule": "http"
+        },
+        {
+            "file": "js/component/http.js",
+            "line": 146,
+            "description": "Produces an HTTP PUT (update) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `PUT` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "itemtype": "method",
+            "name": "put",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL for the request",
+                    "type": "String"
+                },
+                {
+                    "name": "body",
+                    "description": "Data to be sent.  It will be turned into JSON before sending",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "as described above.",
+                "type": "Promise"
+            },
+            "static": 1,
+            "class": "http",
+            "module": "utilities",
+            "submodule": "http"
+        },
+        {
+            "file": "js/component/http.js",
+            "line": 179,
+            "description": "Alias of [put](#method_put).\nProduces an HTTP PUT (update) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `PUT` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "itemtype": "method",
+            "name": "update",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL for the request",
+                    "type": "String"
+                },
+                {
+                    "name": "body",
+                    "description": "Data to be sent.  It will be turned into JSON before sending",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "as described above.",
+                "type": "Promise"
+            },
+            "static": 1,
+            "class": "http",
+            "module": "utilities",
+            "submodule": "http"
+        },
+        {
+            "file": "js/component/http.js",
+            "line": 204,
+            "description": "Produces an HTTP DELETE request.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `DEL` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "itemtype": "method",
+            "name": "del",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "URL for the request",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "as described above.",
+                "type": "Promise"
+            },
+            "static": 1,
+            "class": "http",
+            "module": "utilities",
+            "submodule": "http"
+        },
+        {
             "file": "js/component/parcel.js",
             "line": 32,
             "description": "Type of DOM element that will be created to serve as a container for this Parcel.\nDefaults to a `DIV`",
@@ -889,7 +1114,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 87,
+            "line": 88,
             "description": "Array of tab configuration entries.",
             "itemtype": "property",
             "name": "_tabs",
@@ -902,7 +1127,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 96,
+            "line": 97,
             "description": "Reference to the active tab.",
             "itemtype": "property",
             "name": "_selected",
@@ -916,7 +1141,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 106,
+            "line": 107,
             "description": "Defines whether a close icon will be added to the left-justified tabs.",
             "itemtype": "property",
             "name": "_canClose",
@@ -930,7 +1155,31 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 118,
+            "line": 117,
+            "description": "vNode tag argument for the icon to be used as a close symbol in the tab.\nThe default is the [close](http://fortawesome.github.io/Font-Awesome/icon/times/) icon from [Font Awesome](http://fortawesome.github.io/Font-Awesome/).   It could be replaced by an `img` tag or a `div` with a suitable className.",
+            "itemtype": "property",
+            "name": "closeTag",
+            "type": "String",
+            "default": "'i.fa.fa-close'",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 127,
+            "description": "vNode tag argument for the icon to be used to label the tab to add more tabs.\nThe default is the [plus](http://fortawesome.github.io/Font-Awesome/icon/plus/) icon from [Font Awesome](http://fortawesome.github.io/Font-Awesome/).   It could be replaced by an `img` tag or a `div` with a suitable className.",
+            "itemtype": "property",
+            "name": "moreTag",
+            "type": "String",
+            "default": "'i.fa.fa-plus'",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 139,
             "description": "Responds to clicks on the visible separator emitting the [more](#event_more).\nPropagation and default action of the event is halted.",
             "itemtype": "method",
             "name": "_onMore",
@@ -949,7 +1198,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 126,
+            "line": 147,
             "description": "Fired when the separator in between the left-justified tabs and the right-justified ones is clicked.\nIt is presumed that the purpose of this separator is to add more tabs to the set, hence its name.",
             "itemtype": "event",
             "name": "more",
@@ -966,8 +1215,8 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 140,
-            "description": "Responds to clicks on the regular tabs (not the separator) by \ncalling setting the [selected](#property_selected) property.",
+            "line": 161,
+            "description": "Responds to clicks on the regular tabs (not the separator) by\ncalling setting the [selected](#property_selected) property.",
             "itemtype": "method",
             "name": "_onClick",
             "params": [
@@ -985,7 +1234,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 164,
+            "line": 185,
             "description": "Responds to a click on the close **`x`** mini-icon on the tab by calling\nthe [remove](#method_remove) method.",
             "itemtype": "method",
             "name": "_onClose",
@@ -1004,8 +1253,8 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 182,
-            "description": "Sets/gets the name of the tab currently active.\n\nWhen setting, if the selected tab is not already selected, \nit shows the seleted tab and fires the [selected](#event_selected) event.",
+            "line": 203,
+            "description": "Sets/gets the name of the tab currently active.\n\nWhen setting, if the selected tab is not already selected,\nit shows the seleted tab and fires the [selected](#event_selected) event.",
             "itemtype": "property",
             "name": "selected",
             "type": "String",
@@ -1016,8 +1265,8 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 193,
-            "description": "Fires when a new tab is selected and becomes active. \nIt does not fire if the tab is already selected.",
+            "line": 214,
+            "description": "Fires when a new tab is selected and becomes active.\nIt does not fire if the tab is already selected.",
             "itemtype": "event",
             "name": "selected",
             "params": [
@@ -1038,7 +1287,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 219,
+            "line": 240,
             "description": "Returns the first tab that is not a separator.",
             "itemtype": "method",
             "name": "_firstAvailable",
@@ -1053,7 +1302,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 232,
+            "line": 253,
             "description": "Adds a new tab to the right-most position of the left-justified set.\nEmits the [added](#event_added) event.",
             "itemtype": "method",
             "name": "add",
@@ -1096,7 +1345,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 244,
+            "line": 265,
             "description": "Fires when a tab is added.",
             "itemtype": "event",
             "name": "added",
@@ -1113,7 +1362,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 262,
+            "line": 283,
             "description": "Returns the configuration entry for the given tab.",
             "itemtype": "method",
             "name": "getTab",
@@ -1125,7 +1374,7 @@
                 }
             ],
             "return": {
-                "description": "Configuration entry for the tab or `null`of not found.",
+                "description": "Configuration entry for the tab or `null` if not found.",
                 "type": "Object"
             },
             "class": "TabView",
@@ -1134,8 +1383,8 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 280,
-            "description": "Removes the named tab. \nIf the tab removed is active, the first available tab will be selected.\nFires the [remove](#event_remove) event.",
+            "line": 301,
+            "description": "Removes the named tab.\nIf the tab removed is active, the first available tab will be selected.\nFires the [remove](#event_remove) event.",
             "itemtype": "method",
             "name": "remove",
             "params": [
@@ -1152,7 +1401,7 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 289,
+            "line": 310,
             "description": "Fires when a tab is removed.",
             "itemtype": "event",
             "name": "remove",
@@ -1174,8 +1423,20 @@
         },
         {
             "file": "js/component/tabView.js",
-            "line": 314,
-            "description": "Shows the TabView.  \nOverride of `Parcel` [view](Parcel.html#method_view).",
+            "line": 335,
+            "description": "Shows the TabView.\nOverride of `Parcel` [view](Parcel.html#method_view).",
+            "access": "protected",
+            "tagname": "",
+            "class": "TabView",
+            "module": "Components",
+            "submodule": "TabView"
+        },
+        {
+            "file": "js/component/tabView.js",
+            "line": 378,
+            "description": "Drops the references to the tab contents.\nIt does not call the destructors of the Parcels that make up that content,\nit simply drops the references to them.",
+            "itemtype": "method",
+            "name": "destructor",
             "access": "protected",
             "tagname": "",
             "class": "TabView",
@@ -1771,8 +2032,8 @@
     ],
     "warnings": [
         {
-            "message": "Missing item type\nShows the TabView.  \nOverride of `Parcel` [view](Parcel.html#method_view).",
-            "line": " js/component/tabView.js:314"
+            "message": "Missing item type\nShows the TabView.\nOverride of `Parcel` [view](Parcel.html#method_view).",
+            "line": " js/component/tabView.js:335"
         }
     ]
 }

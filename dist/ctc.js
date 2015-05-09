@@ -354,32 +354,120 @@ exports.Y = Y;
 exports.ANG = ANG;
 
 },{}],3:[function(require,module,exports){
-/* jshint node:true */
+(function (global){
+/* jshint node:true, esnext:true */
 /* global window: false */
 
+/**
+@module utilities
+@submodule http
+*/
+
+/**
+Helper functions to generate standard HTTP requests using the
+[xhr](https://www.npmjs.com/package/xhr) npm module.
+
+It is integrated with the rendering engine so that upon completion of a request,
+a redraw is requested.
+
+@class http
+@static
+*/
 'use strict';
 var vDOM = require('./virtual-dom.js');
 
 var xhr = require('xhr');
 
-var http = function http(config, cb) {
+/**
+Generic entry point for HTTP requests.
+It returns a Promise.
+It queues and resolves a redraw request.
+
+When resolved successfully, the response will contain:
+
+* `body`{Object||String} It the request was for JSON data, it will be returned as an object, otherwise, the plain XHR `responseText`.
+* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection
+* `method` {String} The HTTP method that had been requested
+* `headers` {Object} The XHR response headers
+* `url` {String} The URL requested
+* `rawRequest` {XMLHttpRequest} The XHR object for this request
+
+The promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.
+
+@method http
+@param config {Object}  See [xhr](https://www.npmjs.com/package/xhr)
+@return {Promise} as described above.
+@static
+*/
+var http = function http(config) {
 	vDOM.redrawPending();
-	xhr(config, function (err, res, body) {
-		if (err) throw err;
-		cb(res, body);
-		vDOM.redrawReady();
+	return new Promise(function (resolve, reject) {
+		xhr(config, function (err, res, body) {
+			if (err) {
+				reject(err);
+			} else if (res.statusCode > 300) {
+				reject(res);
+			} else {
+				resolve(res);
+			}
+			// The resolve or rejet methods are async so the redraw has to be delayed for a while.
+			global.window.setTimeout(vDOM.redrawReady, 0);
+		});
 	});
 };
 
-http.get = function (url, cb) {
-	http({
+/**
+Produces an HTTP GET request accepting JSON data.
+It returns a Promise.
+It queues and resolves a redraw request.
+
+When resolved successfully, the response will contain:
+
+* `body`{Object} An object with the JSON response already parsed.
+* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection
+* `method` {String} The value `GET`
+* `headers` {Object} The XHR response headers
+* `url` {String} The URL requested
+* `rawRequest` {XMLHttpRequest} The XHR object for this request
+
+The promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.
+
+@method get
+@param url {String} URL for the request
+@return {Promise} as described above.
+@static
+*/
+http.get = function (url) {
+	return http({
 		json: true,
 		url: url
-	}, cb);
+	});
 };
 
+/**
+Produces an HTTP POST (create) request sending and accepting JSON data.
+It returns a Promise.
+It queues and resolves a redraw request.
+
+When resolved successfully, the response will contain:
+
+* `body`{Object} An object with the JSON response already parsed.
+* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection
+* `method` {String} The value `POST`
+* `headers` {Object} The XHR response headers
+* `url` {String} The URL requested
+* `rawRequest` {XMLHttpRequest} The XHR object for this request
+
+The promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.
+
+
+@method post
+@param url {String} URL for the request
+@param body {Object} Data to be sent.  It will be turned into JSON before sending
+@static
+*/
 http.post = function (url, body, cb) {
-	http({
+	return http({
 		method: 'POST',
 		json: true,
 		url: url,
@@ -387,8 +475,56 @@ http.post = function (url, body, cb) {
 
 	}, cb);
 };
+/**
+Alias of [post](#method_post).
+Produces an HTTP POST (create) request accepting JSON data.
+It returns a Promise.
+It queues and resolves a redraw request.
+
+When resolved successfully, the response will contain:
+
+* `body`{Object} An object with the JSON response already parsed.
+* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection
+* `method` {String} The value `POST`
+* `headers` {Object} The XHR response headers
+* `url` {String} The URL requested
+* `rawRequest` {XMLHttpRequest} The XHR object for this request
+
+The promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.
+
+
+@method create
+@param url {String} URL for the request
+@param body {Object} Data to be sent.  It will be turned into JSON before sending
+@return {Promise} as described above.
+@static
+*/
+http.create = http.post;
+/**
+Produces an HTTP PUT (update) request accepting JSON data.
+It returns a Promise.
+It queues and resolves a redraw request.
+
+When resolved successfully, the response will contain:
+
+* `body`{Object} An object with the JSON response already parsed.
+* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection
+* `method` {String} The value `PUT`
+* `headers` {Object} The XHR response headers
+* `url` {String} The URL requested
+* `rawRequest` {XMLHttpRequest} The XHR object for this request
+
+The promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.
+
+
+@method put
+@param url {String} URL for the request
+@param body {Object} Data to be sent.  It will be turned into JSON before sending
+@return {Promise} as described above.
+@static
+*/
 http.put = function (url, body, cb) {
-	http({
+	return http({
 		method: 'PUT',
 		json: true,
 		url: url,
@@ -396,8 +532,56 @@ http.put = function (url, body, cb) {
 
 	}, cb);
 };
+
+/**
+Alias of [put](#method_put).
+Produces an HTTP PUT (update) request accepting JSON data.
+It returns a Promise.
+It queues and resolves a redraw request.
+
+When resolved successfully, the response will contain:
+
+* `body`{Object} An object with the JSON response already parsed.
+* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection
+* `method` {String} The value `PUT`
+* `headers` {Object} The XHR response headers
+* `url` {String} The URL requested
+* `rawRequest` {XMLHttpRequest} The XHR object for this request
+
+The promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.
+
+
+@method update
+@param url {String} URL for the request
+@param body {Object} Data to be sent.  It will be turned into JSON before sending
+@return {Promise} as described above.
+@static
+*/
+http.update = http.put;
+/**
+Produces an HTTP DELETE request.
+It returns a Promise.
+It queues and resolves a redraw request.
+
+When resolved successfully, the response will contain:
+
+* `body`{Object} An object with the JSON response already parsed.
+* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection
+* `method` {String} The value `DEL`
+* `headers` {Object} The XHR response headers
+* `url` {String} The URL requested
+* `rawRequest` {XMLHttpRequest} The XHR object for this request
+
+The promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.
+
+
+@method del
+@param url {String} URL for the request
+@return {Promise} as described above.
+@static
+*/
 http.del = function (url, cb) {
-	http({
+	return http({
 		method: 'DEL',
 		json: true,
 		url: url
@@ -406,6 +590,7 @@ http.del = function (url, cb) {
 
 module.exports = http;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./virtual-dom.js":8,"xhr":24}],4:[function(require,module,exports){
 'use strict';
 
@@ -944,26 +1129,27 @@ var _ = require('lodash');
 /**
 Provides a set of tabs to show alternate content on the screen.
 
+Each tab is described by an object within the `tabs` array in the initial configuration.
+The array is required to ensure the order of the tabs.
+
 Individual tabs can be left-justified or right-justified.
 The left-justified are usually the variable ones,
 new tabs can be added to them and existing ones removed.
+If the `canClose` configuration property is true or missing,
+the markup in the [closeTag](#property_closeTag) will be shown
+by the label.
+
 The right-justified, if present, are usually fixed in number.
-Each entry is described by an object within an array in the initial configuration.
-The array is required to ensure the order of the tabs.
 
 Each tab is identified by a `name` that should be unique within the TabView.
 The `label` property provides the text to be shown in the tab.
 This can be localized and if missing, it defaults to the `name`.
 The `content` should be an instance of [Parcel](Parcel.html),
 
-In the configuration, a separator marks the split point in between them.
-The separator can be anything that is not an object.
-If it is a string, it will be displayed.
-If it is a simple `+` sign, the corresponding icon from Font Awesome will be shown instead.
+In the tabs configuration, a separator marks the split point in between the sets of left and right justified tabs.
+A `null` will not be displayed.  Any other thing will produce a tab with no contents
+and its label given by the markup in the [moreTag](#property_moreTag) property.
 When clicked the [more](#event_more) event is emitted for the application to add a new tab.
-If it is not a string (usually `null`) it will not be displayed and thus cannot be clicked.
-
-
 
 @example
 	{
@@ -990,17 +1176,17 @@ If it is not a string (usually `null`) it will not be displayed and thus cannot 
 @extends ParcelEv
 @constructor
 @param config {Object} configuration options
+@param [config.selected] {String} name of the tab to be shown, defaults to the first.
+@param [config.canClose] {Boolean} adds a close icon to each of the left-justified tabs.
 @param config.tabs {Array of Objects OR String} Set of tabs to display. It has to be an array to ensure the order of the tabs. Each entry can be:
 
 * `null`: It acts as an invisible separator.  The tabs before it will be left-justified, the ones after, right justified.  The `null` will not take any space.
-* A string: It acts as a separator, just as null, plus it is shown and, when clicked, it emits the [add](#event_add) event. It is meant to be used as a cue to add extra tabs.
+* Anything not an object or `null`: It acts as a separator, just as `null` but a tab with no content will be shown, containing the markup produced by [moreTag](#property_moreTag). When clicked, it emits the [more](#event_more) event. It is meant to be used as a cue to add extra tabs.
 * An object, containing the following properties
 
 @param config.tabs[n].name {String} Internal identifier for the tab.
 @param [config.tabs[n].label] {String} Label to be shown on the tab, defaults to its `name`.
 @param config.tabs[n].content {Parcel} Instance of Parcel to be shown when this tab is selected.
-@param [config.selected] {String} name of the tab to be shown, defaults to the first.
-@param [config.canClose] {Boolean} adds a close icon to each of the left-justified tabs.
 */
 
 var TabView = (function (_ParcelEv) {
@@ -1012,7 +1198,7 @@ var TabView = (function (_ParcelEv) {
 				click: {
 					'li.more *': this._onMore,
 					'li.tab, li.tab a': this._onClick,
-					'li.tab i.fa': this._onClose
+					'li.tab a span.close *': this._onClose
 				}
 			}
 		});
@@ -1043,6 +1229,24 @@ var TabView = (function (_ParcelEv) {
   @private
   */
 		this._canClose = config.canClose !== false;
+
+		/**
+  vNode tag argument for the icon to be used as a close symbol in the tab.
+  The default is the [close](http://fortawesome.github.io/Font-Awesome/icon/times/) icon from [Font Awesome](http://fortawesome.github.io/Font-Awesome/).   It could be replaced by an `img` tag or a `div` with a suitable className.
+  	@property closeTag
+  @type String
+  @default 'i.fa.fa-close'
+  */
+		this.closeTag = 'i.fa.fa-close';
+
+		/**
+  vNode tag argument for the icon to be used to label the tab to add more tabs.
+  The default is the [plus](http://fortawesome.github.io/Font-Awesome/icon/plus/) icon from [Font Awesome](http://fortawesome.github.io/Font-Awesome/).   It could be replaced by an `img` tag or a `div` with a suitable className.
+  	@property moreTag
+  @type String
+  @default 'i.fa.fa-plus'
+  */
+		this.moreTag = 'i.fa.fa-plus';
 
 		this.selected = config.selected;
 	}
@@ -1111,7 +1315,7 @@ var TabView = (function (_ParcelEv) {
 			ev.preventDefault();
 			ev.stopPropagation();
 
-			var hash = ev.target.parentNode.hash.substr(1);
+			var hash = ev.target.closest('a').hash.substr(1);
 			this.remove(hash);
 		}
 	}, {
@@ -1269,15 +1473,15 @@ var TabView = (function (_ParcelEv) {
 			    l = this._tabs.length;
 			for (i = 0; i < l; i++) {
 				tab = tabs[i];
-				if (_.isObject(tab)) {
+				if (_.isPlainObject(tab)) {
 					ts.push(v('li.tab.tab-left', {
 						className: this._selected.name == tab.name ? ' selected' : ''
-					}, v('a', { href: '#' + tab.name }, [tab.label || tab.name, this._canClose ? v('i.fa.fa-close') : ''])));
+					}, v('a', { href: '#' + tab.name }, [tab.label || tab.name, this._canClose ? v('span.close', v(this.closeTag)) : ''])));
 				} else break;
 			}
 
-			if (_.isString(tab)) {
-				ts.push(v('li.more.tab-left', tab == '+' ? v('i.fa.fa-plus') : tab));
+			if (i < l && !_.isNull(tab)) {
+				ts.push(v('li.more.tab-left', v(this.moreTag)));
 				i++;
 			}
 
@@ -1288,6 +1492,21 @@ var TabView = (function (_ParcelEv) {
 				}, v('a', { href: '#' + tab.name }, tab.label || tab.name)));
 			}
 			return [v('ul.tabs', ts), v('.tab-content', this._selected.content)];
+		}
+	}, {
+		key: 'destructor',
+
+		/**
+  Drops the references to the tab contents.
+  It does not call the destructors of the Parcels that make up that content,
+  it simply drops the references to them.
+  	@method destructor
+  @protected
+  */
+		value: function destructor() {
+			delete this._tabs;
+			delete this._selected;
+			_get(Object.getPrototypeOf(TabView.prototype), 'destructor', this).call(this);
 		}
 	}]);
 
@@ -2577,6 +2796,7 @@ exports['default'] = EstadoFactory;
 module.exports = exports['default'];
 
 },{"./component/parcel.js":4,"./component/radio.js":6}],11:[function(require,module,exports){
+(function (global){
 'use strict';
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -2620,10 +2840,10 @@ var ListaSectores = (function (_ParcelEv) {
 
 		this.className = 'lista-sectores';
 
-		http.get('data/lista.json', function (response, body) {
-			if (response.statusCode == 200) {
-				_this.lista = body;
-			}
+		http.get('data/lista.json').then(function (response) {
+			_this.lista = response.body;
+		})['catch'](function (response) {
+			global.window.alert(response.message || response.statusCode + ': ' + response.body);
 		});
 	}
 
@@ -2652,6 +2872,7 @@ var ListaSectores = (function (_ParcelEv) {
 exports['default'] = ListaSectores;
 module.exports = exports['default'];
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./component/http.js":3,"./component/parcelEv.js":5,"lodash":23}],12:[function(require,module,exports){
 (function (global){
 'use strict';
@@ -2996,14 +3217,16 @@ var Sector = (function (_ParcelEv) {
 		this.estado = '';
 		this.name = config.sector;
 
-		http.get('data/' + config.sector + '.json', function (response, body) {
-			if (response.statusCode == 200) {
-				_this.alto = body.alto;
-				_this.ancho = body.ancho;
-				_this.descr = body.descr;
-				_.forEach(body.celdas, function (celda, coords) {
-					_this.celdas[coords] = new _CeldaFactory2['default'](celda, coords).on('click', _this.onClick.bind(_this));
-				});
+		http.get('data/' + config.sector + '.json').then(function (response) {
+			var body = response.body;
+
+			_this.alto = body.alto;
+			_this.ancho = body.ancho;
+			_this.descr = body.descr;
+			_.forEach(body.celdas, function (celda, coords) {
+				_this.celdas[coords] = new _CeldaFactory2['default'](celda, coords).on('click', _this.onClick.bind(_this));
+			});
+			if (body.enclavamientos) {
 				body.enclavamientos.forEach(function (enclavamiento) {
 					_this.enclavamientos.push(new _EnclavamientoFactory2['default'](enclavamiento, _this));
 				});
@@ -3016,10 +3239,11 @@ var Sector = (function (_ParcelEv) {
 				if (reintentos == -1) {
 					alert('El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones');
 				}
-			} else {
-				_this.fail = response.statusCode + ': ' + response.body;
 			}
 			_this.emit('loaded');
+		})['catch'](function (response) {
+			_this.fail = response.message || response.statusCode + ': ' + response.body;
+			_this.emit('failed', _this.fail);
 		});
 	}
 
@@ -3043,7 +3267,7 @@ var Sector = (function (_ParcelEv) {
 		key: 'view',
 		value: function view(v) {
 			if (this.fail) {
-				return v('.error', this.fail);
+				return v('div.pure-u-1-1', v('.error', this.fail));
 			}return [v('div.pure-u-3-4', v('svg', {
 				viewBox: '0 0 ' + this.ancho * _ANCHO_CELDA.ANCHO_CELDA + ' ' + this.alto * _ANCHO_CELDA.ANCHO_CELDA,
 				xmlns: 'http://www.w3.org/2000/svg',

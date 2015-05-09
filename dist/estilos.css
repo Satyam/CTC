@@ -43,7 +43,7 @@ Copyright (c) Nicolas Gallagher and Jonathan Neal
   border-radius: 4px 4px 0 0;
   padding: 0.3em;
 }
-.tab-view > .tabs > li i.fa-close {
+.tab-view > .tabs .close {
   margin-left: 0.5em;
 }
 .tab-view > .tabs > li.more {

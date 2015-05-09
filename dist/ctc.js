@@ -102,6 +102,14 @@ var Celda = (function (_ParcelEv) {
 		get: function () {
 			return this.x + ',' + this.y;
 		}
+	}, {
+		key: 'destructor',
+		value: function destructor() {
+			_.each(this.senales, function (senal) {
+				return senal.destructor();
+			});
+			_get(Object.getPrototypeOf(Celda.prototype), 'destructor', this).call(this);
+		}
 	}]);
 
 	return Celda;
@@ -677,32 +685,10 @@ var Parcel = (function () {
 		key: 'destructor',
 
 		/**
-  Destructor.  
-  	The provided method checks all the instance properties and if any of them are 
-  instances of Parcel or arrays of Parcel instances, 
-  it will call the `destructor` method on each of the child parcels.
-  	It is a last-resort tactic to avoid leaving stuff behind.
-  In practice, it should be overriden to destroy only what each parcel has created.
+  Destructor.  The existing implementation does nothing.
   	@method destructor
   */
-		value: function destructor() {
-			_.each(this, function (member) {
-				if (member instanceof Parcel) member.destructor();
-				if (_.isArray(member)) {
-					_.some(member, function (item) {
-						if (item) {
-							if (item instanceof Parcel) {
-								item.destructor();
-							} else {
-								// If the first non-emtpy item is not a Parcel instance,
-								// it doesn't bother checking the rest.
-								return true;
-							}
-						}
-					});
-				}
-			});
-		}
+		value: function destructor() {}
 	}, {
 		key: 'preView',
 
@@ -1504,8 +1490,6 @@ var TabView = (function (_ParcelEv) {
   @protected
   */
 		value: function destructor() {
-			delete this._tabs;
-			delete this._selected;
 			_get(Object.getPrototypeOf(TabView.prototype), 'destructor', this).call(this);
 		}
 	}]);
@@ -2412,9 +2396,7 @@ var Enclavamiento = (function () {
 		}
 	}, {
 		key: 'destructor',
-		value: function destructor() {
-			delete this.sector;
-		}
+		value: function destructor() {}
 	}]);
 
 	return Enclavamiento;
@@ -2484,10 +2466,10 @@ var Enclavamientos = {
 			value: function destructor() {
 				var _this3 = this;
 
-				_get(Object.getPrototypeOf(Apareados.prototype), 'destructor', this).call(this);
 				this.celdas.forEach(function (coord) {
-					_this3.sector.getCelda(coord).removeEventListener('cambio', _this3._boundCambioListener);
+					_this3.sector.getCelda(coord).removeListener('cambio', _this3._boundCambioListener);
 				});
+				_get(Object.getPrototypeOf(Apareados.prototype), 'destructor', this).call(this);
 			}
 		}]);
 
@@ -2499,7 +2481,7 @@ var Enclavamientos = {
 
 			_get(Object.getPrototypeOf(SenalCambio.prototype), 'constructor', this).call(this, config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
-			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 		}
 
 		_inherits(SenalCambio, _Enclavamiento2);
@@ -2522,8 +2504,7 @@ var Enclavamientos = {
 		}, {
 			key: 'inicial',
 			value: function inicial() {
-				var celda = this.sector.getCelda(this.celda);
-				return this.onCambio(celda, celda.desviado);
+				return this.onCambio(this.celda, this.celda.desviado);
 			}
 		}, {
 			key: 'toJSON',
@@ -2538,8 +2519,8 @@ var Enclavamientos = {
 		}, {
 			key: 'destructor',
 			value: function destructor() {
+				this.celda.removeListener('cambio', this._boundCambioListener);
 				_get(Object.getPrototypeOf(SenalCambio.prototype), 'destructor', this).call(this);
-				this.celda.removeEventListener('cambio', this._boundCambioListener);
 			}
 		}]);
 
@@ -2551,7 +2532,7 @@ var Enclavamientos = {
 
 			_get(Object.getPrototypeOf(SenalTriple.prototype), 'constructor', this).call(this, config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
-			sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
 		}
 
 		_inherits(SenalTriple, _Enclavamiento3);
@@ -2575,8 +2556,7 @@ var Enclavamientos = {
 		}, {
 			key: 'inicial',
 			value: function inicial() {
-				var celda = this.sector.getCelda(this.celda);
-				return this.onCambio(celda, celda.posicion);
+				return this.onCambio(this.celda, this.celda.posicion);
 			}
 		}, {
 			key: 'toJSON',
@@ -2592,8 +2572,8 @@ var Enclavamientos = {
 		}, {
 			key: 'destructor',
 			value: function destructor() {
+				this.celda.removeListener('cambio', this._boundCambioListener);
 				_get(Object.getPrototypeOf(SenalTriple.prototype), 'destructor', this).call(this);
-				this.celda.removeEventListener('cambio', this._boundCambioListener);
 			}
 		}]);
 
@@ -2655,13 +2635,6 @@ var Estado = (function (_Parcel) {
 		value: function view(v) {
 			return v('pre', this.celda.toString());
 		}
-	}, {
-		key: 'destructor',
-		value: function destructor() {
-			this.celda = null;
-			this.sector = null;
-			_get(Object.getPrototypeOf(Estado.prototype), 'destructor', this).call(this);
-		}
 	}]);
 
 	return Estado;
@@ -2715,6 +2688,13 @@ var Estados = {
 			value: function cambiarManual(value) {
 				this.celda.manual = value == 'manual';
 			}
+		}, {
+			key: 'destructor',
+			value: function destructor() {
+				this.desviado.destructor();
+				this.manual.destructor();
+				_get(Object.getPrototypeOf(Cambio.prototype), 'destructor', this).call(this);
+			}
 		}]);
 
 		return Cambio;
@@ -2766,6 +2746,13 @@ var Estados = {
 			key: 'view',
 			value: function view(v) {
 				return [_get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v), this.posicion, this.manual];
+			}
+		}, {
+			key: 'destructor',
+			value: function destructor() {
+				this.posicion.destructor();
+				this.manual.destructor();
+				_get(Object.getPrototypeOf(Triple.prototype), 'destructor', this).call(this);
 			}
 		}]);
 
@@ -2968,17 +2955,23 @@ var Mimico = (function (_Parcel) {
 			}, true);
 		});
 		Mimico.addSect = function (name) {
-			var tab = Mimico.sectTabs.getTab('nuevo');
-			if (tab) {
+			var tabs = Mimico.sectTabs,
+			    tab = tabs.getTab('nuevo');
+			if (tab.content) tab.content.destructor();
+			if (config.sectores.indexOf(name) == -1) {
 				tab.name = name;
 				tab.content = new _Sector2['default']({ sector: name }).once('loaded', _this.sectorLoaded);
+				config.sectores.push(name);
+				config.save();
+			} else {
+				tabs.remove('nuevo');
+				tabs.selected = name;
 			}
-			config.sectores.push(name);
-			config.save();
 		};
-		Mimico.sectTabs.on('remove', function (name) {
+		Mimico.sectTabs.on('remove', function (name, removed) {
 			var sects = config.sectores;
 
+			removed.content.destructor();
 			sects.splice(sects.indexOf(name), 1);
 			config.save();
 		});
@@ -3313,6 +3306,20 @@ var Sector = (function (_ParcelEv) {
 		key: 'toString',
 		value: function toString() {
 			return JSON.stringify(this.toJSON(), null, 2);
+		}
+	}, {
+		key: 'destructor',
+		value: function destructor() {
+			if (this.estado.destructor) {
+				this.estado.destructor();
+			}
+			_.each(this.enclavamientos, function (enclavamiento) {
+				return enclavamiento.destructor();
+			});
+			_.each(this.celdas, function (celda) {
+				return celda.destructor();
+			});
+			_get(Object.getPrototypeOf(Sector.prototype), 'destructor', this).call(this);
 		}
 	}]);
 

@@ -61,17 +61,24 @@ class Mimico extends Parcel {
 			}, true);
 		});
 		Mimico.addSect = (name) => {
-			var tab = Mimico.sectTabs.getTab('nuevo');
-			if (tab) {
+			var tabs = Mimico.sectTabs,
+				tab = tabs.getTab('nuevo');
+			if (tab.content) tab.content.destructor();
+			if (config.sectores.indexOf(name) == -1) {
 				tab.name = name;
 				tab.content = new Sector({sector:name}).once('loaded', this.sectorLoaded);
+				config.sectores.push(name);
+				config.save();
+			} else {
+				tabs.remove('nuevo');
+				tabs.selected = name;
 			}
-			config.sectores.push(name);
-			config.save();
+
 		};
-		Mimico.sectTabs.on('remove', (name) => {
+		Mimico.sectTabs.on('remove', (name, removed) => {
 			var sects = config.sectores;
 
+			removed.content.destructor();
 			sects.splice(sects.indexOf(name),1);
 			config.save();
 		});

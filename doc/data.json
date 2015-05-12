@@ -83,6 +83,61 @@
             },
             "fors": {},
             "namespaces": {}
+        },
+        "js/celda.js": {
+            "name": "js/celda.js",
+            "modules": {
+                "configCelda": 1
+            },
+            "classes": {
+                "ConfigCelda": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/enclavamientos.js": {
+            "name": "js/enclavamientos.js",
+            "modules": {
+                "enclavamientos": 1,
+                "configEnclavamiento": 1
+            },
+            "classes": {
+                "Enclavamiento": 1,
+                "Enclavamiento.Apareados": 1,
+                "Enclavamiento.SenalCambio": 1,
+                "Enclavamiento.SenalTriple": 1,
+                "EnclavamientoFactory": 1,
+                "ConfigEnclavamiento": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/sector.js": {
+            "name": "js/sector.js",
+            "modules": {
+                "sector": 1,
+                "configSector": 1
+            },
+            "classes": {
+                "Sector": 1,
+                "ConfigSector": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/senal.js": {
+            "name": "js/senal.js",
+            "modules": {
+                "senal": 1,
+                "configSenal": 1
+            },
+            "classes": {
+                "Senal": 1,
+                "ConfigSenal": 1,
+                "ConfigLuz": 1
+            },
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {
@@ -140,7 +195,7 @@
             "namespace": "",
             "file": "js/component/http.js",
             "line": 9,
-            "description": "Helper functions to generate standard HTTP requests using the \n[xhr](https://www.npmjs.com/package/xhr) npm module.\n\nIt is integrated with the rendering engine so that upon completion of a request,\na redraw is requested."
+            "description": "Helper functions to generate standard HTTP requests using the\n[xhr](https://www.npmjs.com/package/xhr) npm module.\n\nAll methods return a Promise.\n\nIt is integrated with the rendering engine so that upon completion of a request,\na redraw is requested."
         },
         "Parcela": {
             "name": "Parcela",
@@ -188,7 +243,7 @@
             "namespace": "",
             "file": "js/component/parcelEv.js",
             "line": 32,
-            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html),\n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.\n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.\n  This limits the kind of DOM element or elements whose events you want to listen to.\n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)"
+            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html),\n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.\n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.\n  This limits the kind of DOM element or elements whose events you want to listen to.\n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless all of the listeners agree to cancel it by all returning exactly `false`.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)"
         },
         "Components": {
             "name": "Components",
@@ -250,6 +305,143 @@
             "file": "js/component/virtual-dom.js",
             "line": 793,
             "description": "Provides virtual dom functionality for other modules."
+        },
+        "CTC": {
+            "name": "CTC",
+            "submodules": {
+                "configCelda": 1,
+                "enclavamientos": 1,
+                "configEnclavamiento": 1,
+                "sector": 1,
+                "configSector": 1,
+                "senal": 1,
+                "configSenal": 1
+            },
+            "classes": {
+                "ConfigCelda": 1,
+                "Enclavamiento": 1,
+                "Enclavamiento.Apareados": 1,
+                "Enclavamiento.SenalCambio": 1,
+                "Enclavamiento.SenalTriple": 1,
+                "EnclavamientoFactory": 1,
+                "ConfigEnclavamiento": 1,
+                "Sector": 1,
+                "ConfigSector": 1,
+                "Senal": 1,
+                "ConfigSenal": 1,
+                "ConfigLuz": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "file": "js/senal.js",
+            "line": 123
+        },
+        "configCelda": {
+            "name": "configCelda",
+            "submodules": {},
+            "classes": {
+                "ConfigCelda": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "CTC",
+            "namespace": "",
+            "file": "js/celda.js",
+            "line": 235,
+            "description": "Contiene la configuración de una celda dentro de un sector.\n\nCada celda contendrá un tramo de vía que podrá ser de varios tipos (ver [tipo](#property_tipo)).\n\nTodas las vías pasan por el centro de la celda \ny se extienden a los extremos de la misma en 8 direcciones posibles\ndesignadas según los puntos cardinales: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`\ndonde conectan con las vías de la celda vecina.\n\nUna celda puede tener señales, una por cada dirección.\nVer [ConfigSenal](ConfigSenal.html).\nTodas las señales apuntan tal que sean visibles al tren que entra a la celda."
+        },
+        "enclavamientos": {
+            "name": "enclavamientos",
+            "submodules": {},
+            "classes": {
+                "Enclavamiento": 1,
+                "Enclavamiento.Apareados": 1,
+                "Enclavamiento.SenalCambio": 1,
+                "Enclavamiento.SenalTriple": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "CTC",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 248,
+            "description": "Clases cuyas instancias manejan cada tipo de enclavamiento disponible."
+        },
+        "configEnclavamiento": {
+            "name": "configEnclavamiento",
+            "submodules": {},
+            "classes": {
+                "EnclavamientoFactory": 1,
+                "ConfigEnclavamiento": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "CTC",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 385,
+            "description": "Describe la relación entre el estado de un elemento del sector y otro u otros.\n\nCada tipo de enclavamiento actua de forma diferente.  Se lo distingue por el [tipo](#property_tipo)."
+        },
+        "sector": {
+            "name": "sector",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "CTC",
+            "namespace": "",
+            "file": "js/sector.js",
+            "line": 4
+        },
+        "configSector": {
+            "name": "configSector",
+            "submodules": {},
+            "classes": {
+                "Sector": 1,
+                "ConfigSector": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "CTC",
+            "namespace": "",
+            "file": "js/sector.js",
+            "line": 149,
+            "description": "Provee la descripción de un sector."
+        },
+        "senal": {
+            "name": "senal",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "CTC",
+            "namespace": "",
+            "file": "js/senal.js",
+            "line": 8,
+            "description": "Maneja el mostrado de las señales en una celda"
+        },
+        "configSenal": {
+            "name": "configSenal",
+            "submodules": {},
+            "classes": {
+                "Senal": 1,
+                "ConfigSenal": 1,
+                "ConfigLuz": 1
+            },
+            "fors": {},
+            "is_submodule": 1,
+            "namespaces": {},
+            "module": "CTC",
+            "namespace": "",
+            "file": "js/senal.js",
+            "line": 123,
+            "description": "Describe las señales existentes en una celda."
         }
     },
     "classes": {
@@ -283,7 +475,7 @@
             "namespace": "",
             "file": "js/component/http.js",
             "line": 9,
-            "description": "Helper functions to generate standard HTTP requests using the \n[xhr](https://www.npmjs.com/package/xhr) npm module.\n\nIt is integrated with the rendering engine so that upon completion of a request,\na redraw is requested.",
+            "description": "Helper functions to generate standard HTTP requests using the\n[xhr](https://www.npmjs.com/package/xhr) npm module.\n\nAll methods return a Promise.\n\nIt is integrated with the rendering engine so that upon completion of a request,\na redraw is requested.",
             "static": 1
         },
         "Parcel": {
@@ -323,7 +515,7 @@
             "namespace": "",
             "file": "js/component/parcelEv.js",
             "line": 32,
-            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html),\n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.\n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.\n  This limits the kind of DOM element or elements whose events you want to listen to.\n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)",
+            "description": "Subclass of [Parcel](Parcel.html) capable of listening and\nrelaying DOM events.\n\nBesides the configuration attributes used by [Parcel](Parcel.html),\n`ParcelEv` accepts the `EVENTS` property which is a hash map of DOM events to listen to.\n\nEach entry into `EVENTS` must contain the name of a DOM event (i.e.: `click`, `keypress`)\nfollowed either by a listener function or a further object.\n\n* A function can be given as a reference or as a string with the name of the method within this class\n  that handles it.  The function will be called whenever that event is fired.\n* If an object, it should be a hash map of CSS selectors and functions.\n  This limits the kind of DOM element or elements whose events you want to listen to.\n  The function will then be called only when the element generating it satisfies the condition.\n\n`ParcelEv` will queue a request to redraw the page unless all of the listeners agree to cancel it by all returning exactly `false`.\n\n`ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.\nSee: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)",
             "example": [
                 "\n      class MyDialogBox extends ParcelEv {\n\t  \t\tconstructor(config) {\n\t\t\t\tsuper({\n\t\t\t\t\tEVENTS: {\n\t\t\t\t\t\t// Listening to keypresses anywhere within this Parcel\n\t\t\t\t\t\t'keypress': this.onKeyPress\n\t\t\t\t\t\t// Listening to clicks on specific elements within the Parcel\n\t\t\t\t\t\t'click': {\n\t\t\t\t\t\t\t// only on a button with the className `ok` on it.\n\t\t\t\t\t\t\t'button.ok': this.onOk,\n\t\t\t\t\t\t\t// The function reference is given as a string which translates to `this.onCancel`\n\t\t\t\t\t\t\t'button.cancel':'onCancel'\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\t// Other configuration options will be passed to the Parcel constructor\n\t\t\t\t\tclassName: 'dialog'\n\t\t\t\t});\n\t\t\t}\n\t\t\t// Methods handling the functions, will receive the original DOM event object.\n\t\t\t// Their `this` will be that of the instance of ParcelEv.\n\t\t\tonKeyPress (ev) {}\n\t\t\tonOk (ev) {}\n\t\t\tonCancel (ev) {}\n\t\t}"
             ],
@@ -487,6 +679,288 @@
             "access": "protected",
             "tagname": "",
             "static": 1
+        },
+        "ConfigCelda": {
+            "name": "ConfigCelda",
+            "shortname": "ConfigCelda",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configCelda",
+            "namespace": "",
+            "file": "js/celda.js",
+            "line": 235,
+            "description": "Contiene la configuración de una celda dentro de un sector.\n\nCada celda contendrá un tramo de vía que podrá ser de varios tipos (ver [tipo](#property_tipo)).\n\nTodas las vías pasan por el centro de la celda \ny se extienden a los extremos de la misma en 8 direcciones posibles\ndesignadas según los puntos cardinales: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`\ndonde conectan con las vías de la celda vecina.\n\nUna celda puede tener señales, una por cada dirección.\nVer [ConfigSenal](ConfigSenal.html).\nTodas las señales apuntan tal que sean visibles al tren que entra a la celda.",
+            "static": 1
+        },
+        "Enclavamiento": {
+            "name": "Enclavamiento",
+            "shortname": "Enclavamiento",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "enclavamientos",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 18,
+            "description": "Clase abstracta de la cual deben heredar todos las que manejan cada uno de los enclavamientos.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Datos de configuración de cada enclavamiento.",
+                    "type": "ConfigEnclavamiento"
+                },
+                {
+                    "name": "sector",
+                    "description": "Instancia del sector en que se encuentran los elementos enclavados.",
+                    "type": "Sector"
+                }
+            ]
+        },
+        "Enclavamiento.Apareados": {
+            "name": "Enclavamiento.Apareados",
+            "shortname": "Enclavamiento.Apareados",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "enclavamientos",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 74,
+            "description": "Asegura que los cambios en dos o más celdas se mueven a la par. Si uno cambia, el otro también.",
+            "example": [
+                "\n\t{\n\t\t\"tipo\": \"apareados\",\n\t\t\"celdas\": [\"4,4\", \"5,5\"]\n\t},"
+            ],
+            "extends": "Enclavamiento",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Datos de configuración de cada enclavamiento.",
+                    "type": "ConfigEnclavamiento"
+                },
+                {
+                    "name": "sector",
+                    "description": "Instancia del sector en que se encuentran los elementos enclavados.",
+                    "type": "Sector"
+                }
+            ]
+        },
+        "Enclavamiento.SenalCambio": {
+            "name": "Enclavamiento.SenalCambio",
+            "shortname": "Enclavamiento.SenalCambio",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "enclavamientos",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 153,
+            "description": "Modifica el estado de una señal en función del estado de un cambio.",
+            "example": [
+                "\n\t{\n\t\t\"tipo\": \"senalCambio\",\n\t\t\"senal\": \"8,3,SE\",\n\t\t\"celda\": \"8,3\",\n\t\t\"normal\": {\n\t\t\t\"primaria\": \"verde\",\n\t\t\t\"izq\": \"alto\"\n\t\t},\n\t\t\"desviado\": {\n\t\t\t\"primaria\": \"alto\",\n\t\t\t\"izq\": \"precaucion\"\n\t\t}\n\t},"
+            ],
+            "extends": "Enclavamiento",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Datos de configuración de cada enclavamiento.",
+                    "type": "ConfigEnclavamiento"
+                },
+                {
+                    "name": "sector",
+                    "description": "Instancia del sector en que se encuentran los elementos enclavados.",
+                    "type": "Sector"
+                }
+            ]
+        },
+        "Enclavamiento.SenalTriple": {
+            "name": "Enclavamiento.SenalTriple",
+            "shortname": "Enclavamiento.SenalTriple",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "enclavamientos",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 248,
+            "description": "Modifica el estado de una señal en función del estado de un triple.",
+            "example": [
+                "\n\t{\n\t\t\"tipo\": \"senalTriple\",\n\t\t\"senal\": \"2,4,W\",\n\t\t\"celda\": \"2,4\",\n\t\t\"izq\": {\n\t\t\t\"izq\": \"verde\",\n\t\t\t\"primaria\": \"alto\",\n\t\t\t\"der\": \"alto\"\n\t\t},\n\t\t\"centro\": {\n\t\t\t\"izq\": \"alto\",\n\t\t\t\"primaria\": \"verde\",\n\t\t\t\"der\": \"alto\"\n\t\t},\n\t\t\"der\": {\n\t\t\t\"izq\": \"alto\",\n\t\t\t\"primaria\": \"alto\",\n\t\t\t\"der\": \"verde\"\n\t\t}\n\t}"
+            ],
+            "extends": "Enclavamiento",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Datos de configuración de cada enclavamiento.",
+                    "type": "ConfigEnclavamiento"
+                },
+                {
+                    "name": "sector",
+                    "description": "Instancia del sector en que se encuentran los elementos enclavados.",
+                    "type": "Sector"
+                }
+            ]
+        },
+        "EnclavamientoFactory": {
+            "name": "EnclavamientoFactory",
+            "shortname": "EnclavamientoFactory",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configEnclavamiento",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 361,
+            "description": "Fábrica de enclavamientos.  \nAl crear una instancia de esta clase se devuelve una subclase de [Enclavamiento](Enclavamiento.html) \nque corresponde al [tipo](configEnclavamiento.html#property_tipo) de enclavamiento que define.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "enclavamiento",
+                    "description": "Configuración del enclavamiento.",
+                    "type": "Object"
+                },
+                {
+                    "name": "sector",
+                    "description": "Sector en que se encuentran los elementos del enclavamiento.",
+                    "type": "Sector"
+                }
+            ],
+            "return": {
+                "description": "Instancia de [Enclavamiento](Enclavamiento.html) acorde al [tipo](ConfigEnclavamiento.html#property_tipo)",
+                "type": "Enclavamiento"
+            }
+        },
+        "ConfigEnclavamiento": {
+            "name": "ConfigEnclavamiento",
+            "shortname": "ConfigEnclavamiento",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configEnclavamiento",
+            "namespace": "",
+            "file": "js/enclavamientos.js",
+            "line": 385,
+            "description": "Provee la información de un enclavamiento. \n\nLas propiedades de cada entrada corresponden a cada tipo de enclavamiento \nsalvo la propiedad [tipo](#property_tipo) que es común a todas ellas.\nLos valores de cada entrada se le pasa como argumento al constructor de cada tipo de enclavamiento.\nLa información sobre estos parámetros se encuentra en la documentación para cada uno de estos enclavamientos.",
+            "static": 1
+        },
+        "Sector": {
+            "name": "Sector",
+            "shortname": "Sector",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configSector",
+            "namespace": "",
+            "file": "js/sector.js",
+            "line": 24,
+            "extends": "ParcelEv",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Sector configuration file as described in [SectorConfig](SectorConfig.html)",
+                    "type": "Object"
+                }
+            ]
+        },
+        "ConfigSector": {
+            "name": "ConfigSector",
+            "shortname": "ConfigSector",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configSector",
+            "namespace": "",
+            "file": "js/sector.js",
+            "line": 149,
+            "description": "La clase ConfigSector es un objeto que describe todas las características del sector\nNo tiene métodos ni eventos, simplemente datos.",
+            "static": 1
+        },
+        "Senal": {
+            "name": "Senal",
+            "shortname": "Senal",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configSenal",
+            "namespace": "",
+            "file": "js/senal.js",
+            "line": 14,
+            "description": "Maneja el mostrado de las señales en una celda",
+            "extends": "Parcel",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Configuración de la esta señal",
+                    "type": "ConfigSenal"
+                }
+            ]
+        },
+        "ConfigSenal": {
+            "name": "ConfigSenal",
+            "shortname": "ConfigSenal",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configSenal",
+            "namespace": "",
+            "file": "js/senal.js",
+            "line": 96,
+            "description": "Describe una señal.\nCada señal puede tener hasta 3 luces, una principal y una a cada lado.\nCada luz puede estar en varios estados (ver [estado](#property_estado)), que determinan su color.\nPor razones de espacio, aún cuando la señal real pudiera tener múltiples focos, \nuno de cada color, de las cuales una sóla está encendida en cada momento,\nen el mímico, se muestra como un único círculo que cambia de color.",
+            "static": 1
+        },
+        "ConfigLuz": {
+            "name": "ConfigLuz",
+            "shortname": "ConfigLuz",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "CTC",
+            "submodule": "configSenal",
+            "namespace": "",
+            "file": "js/senal.js",
+            "line": 123,
+            "description": "Contiene la definición de una luz dentro de una señal."
         }
     },
     "classitems": [
@@ -765,8 +1239,8 @@
         },
         {
             "file": "js/component/http.js",
-            "line": 24,
-            "description": "Generic entry point for HTTP requests.  \nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object||String} It the request was for JSON data, it will be returned as an object, otherwise, the plain XHR `responseText`.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The HTTP method that had been requested \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "line": 26,
+            "description": "Generic entry point for HTTP requests.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object||String} It the request was for JSON data, it will be returned as an object, otherwise, the plain XHR `responseText`.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The HTTP method that had been requested\n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
             "itemtype": "method",
             "name": "http",
             "params": [
@@ -787,8 +1261,8 @@
         },
         {
             "file": "js/component/http.js",
-            "line": 62,
-            "description": "Produces an HTTP GET request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `GET` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "line": 64,
+            "description": "Produces an HTTP GET request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `GET`\n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
             "itemtype": "method",
             "name": "get",
             "params": [
@@ -809,8 +1283,8 @@
         },
         {
             "file": "js/component/http.js",
-            "line": 90,
-            "description": "Produces an HTTP POST (create) request sending and accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `POST` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "line": 92,
+            "description": "Produces an HTTP POST (create) request sending and accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `POST`\n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
             "itemtype": "method",
             "name": "post",
             "params": [
@@ -832,8 +1306,8 @@
         },
         {
             "file": "js/component/http.js",
-            "line": 121,
-            "description": "Alias of [post](#method_post).\nProduces an HTTP POST (create) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `POST` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "line": 123,
+            "description": "Alias of [post](#method_post).\nProduces an HTTP POST (create) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `POST`\n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
             "itemtype": "method",
             "name": "create",
             "params": [
@@ -859,8 +1333,8 @@
         },
         {
             "file": "js/component/http.js",
-            "line": 146,
-            "description": "Produces an HTTP PUT (update) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `PUT` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "line": 148,
+            "description": "Produces an HTTP PUT (update) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `PUT`\n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
             "itemtype": "method",
             "name": "put",
             "params": [
@@ -886,8 +1360,8 @@
         },
         {
             "file": "js/component/http.js",
-            "line": 179,
-            "description": "Alias of [put](#method_put).\nProduces an HTTP PUT (update) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `PUT` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "line": 181,
+            "description": "Alias of [put](#method_put).\nProduces an HTTP PUT (update) request accepting JSON data.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `PUT`\n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
             "itemtype": "method",
             "name": "update",
             "params": [
@@ -913,8 +1387,8 @@
         },
         {
             "file": "js/component/http.js",
-            "line": 204,
-            "description": "Produces an HTTP DELETE request.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `DEL` \n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
+            "line": 206,
+            "description": "Produces an HTTP DELETE request.\nIt returns a Promise.\nIt queues and resolves a redraw request.\n\nWhen resolved successfully, the response will contain:\n\n* `body`{Object} An object with the JSON response already parsed.\n* `statusCode` {Number} Values in the 2xx range will be considered successful, others, a rejection\n* `method` {String} The value `DEL`\n* `headers` {Object} The XHR response headers\n* `url` {String} The URL requested\n* `rawRequest` {XMLHttpRequest} The XHR object for this request\n\nThe promise can be rejected with a standard JavaScript `Error` object with at least `name` and `message` properties if the request could not be processed due to erroneous arguments.  If the response comes with an error code above the 2xx range, it will also be rejected with the same response object as a successful response.",
             "itemtype": "method",
             "name": "del",
             "params": [
@@ -983,7 +1457,7 @@
         {
             "file": "js/component/parcel.js",
             "line": 75,
-            "description": "Destructor.  \n\nThe provided method checks all the instance properties and if any of them are \ninstances of Parcel or arrays of Parcel instances, \nit will call the `destructor` method on each of the child parcels.\n\nIt is a last-resort tactic to avoid leaving stuff behind.\nIn practice, it should be overriden to destroy only what each parcel has created.",
+            "description": "Destructor.  The existing implementation does nothing.",
             "itemtype": "method",
             "name": "destructor",
             "class": "Parcel",
@@ -992,7 +1466,7 @@
         },
         {
             "file": "js/component/parcel.js",
-            "line": 107,
+            "line": 82,
             "description": "Called by the renderer before this Parcel is shown for the first time.\nIt is a good place to activate resources that are only usefull while the \nparcel is visible such as animations.\n\nThe provided method is empty, it can be overriden by each Parcela app.",
             "itemtype": "method",
             "name": "preView",
@@ -1002,7 +1476,7 @@
         },
         {
             "file": "js/component/parcel.js",
-            "line": 118,
+            "line": 93,
             "description": "Called by the renderer after this Parcel is hidden.\n\nIt is a good place to deactivate resources that are only usefull while the \nparcel is visible such as animations.\n\nThe provided method is empty, it can be overriden by each Parcela app.",
             "itemtype": "method",
             "name": "postView",
@@ -1012,7 +1486,7 @@
         },
         {
             "file": "js/component/parcel.js",
-            "line": 131,
+            "line": 106,
             "description": "Returns the virtual DOM for this parcel.\n\nMust be overriden by each Parcela app.  By default, it returns the value of the [text](#property_text) property.\n\nA virtual DOM node is composed of the following elements:\n\n* `tag` {String}:  Name of the HTML tag for the node to be created.\n* `attrs` {Object}: Collection of HTML attributes to be added to the node.\n* `children` {Array}: Array of virtual DOM nodes that will become children of the created node.\n\nAs a convenience, this method receives a reference to the [`vDOM.vNode`](vDOM.html#method_vNode)\nhelper function to produce the virtual DOM node, however it may be ignored as long as a\nvirtual DOM node is somehow returned.",
             "example": [
                 "\n\tview: function (v) {\n\t\treturn v('div', [\n\t\t\tv('p.joyful','Hello Workd!'),\n\t\t\tv('hr'),\n\t\t\tv('p','(Not very original, really)')\n\t\t]);\n\t}\n\n\t// Equivalent to:\n\tview: function (v) {\n\t\treturn {tag:'div', attrs:{},children: [\n\t\t\t{tag:'p', attrs:{className:'joyful'}, children:['Hellow World!']},\n\t\t\t{tag:'hr', attrs: {}, children: []},\n\t\t\t{tag:'p', attrs:{}, children:['(Not very original, really)']}\n\t\t]};\n\t}"
@@ -1036,7 +1510,7 @@
         },
         {
             "file": "js/component/parcel.js",
-            "line": 171,
+            "line": 146,
             "description": "Returns a value representative of the state of this parcel.\nThe system will compare it with the previous state and if they match,\nit will assume the view has not changed.\n\nThe default function returns `NaN` which is always different than itself.\nIt may be overriden for optimization purposes.",
             "itemtype": "method",
             "name": "stamp",
@@ -2028,9 +2502,513 @@
             "class": "vNode",
             "module": "Parcela",
             "submodule": "virtual-DOM"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 254,
+            "description": "Define el tipo de vías que contiene esta celda.  Puede ser uno de:\n\n* `linea`: Un tramo de vía simple, requiere [desde](#property_desde) y [hasta](#property_hasta)\n* `cambio`: Un cambio, require [punta](#property_punta), [normal](#property_normal) e [invertido](#property_invertido)\n* `cruce`: Dos tramos de vía que se cruzan pero no se conectan, requiere [l1](#property_l1) y [l2](#property_l2)\n* `paragolpe`: Fin de un trazado, requiere [desde](#property_desde)\n* `triple`: Un cambio con tres alternativas, requiere [punta](#property_punta), [izq](#property_izq), [centro](#property_centro) y [der](#property_der)",
+            "itemtype": "property",
+            "name": "tipo",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 265,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nSe usa en las celdas de [tipo](#property_tipo) `linea`, `cruce` y `paragolpe`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "desde",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 272,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nSe usa en las celdas de [tipo](#property_tipo) `linea` y `cruce`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "hasta",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 279,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nEn los cambios, define el tronco común del que se abren las alternativas.\nSe usa en las celdas de [tipo](#property_tipo) `cambio` y `triple`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "punta",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 287,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nEn los cambios, habitualmente, define el lado que sale recto.\nSe usa en las celdas de [tipo](#property_tipo) `cambio`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "normal",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 295,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nEn los cambios, habitualmente, define el lado que sale en curva.\nSe usa en las celdas de [tipo](#property_tipo) `cambio`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "invertido",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 303,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nEn los cambios triples, habitualmente, define el lado que sale en curva a la izquierda.\nSe usa en las celdas de [tipo](#property_tipo) `triple`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "izq",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 311,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nEn los cambios triples, habitualmente, define el lado que sale recto opuesto a la [punta](#property_punta).\nSe usa en las celdas de [tipo](#property_tipo) `triple`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "centro",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 319,
+            "description": "Una de las direcciones en que se extiende la vía contenida en este sector.  \nEn los cambios triples, habitualmente, define el lado que sale en curva a la derecha.\nSe usa en las celdas de [tipo](#property_tipo) `triple`.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "der",
+            "type": "String",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 327,
+            "description": "Define una de las vías que se cruzan en esta celda.\nContendrá un objecto con propiedades [desde](#property_desde) y [hasta](#property_hacia) como un trampo de vía normal\nSe usa en las celdas de [tipo](#property_tipo) `cruce`.",
+            "itemtype": "property",
+            "name": "l1",
+            "type": "Object",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 334,
+            "description": "Define una de las vías que se cruzan en esta celda.\nContendrá un objecto con propiedades [desde](#property_desde) y [hasta](#property_hacia) como un trampo de vía normal\nSe usa en las celdas de [tipo](#property_tipo) `cruce`.",
+            "itemtype": "property",
+            "name": "l2",
+            "type": "Object",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/celda.js",
+            "line": 341,
+            "description": "Define el conjunto de las señales contenidas en esta celda.\nVer [ConfigSenal](ConfigSenal.html).\nCada señal está indexada por la dirección del tramo de vía a cuyo lado se encuentra.",
+            "itemtype": "property",
+            "name": "senales",
+            "type": "Object",
+            "class": "ConfigCelda",
+            "module": "CTC",
+            "submodule": "configCelda"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 28,
+            "description": "Referencia al sector en que se encuentran los elementos enclavados.",
+            "itemtype": "property",
+            "name": "sector",
+            "type": "Sector",
+            "class": "Enclavamiento",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 36,
+            "description": "Asegura que los elementos enclavados se encuentran en estados iniciales válidos.",
+            "itemtype": "method",
+            "name": "inicial",
+            "return": {
+                "description": "Indica que al verificar el estado, ha debido hacer alguna modificación.",
+                "type": "Boolean"
+            },
+            "class": "Enclavamiento",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 43,
+            "description": "Devuelve la configuración instantánea del enclavamiento.",
+            "itemtype": "method",
+            "name": "toJSON",
+            "return": {
+                "description": "Descripción del enclavamiento",
+                "type": "Object"
+            },
+            "class": "Enclavamiento",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 54,
+            "description": "Versión formateada de la configuración instantánea del enclavamiento.",
+            "itemtype": "method",
+            "name": "toString",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "Enclavamiento",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 63,
+            "description": "Libera los recursos tomados, en este caso, la referencia al sector.",
+            "itemtype": "method",
+            "name": "destructor",
+            "class": "Enclavamiento",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 89,
+            "description": "Lista las coordenadas de las celdas cuyos cambios han de estar apareados.",
+            "itemtype": "property",
+            "name": "celdas",
+            "type": "Array",
+            "class": "Enclavamiento.Apareados",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 103,
+            "description": "Responde al evento [cambio](Celda.html#event_cambio) de cualquiera de las celdas apareadas\npara actuar sobre las apareadas",
+            "itemtype": "method",
+            "name": "onCambio",
+            "params": [
+                {
+                    "name": "celda",
+                    "description": "instancia de la celda que originó el cambio.",
+                    "type": "Celda"
+                },
+                {
+                    "name": "desviado",
+                    "description": "Indica si el cambio está en su posición alternativa.",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Enclavamiento.Apareados",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 176,
+            "description": "Coordenada de la celda que contiene el cambio que afecta la señal.",
+            "itemtype": "property",
+            "name": "celda",
+            "type": "String",
+            "class": "Enclavamiento.SenalCambio",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 181,
+            "description": "Coordenada de la señal que responde al estado del cambio.",
+            "itemtype": "property",
+            "name": "senal",
+            "type": "String",
+            "class": "Enclavamiento.SenalCambio",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 186,
+            "description": "Configuración de las señales cuando el cambio está en su posición normal.\n\nContiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`) \ny el estado en que han de estar (`verde`, `precaucion` o `alto`).",
+            "itemtype": "property",
+            "name": "normal",
+            "type": "Object",
+            "class": "Enclavamiento.SenalCambio",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 194,
+            "description": "Configuración de las señales cuando el cambio está en su posición desviada.\n\nContiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`) \ny el estado en que han de estar (`verde`, `precaucion` o `alto`).",
+            "itemtype": "property",
+            "name": "desviado",
+            "type": "Object",
+            "class": "Enclavamiento.SenalCambio",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 209,
+            "description": "Responde al evento [cambio](Celda.html#event_cambio) de la [celda](#property_celda) que afecta \na esta señal.",
+            "itemtype": "method",
+            "name": "onCambio",
+            "params": [
+                {
+                    "name": "celda",
+                    "description": "instancia de la celda que originó el cambio.",
+                    "type": "Celda"
+                },
+                {
+                    "name": "desviado",
+                    "description": "Indica si el cambio está en su posición alternativa.",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Enclavamiento.SenalCambio",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 279,
+            "description": "Coordenada de la celda que contiene el cambio que afecta la señal.",
+            "itemtype": "property",
+            "name": "celda",
+            "type": "String",
+            "class": "Enclavamiento.SenalTriple",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 284,
+            "description": "Coordenada de la señal que responde al estado del cambio.",
+            "itemtype": "property",
+            "name": "senal",
+            "type": "String",
+            "class": "Enclavamiento.SenalTriple",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 289,
+            "description": "Configuración de las señales cuando el cambio está en su posición izquierda.\n\nContiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`) \ny el estado en que han de estar (`verde`, `precaucion` o `alto`).",
+            "itemtype": "property",
+            "name": "izq",
+            "type": "Object",
+            "class": "Enclavamiento.SenalTriple",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 297,
+            "description": "Configuración de las señales cuando el cambio está en su posición central.\n\nContiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`) \ny el estado en que han de estar (`verde`, `precaucion` o `alto`).",
+            "itemtype": "property",
+            "name": "centro",
+            "type": "Object",
+            "class": "Enclavamiento.SenalTriple",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 305,
+            "description": "Configuración de las señales cuando el cambio está en su posición derecha.\n\nContiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`) \ny el estado en que han de estar (`verde`, `precaucion` o `alto`).",
+            "itemtype": "property",
+            "name": "der",
+            "type": "Object",
+            "class": "Enclavamiento.SenalTriple",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 319,
+            "description": "Responde al evento [cambio](Celda.html#event_cambio) de la celda que contiene el cambio\ntriple que afecta a esta señal.",
+            "itemtype": "method",
+            "name": "onCambio",
+            "params": [
+                {
+                    "name": "celda",
+                    "description": "instancia de la celda que originó el cambio.",
+                    "type": "Celda"
+                },
+                {
+                    "name": "posicion",
+                    "description": "Indica la posición del cambio.",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "Enclavamiento.SenalTriple",
+            "module": "CTC",
+            "submodule": "enclavamientos"
+        },
+        {
+            "file": "js/enclavamientos.js",
+            "line": 396,
+            "description": "Identifica al tipo de enclavamiento.",
+            "itemtype": "property",
+            "name": "tipo",
+            "type": "String",
+            "class": "ConfigEnclavamiento",
+            "module": "CTC",
+            "submodule": "configEnclavamiento"
+        },
+        {
+            "file": "js/sector.js",
+            "line": 157,
+            "description": "Una descripción textual del sector.  Se mostrará al usuario en la solapa por lo que debe ser breve.",
+            "itemtype": "property",
+            "name": "descr",
+            "type": "String",
+            "class": "ConfigSector",
+            "module": "CTC",
+            "submodule": "configSector"
+        },
+        {
+            "file": "js/sector.js",
+            "line": 161,
+            "description": "El número de celdas a lo ancho que usa este sector",
+            "itemtype": "property",
+            "name": "ancho",
+            "type": "Number",
+            "class": "ConfigSector",
+            "module": "CTC",
+            "submodule": "configSector"
+        },
+        {
+            "file": "js/sector.js",
+            "line": 165,
+            "description": "El número de celdas a lo alto que usa este sector",
+            "itemtype": "property",
+            "name": "alto",
+            "type": "Number",
+            "class": "ConfigSector",
+            "module": "CTC",
+            "submodule": "configSector"
+        },
+        {
+            "file": "js/sector.js",
+            "line": 169,
+            "description": "Objeto conteniendo la configuración de cada celda del sector.\nCada celda estará indexada por su coordenada X,Y y contendrá un objeto de clase [ConfigCelda](ConfigCelda.html).\nNo es necesario proveer entradas para celdas que no contienen vías.\nLas celdas se puede enumerar en cualquier orden.",
+            "example": [
+                "\n    {\n      \"celdas\": {\n        \"6,5\": {\n          \"tipo\": \"linea\",\n          \"desde\": \"W\",\n          \"hacia\": \"SE\"\n        },\n        ...\n      }\n    }"
+            ],
+            "itemtype": "property",
+            "name": "celdas",
+            "type": "Object",
+            "class": "ConfigSector",
+            "module": "CTC",
+            "submodule": "configSector"
+        },
+        {
+            "file": "js/sector.js",
+            "line": 188,
+            "description": "Lista de los enclavamientos entre los elementos del sector",
+            "itemtype": "property",
+            "name": "enclavamientos",
+            "type": "Array",
+            "optional": 1,
+            "class": "ConfigSector",
+            "module": "CTC",
+            "submodule": "configSector"
+        },
+        {
+            "file": "js/senal.js",
+            "line": 29,
+            "description": "Determina la dirección del ramal a la que está asociada la señal.\nPuede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`",
+            "itemtype": "property",
+            "name": "dir",
+            "type": "String",
+            "class": "Senal",
+            "module": "CTC",
+            "submodule": "senal"
+        },
+        {
+            "file": "js/senal.js",
+            "line": 108,
+            "description": "Contiene información de la luz primaria de la señal.",
+            "itemtype": "property",
+            "name": "primaria",
+            "type": "ConfigLuz",
+            "class": "ConfigSenal",
+            "module": "CTC",
+            "submodule": "configSenal"
+        },
+        {
+            "file": "js/senal.js",
+            "line": 113,
+            "description": "Contiene información de la luz secundaria que se muestra abajo a la derecha de la señal primaria.",
+            "itemtype": "property",
+            "name": "der",
+            "type": "ConfigLuz",
+            "class": "ConfigSenal",
+            "module": "CTC",
+            "submodule": "configSenal"
+        },
+        {
+            "file": "js/senal.js",
+            "line": 118,
+            "description": "Contiene información de la luz secundaria que se muestra abajo a la izquierda de la señal primaria.",
+            "itemtype": "property",
+            "name": "izq",
+            "type": "ConfigLuz",
+            "class": "ConfigSenal",
+            "module": "CTC",
+            "submodule": "configSenal"
+        },
+        {
+            "file": "js/senal.js",
+            "line": 128,
+            "description": "Indica el estado de la señal. \n\nPuede ser `verde`, `precaucion` o `alto`.",
+            "itemtype": "property",
+            "name": "estado",
+            "type": "String",
+            "class": "ConfigLuz",
+            "module": "CTC",
+            "submodule": "configSenal"
         }
     ],
     "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " js/enclavamientos.js:36"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " js/enclavamientos.js:361"
+        },
         {
             "message": "Missing item type\nShows the TabView.\nOverride of `Parcel` [view](Parcel.html#method_view).",
             "line": " js/component/tabView.js:335"

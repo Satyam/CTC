@@ -312,6 +312,124 @@ var CeldaFactory = function CeldaFactory(celda, coords) {
 exports['default'] = CeldaFactory;
 module.exports = exports['default'];
 
+/**
+@module CTC
+@submodule configCelda
+*/
+/**
+Contiene la configuración de una celda dentro de un sector.
+
+Cada celda contendrá un tramo de vía que podrá ser de varios tipos (ver [tipo](#property_tipo)).
+
+Todas las vías pasan por el centro de la celda
+y se extienden a los extremos de la misma en 8 direcciones posibles
+designadas según los puntos cardinales: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+donde conectan con las vías de la celda vecina.
+
+Una celda puede tener señales, una por cada dirección.
+Ver [ConfigSenal](ConfigSenal.html).
+Todas las señales apuntan tal que sean visibles al tren que entra a la celda.
+
+
+
+@class ConfigCelda
+@static
+*/
+/**
+Define el tipo de vías que contiene esta celda.  Puede ser uno de:
+
+* `linea`: Un tramo de vía simple, requiere [desde](#property_desde) y [hasta](#property_hasta)
+* `cambio`: Un cambio, require [punta](#property_punta), [normal](#property_normal) e [invertido](#property_invertido)
+* `cruce`: Dos tramos de vía que se cruzan pero no se conectan, requiere [l1](#property_l1) y [l2](#property_l2)
+* `paragolpe`: Fin de un trazado, requiere [desde](#property_desde)
+* `triple`: Un cambio con tres alternativas, requiere [punta](#property_punta), [izq](#property_izq), [centro](#property_centro) y [der](#property_der)
+
+@property tipo {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+Se usa en las celdas de [tipo](#property_tipo) `linea`, `cruce` y `paragolpe`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property desde {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+Se usa en las celdas de [tipo](#property_tipo) `linea` y `cruce`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property hasta {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios, define el tronco común del que se abren las alternativas.
+Se usa en las celdas de [tipo](#property_tipo) `cambio` y `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property punta {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios, habitualmente, define el lado que sale recto.
+Se usa en las celdas de [tipo](#property_tipo) `cambio`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property normal {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios, habitualmente, define el lado que sale en curva.
+Se usa en las celdas de [tipo](#property_tipo) `cambio`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property invertido {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios triples, habitualmente, define el lado que sale en curva a la izquierda.
+Se usa en las celdas de [tipo](#property_tipo) `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property izq {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios triples, habitualmente, define el lado que sale recto opuesto a la [punta](#property_punta).
+Se usa en las celdas de [tipo](#property_tipo) `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property centro {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios triples, habitualmente, define el lado que sale en curva a la derecha.
+Se usa en las celdas de [tipo](#property_tipo) `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property der {String}
+*/
+/**
+Define una de las vías que se cruzan en esta celda.
+Contendrá un objecto con propiedades [desde](#property_desde) y [hasta](#property_hacia) como un trampo de vía normal
+Se usa en las celdas de [tipo](#property_tipo) `cruce`.
+
+@property l1 {Object}
+*/
+/**
+Define una de las vías que se cruzan en esta celda.
+Contendrá un objecto con propiedades [desde](#property_desde) y [hasta](#property_hacia) como un trampo de vía normal
+Se usa en las celdas de [tipo](#property_tipo) `cruce`.
+
+@property l2 {Object}
+*/
+/**
+Define el conjunto de las señales contenidas en esta celda.
+Ver [ConfigSenal](ConfigSenal.html).
+Cada señal está indexada por la dirección del tramo de vía a cuyo lado se encuentra.
+
+@property senales {Object}
+*/
+
 },{"./common.js":2,"./component/parcelEv.js":5,"./senal.js":15,"lodash":23}],2:[function(require,module,exports){
 "use strict";
 
@@ -374,6 +492,8 @@ exports.ANG = ANG;
 /**
 Helper functions to generate standard HTTP requests using the
 [xhr](https://www.npmjs.com/package/xhr) npm module.
+
+All methods return a Promise.
 
 It is integrated with the rendering engine so that upon completion of a request,
 a redraw is requested.
@@ -811,18 +931,18 @@ var EventEmitter = require('events').EventEmitter,
 
 var simpleEventListener = function simpleEventListener(listener, ev) {
 	vDOM.redrawPending();
-	vDOM.redrawReady((typeof listener == 'string' ? this[listener] : listener).call(this, ev));
+	vDOM.redrawReady((typeof listener == 'string' ? this[listener] : listener).call(this, ev) === false);
 },
     pickyEventListener = function pickyEventListener(cbOrSel, ev) {
 	var _this = this;
 
 	var target = ev.target;
 	vDOM.redrawPending();
-	vDOM.redrawReady(!_.every(cbOrSel, function (listener, cssSel) {
+	vDOM.redrawReady(!_.all(cbOrSel, function (listener, cssSel) {
 		if (target.matches(cssSel)) {
-			return !(typeof listener == 'string' ? _this[listener] : listener).call(_this, ev);
+			return (typeof listener == 'string' ? _this[listener] : listener).call(_this, ev) === false;
 		}
-		return true; // Otherwise, cancel the redraw
+		return false; // Otherwise, cancel the redraw
 	}));
 };
 
@@ -842,7 +962,7 @@ followed either by a listener function or a further object.
   This limits the kind of DOM element or elements whose events you want to listen to.
   The function will then be called only when the element generating it satisfies the condition.
 
-`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.
+`ParcelEv` will queue a request to redraw the page unless all of the listeners agree to cancel it by all returning exactly `false`.
 
 `ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.
 See: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)
@@ -2373,17 +2493,50 @@ Object.defineProperty(exports, '__esModule', {
 var _ = require('lodash');
 
 var prioridades = ['verde', 'precaucion', 'alto'];
+/**
+Clases cuyas instancias manejan cada tipo de enclavamiento disponible.
+
+@module CTC
+@submodule enclavamientos
+*/
+/**
+Clase abstracta de la cual deben heredar todos las que manejan cada uno de los enclavamientos.
+
+@class Enclavamiento
+@constructor
+@param config {ConfigEnclavamiento} Datos de configuración de cada enclavamiento.
+@param sector {Sector} Instancia del sector en que se encuentran los elementos enclavados.
+*/
 
 var Enclavamiento = (function () {
 	function Enclavamiento(config, sector) {
 		_classCallCheck(this, Enclavamiento);
 
+		/**
+  Referencia al sector en que se encuentran los elementos enclavados.
+
+  @property sector {Sector}
+  */
 		this.sector = sector;
 		_.merge(this, config);
 	}
 
 	_createClass(Enclavamiento, [{
 		key: 'toJSON',
+
+		/**
+  Asegura que los elementos enclavados se encuentran en estados iniciales válidos.
+
+  @method inicial
+  @returns {Boolean} Indica que al verificar el estado, ha debido hacer alguna modificación.
+  */
+		// Este método debe ser redefinido en cada uno de los enclavamientos.
+		/**
+  Devuelve la configuración instantánea del enclavamiento.
+
+  @method toJSON
+  @return {Object} Descripción del enclavamiento
+  */
 		value: function toJSON() {
 			return {
 				tipo: this.tipo
@@ -2391,18 +2544,54 @@ var Enclavamiento = (function () {
 		}
 	}, {
 		key: 'toString',
+
+		/**
+  Versión formateada de la configuración instantánea del enclavamiento.
+
+  @method toString
+  @return {String}
+  */
 		value: function toString() {
 			return JSON.stringify(this.toJSON(), null, 2);
 		}
 	}, {
 		key: 'destructor',
-		value: function destructor() {}
+
+		/**
+  Libera los recursos tomados, en este caso, la referencia al sector.
+
+  @method destructor
+  */
+		value: function destructor() {
+			this.sector = null;
+		}
 	}]);
 
 	return Enclavamiento;
 })();
 
 var Enclavamientos = {
+	/**
+ Asegura que los cambios en dos o más celdas se mueven a la par. Si uno cambia, el otro también.
+
+ @example
+ 	{
+ 		"tipo": "apareados",
+ 		"celdas": ["4,4", "5,5"]
+ 	},
+
+ @class Enclavamiento.Apareados
+ @extends Enclavamiento
+ @constructor
+ @param config {ConfigEnclavamiento} Datos de configuración de cada enclavamiento.
+ @param sector {Sector} Instancia del sector en que se encuentran los elementos enclavados.
+ */
+	/**
+ Lista las coordenadas de las celdas cuyos cambios han de estar apareados.
+
+ @property celdas {Array}
+ */
+
 	apareados: (function (_Enclavamiento) {
 		function Apareados(config, sector) {
 			var _this = this;
@@ -2420,6 +2609,15 @@ var Enclavamientos = {
 
 		_createClass(Apareados, [{
 			key: 'onCambio',
+
+			/**
+   Responde al evento [cambio](Celda.html#event_cambio) de cualquiera de las celdas apareadas
+   para actuar sobre las apareadas
+
+   @method onCambio
+   @param celda {Celda} instancia de la celda que originó el cambio.
+   @param desviado {Boolean} Indica si el cambio está en su posición alternativa.
+   */
 			value: function onCambio(celda, desviado) {
 				var _this2 = this;
 
@@ -2475,6 +2673,56 @@ var Enclavamientos = {
 
 		return Apareados;
 	})(Enclavamiento),
+	/**
+ Modifica el estado de una señal en función del estado de un cambio.
+ @example
+ 	{
+ 		"tipo": "senalCambio",
+ 		"senal": "8,3,SE",
+ 		"celda": "8,3",
+ 		"normal": {
+ 			"primaria": "verde",
+ 			"izq": "alto"
+ 		},
+ 		"desviado": {
+ 			"primaria": "alto",
+ 			"izq": "precaucion"
+ 		}
+ 	},
+
+ @class Enclavamiento.SenalCambio
+ @extends Enclavamiento
+ @constructor
+ @param config {ConfigEnclavamiento} Datos de configuración de cada enclavamiento.
+ @param sector {Sector} Instancia del sector en que se encuentran los elementos enclavados.
+ */
+	/**
+ Coordenada de la celda que contiene el cambio que afecta la señal.
+
+ @property celda {String}
+ */
+	/**
+ Coordenada de la señal que responde al estado del cambio.
+
+ @property senal {String}
+ */
+	/**
+ Configuración de las señales cuando el cambio está en su posición normal.
+
+ Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ y el estado en que han de estar (`verde`, `precaucion` o `alto`).
+
+ @property normal {Object}
+ */
+	/**
+ Configuración de las señales cuando el cambio está en su posición desviada.
+
+ Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ y el estado en que han de estar (`verde`, `precaucion` o `alto`).
+
+ @property desviado {Object}
+ */
+
 	senalCambio: (function (_Enclavamiento2) {
 		function SenalCambio(config, sector) {
 			_classCallCheck(this, SenalCambio);
@@ -2488,10 +2736,19 @@ var Enclavamientos = {
 
 		_createClass(SenalCambio, [{
 			key: 'onCambio',
-			value: function onCambio(celda, estado) {
+
+			/**
+   Responde al evento [cambio](Celda.html#event_cambio) de la [celda](#property_celda) que afecta
+   a esta señal.
+
+   @method onCambio
+   @param celda {Celda} instancia de la celda que originó el cambio.
+   @param desviado {Boolean} Indica si el cambio está en su posición alternativa.
+   */
+			value: function onCambio(celda, desviado) {
 				var senal = this.sector.getSenal(this.senal),
 				    cambiosEfectuados = 0;
-				_.each(this[estado ? 'desviado' : 'normal'], function (color, luz) {
+				_.each(this[desviado ? 'desviado' : 'normal'], function (color, luz) {
 					//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
 					if (senal[luz].estado != color) {
 						senal[luz].estado = color;
@@ -2526,6 +2783,71 @@ var Enclavamientos = {
 
 		return SenalCambio;
 	})(Enclavamiento),
+	/**
+ Modifica el estado de una señal en función del estado de un triple.
+
+ @example
+ 	{
+ 		"tipo": "senalTriple",
+ 		"senal": "2,4,W",
+ 		"celda": "2,4",
+ 		"izq": {
+ 			"izq": "verde",
+ 			"primaria": "alto",
+ 			"der": "alto"
+ 		},
+ 		"centro": {
+ 			"izq": "alto",
+ 			"primaria": "verde",
+ 			"der": "alto"
+ 		},
+ 		"der": {
+ 			"izq": "alto",
+ 			"primaria": "alto",
+ 			"der": "verde"
+ 		}
+ 	}
+
+ @class Enclavamiento.SenalTriple
+ @extends Enclavamiento
+ @constructor
+ @param config {ConfigEnclavamiento} Datos de configuración de cada enclavamiento.
+ @param sector {Sector} Instancia del sector en que se encuentran los elementos enclavados.
+ */
+	/**
+ Coordenada de la celda que contiene el cambio que afecta la señal.
+
+ @property celda {String}
+ */
+	/**
+ Coordenada de la señal que responde al estado del cambio.
+
+ @property senal {String}
+ */
+	/**
+ Configuración de las señales cuando el cambio está en su posición izquierda.
+
+ Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ y el estado en que han de estar (`verde`, `precaucion` o `alto`).
+
+ @property izq {Object}
+ */
+	/**
+ Configuración de las señales cuando el cambio está en su posición central.
+
+ Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ y el estado en que han de estar (`verde`, `precaucion` o `alto`).
+
+ @property centro {Object}
+ */
+	/**
+ Configuración de las señales cuando el cambio está en su posición derecha.
+
+ Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ y el estado en que han de estar (`verde`, `precaucion` o `alto`).
+
+ @property der {Object}
+ */
 	senalTriple: (function (_Enclavamiento3) {
 		function SenalTriple(config, sector) {
 			_classCallCheck(this, SenalTriple);
@@ -2539,11 +2861,20 @@ var Enclavamientos = {
 
 		_createClass(SenalTriple, [{
 			key: 'onCambio',
-			value: function onCambio(celda, estado) {
+
+			/**
+   Responde al evento [cambio](Celda.html#event_cambio) de la celda que contiene el cambio
+   triple que afecta a esta señal.
+
+   @method onCambio
+   @param celda {Celda} instancia de la celda que originó el cambio.
+   @param posicion {Boolean} Indica la posición del cambio.
+   */
+			value: function onCambio(celda, posicion) {
 				var senal = this.sector.getSenal(this.senal),
 				    cambiosEfectuados = 0;
 
-				_.each(this[['izq', 'centro', 'der'][estado + 1]], function (color, luz) {
+				_.each(this[['izq', 'centro', 'der'][posicion + 1]], function (color, luz) {
 					//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
 					if (senal[luz].estado != color) {
 						senal[luz].estado = color;
@@ -2580,6 +2911,17 @@ var Enclavamientos = {
 		return SenalTriple;
 	})(Enclavamiento)
 };
+/**
+Fábrica de enclavamientos.
+Al crear una instancia de esta clase se devuelve una subclase de [Enclavamiento](Enclavamiento.html)
+que corresponde al [tipo](configEnclavamiento.html#property_tipo) de enclavamiento que define.
+
+@class EnclavamientoFactory
+@constructor
+@param enclavamiento {Object} Configuración del enclavamiento.
+@param sector {Sector} Sector en que se encuentran los elementos del enclavamiento.
+@returns {Enclavamiento} Instancia de [Enclavamiento](Enclavamiento.html) acorde al [tipo](ConfigEnclavamiento.html#property_tipo)
+*/
 
 var EnclavamientoFactory = function EnclavamientoFactory(enclavamiento, sector) {
 	_classCallCheck(this, EnclavamientoFactory);
@@ -2589,6 +2931,31 @@ var EnclavamientoFactory = function EnclavamientoFactory(enclavamiento, sector) 
 
 exports['default'] = EnclavamientoFactory;
 module.exports = exports['default'];
+
+/**
+Describe la relación entre el estado de un elemento del sector y otro u otros.
+
+Cada tipo de enclavamiento actua de forma diferente.  Se lo distingue por el [tipo](#property_tipo).
+
+@module CTC
+@submodule configEnclavamiento
+*/
+/**
+Provee la información de un enclavamiento.
+
+Las propiedades de cada entrada corresponden a cada tipo de enclavamiento
+salvo la propiedad [tipo](#property_tipo) que es común a todas ellas.
+Los valores de cada entrada se le pasa como argumento al constructor de cada tipo de enclavamiento.
+La información sobre estos parámetros se encuentra en la documentación para cada uno de estos enclavamientos.
+
+@class ConfigEnclavamiento
+@static
+*/
+/**
+Identifica al tipo de enclavamiento.
+
+@property tipo {String}
+*/
 
 },{"lodash":23}],10:[function(require,module,exports){
 'use strict';
@@ -3187,10 +3554,24 @@ var _ANCHO_CELDA = require('./common.js');
 /* jshint node:true, esnext:true */
 /* global window */
 
+/**
+@module CTC
+@submodule sector
+
+*/
+
 'use strict';
 
 var _ = require('lodash'),
     http = require('./component/http.js');
+
+/**
+
+@class Sector
+@extends ParcelEv
+@constructor
+@param config {Object} Sector configuration file as described in [SectorConfig](SectorConfig.html)
+*/
 
 var Sector = (function (_ParcelEv) {
 	function Sector(config) {
@@ -3329,6 +3710,57 @@ var Sector = (function (_ParcelEv) {
 exports['default'] = Sector;
 module.exports = exports['default'];
 
+/**
+Provee la descripción de un sector.
+@module CTC
+@submodule configSector
+*/
+/**
+La clase ConfigSector es un objeto que describe todas las características del sector
+No tiene métodos ni eventos, simplemente datos.
+
+@class ConfigSector
+@static
+*/
+
+/**
+Una descripción textual del sector.  Se mostrará al usuario en la solapa por lo que debe ser breve.
+@property descr {String}
+*/
+/**
+El número de celdas a lo ancho que usa este sector
+@property ancho {Number}
+*/
+/**
+El número de celdas a lo alto que usa este sector
+@property alto {Number}
+*/
+/**
+Objeto conteniendo la configuración de cada celda del sector.
+Cada celda estará indexada por su coordenada X,Y y contendrá un objeto de clase [ConfigCelda](ConfigCelda.html).
+No es necesario proveer entradas para celdas que no contienen vías.
+Las celdas se puede enumerar en cualquier orden.
+
+@example
+    {
+      "celdas": {
+        "6,5": {
+          "tipo": "linea",
+          "desde": "W",
+          "hacia": "SE"
+        },
+        ...
+      }
+    }
+@property celdas {Object}
+*/
+/**
+Lista de los enclavamientos entre los elementos del sector
+@property enclavamientos {Array}
+@optional
+
+*/
+
 },{"./celda.js":1,"./common.js":2,"./component/http.js":3,"./component/parcelEv.js":5,"./enclavamientos.js":9,"./estado.js":10,"lodash":23}],15:[function(require,module,exports){
 'use strict';
 
@@ -3358,6 +3790,21 @@ var _ANCHO_CELDA$CENTRO_CELDA$ANG = require('./common.js');
 
 var _ = require('lodash');
 
+/**
+Maneja el mostrado de las señales en una celda
+
+@module CTC
+@submodule senal
+*/
+/**
+Maneja el mostrado de las señales en una celda
+
+@class Senal
+@extends Parcel
+@constructor
+@param config {ConfigSenal} Configuración de la esta señal
+*/
+
 var Senal = (function (_Parcel) {
 	function Senal(config) {
 		_classCallCheck(this, Senal);
@@ -3372,6 +3819,13 @@ var Senal = (function (_Parcel) {
 
 	_createClass(Senal, [{
 		key: 'dir',
+
+		/**
+  Determina la dirección del ramal a la que está asociada la señal.
+  Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+  @property dir {String}
+  */
 		set: function (value) {
 			this._dir = value;
 			this.attributes = {
@@ -3432,6 +3886,52 @@ var Senal = (function (_Parcel) {
 
 exports['default'] = Senal;
 module.exports = exports['default'];
+
+/**
+Describe las señales existentes en una celda.
+
+@module CTC
+@submodule configSenal
+*/
+
+/**
+Describe una señal.
+Cada señal puede tener hasta 3 luces, una principal y una a cada lado.
+Cada luz puede estar en varios estados (ver [estado](#property_estado)), que determinan su color.
+Por razones de espacio, aún cuando la señal real pudiera tener múltiples focos,
+uno de cada color, de las cuales una sóla está encendida en cada momento,
+en el mímico, se muestra como un único círculo que cambia de color.
+
+@class ConfigSenal
+@static
+*/
+
+/**
+Contiene información de la luz primaria de la señal.
+
+@property primaria {ConfigLuz}
+*/
+/**
+Contiene información de la luz secundaria que se muestra abajo a la derecha de la señal primaria.
+
+@property der {ConfigLuz}
+*/
+/**
+Contiene información de la luz secundaria que se muestra abajo a la izquierda de la señal primaria.
+
+@property izq {ConfigLuz}
+*/
+/**
+Contiene la definición de una luz dentro de una señal.
+
+@class ConfigLuz
+*/
+/**
+Indica el estado de la señal.
+
+Puede ser `verde`, `precaucion` o `alto`.
+@property estado {String}
+*/
 
 },{"./common.js":2,"./component/parcel.js":4,"lodash":23}],16:[function(require,module,exports){
 'use strict';

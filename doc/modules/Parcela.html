@@ -38,11 +38,23 @@
 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ConfigCelda.html">ConfigCelda</a></li>
+                                <li><a href="../classes/ConfigEnclavamiento.html">ConfigEnclavamiento</a></li>
+                                <li><a href="../classes/ConfigLuz.html">ConfigLuz</a></li>
+                                <li><a href="../classes/ConfigSector.html">ConfigSector</a></li>
+                                <li><a href="../classes/ConfigSenal.html">ConfigSenal</a></li>
+                                <li><a href="../classes/Enclavamiento.html">Enclavamiento</a></li>
+                                <li><a href="../classes/Enclavamiento.Apareados.html">Enclavamiento.Apareados</a></li>
+                                <li><a href="../classes/Enclavamiento.SenalCambio.html">Enclavamiento.SenalCambio</a></li>
+                                <li><a href="../classes/Enclavamiento.SenalTriple.html">Enclavamiento.SenalTriple</a></li>
+                                <li><a href="../classes/EnclavamientoFactory.html">EnclavamientoFactory</a></li>
                                 <li><a href="../classes/EventEmitter.html">EventEmitter</a></li>
                                 <li><a href="../classes/http.html">http</a></li>
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
+                                <li><a href="../classes/Sector.html">Sector</a></li>
+                                <li><a href="../classes/Senal.html">Senal</a></li>
                                 <li><a href="../classes/TabView.html">TabView</a></li>
                                 <li><a href="../classes/vDOM.html">vDOM</a></li>
                                 <li><a href="../classes/vNode.html">vNode</a></li>
@@ -51,12 +63,20 @@
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/Browserify.html">Browserify</a></li>
                                 <li><a href="../modules/Components.html">Components</a></li>
+                                <li><a href="../modules/configCelda.html">configCelda</a></li>
+                                <li><a href="../modules/configEnclavamiento.html">configEnclavamiento</a></li>
+                                <li><a href="../modules/configSector.html">configSector</a></li>
+                                <li><a href="../modules/configSenal.html">configSenal</a></li>
+                                <li><a href="../modules/CTC.html">CTC</a></li>
+                                <li><a href="../modules/enclavamientos.html">enclavamientos</a></li>
                                 <li><a href="../modules/Events.html">Events</a></li>
                                 <li><a href="../modules/http.html">http</a></li>
                                 <li><a href="../modules/parcel.html">parcel</a></li>
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
+                                <li><a href="../modules/sector.html">sector</a></li>
+                                <li><a href="../modules/senal.html">senal</a></li>
                                 <li><a href="../modules/TabView.html">TabView</a></li>
                                 <li><a href="../modules/utilities.html">utilities</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
@@ -180,7 +200,7 @@ followed either by a listener function or a further object.
   This limits the kind of DOM element or elements whose events you want to listen to.
   The function will then be called only when the element generating it satisfies the condition.
 
-<code>ParcelEv</code> will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.
+<code>ParcelEv</code> will queue a request to redraw the page unless all of the listeners agree to cancel it by all returning exactly <code>false</code>.
 
 <code>ParcelEv</code> is also an <code>EventEmitter</code> thus, it will have methods to deal with custom events.
 See: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)

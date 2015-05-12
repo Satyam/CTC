@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>virtual-DOM - ctc</title>
+    <title>configCelda - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -113,19 +113,27 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>virtual-DOM Module</h1>
+<h1>configCelda Module</h1>
 <div class="box clearfix meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/js_component_virtual-dom.js.html#l793"><code>js&#x2F;component&#x2F;virtual-dom.js:793</code></a>
+            Defined in: <a href="../files/js_celda.js.html#l235"><code>js&#x2F;celda.js:235</code></a>
         </div>
 
 </div>
 
 
 <div class="box intro">
-    <p>Provides virtual dom functionality for other modules.</p>
+    <p>Contiene la configuración de una celda dentro de un sector.</p>
+<p>Cada celda contendrá un tramo de vía que podrá ser de varios tipos (ver <a href="#property_tipo">tipo</a>).</p>
+<p>Todas las vías pasan por el centro de la celda
+y se extienden a los extremos de la misma en 8 direcciones posibles
+designadas según los puntos cardinales: <code>N</code>, <code>NE</code>, <code>E</code>, <code>SE</code>, <code>S</code>, <code>SW</code>, <code>W</code>, <code>NW</code>
+donde conectan con las vías de la celda vecina.</p>
+<p>Una celda puede tener señales, una por cada dirección.
+Ver <a href="ConfigSenal.html">ConfigSenal</a>.
+Todas las señales apuntan tal que sean visibles al tren que entra a la celda.</p>
 
 </div>
 
@@ -136,13 +144,8 @@
 
             <ul class="module-classes">
                 <li class="module-class">
-                    <a href="../classes/vDOM.html">
-                        vDOM
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/vNode.html">
-                        vNode
+                    <a href="../classes/ConfigCelda.html">
+                        ConfigCelda
                     </a>
                 </li>
             </ul>

@@ -226,3 +226,122 @@ export default class CeldaFactory {
 		return new Celdas[celda.tipo](celda, coords);
 	}
 }
+
+
+/**
+@module CTC
+@submodule configCelda
+*/
+/**
+Contiene la configuración de una celda dentro de un sector.
+
+Cada celda contendrá un tramo de vía que podrá ser de varios tipos (ver [tipo](#property_tipo)).
+
+Todas las vías pasan por el centro de la celda
+y se extienden a los extremos de la misma en 8 direcciones posibles
+designadas según los puntos cardinales: `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+donde conectan con las vías de la celda vecina.
+
+Una celda puede tener señales, una por cada dirección.
+Ver [ConfigSenal](ConfigSenal.html).
+Todas las señales apuntan tal que sean visibles al tren que entra a la celda.
+
+
+
+@class ConfigCelda
+@static
+*/
+/**
+Define el tipo de vías que contiene esta celda.  Puede ser uno de:
+
+* `linea`: Un tramo de vía simple, requiere [desde](#property_desde) y [hasta](#property_hasta)
+* `cambio`: Un cambio, require [punta](#property_punta), [normal](#property_normal) e [invertido](#property_invertido)
+* `cruce`: Dos tramos de vía que se cruzan pero no se conectan, requiere [l1](#property_l1) y [l2](#property_l2)
+* `paragolpe`: Fin de un trazado, requiere [desde](#property_desde)
+* `triple`: Un cambio con tres alternativas, requiere [punta](#property_punta), [izq](#property_izq), [centro](#property_centro) y [der](#property_der)
+
+@property tipo {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+Se usa en las celdas de [tipo](#property_tipo) `linea`, `cruce` y `paragolpe`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property desde {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+Se usa en las celdas de [tipo](#property_tipo) `linea` y `cruce`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property hasta {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios, define el tronco común del que se abren las alternativas.
+Se usa en las celdas de [tipo](#property_tipo) `cambio` y `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property punta {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios, habitualmente, define el lado que sale recto.
+Se usa en las celdas de [tipo](#property_tipo) `cambio`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property normal {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios, habitualmente, define el lado que sale en curva.
+Se usa en las celdas de [tipo](#property_tipo) `cambio`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property invertido {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios triples, habitualmente, define el lado que sale en curva a la izquierda.
+Se usa en las celdas de [tipo](#property_tipo) `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property izq {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios triples, habitualmente, define el lado que sale recto opuesto a la [punta](#property_punta).
+Se usa en las celdas de [tipo](#property_tipo) `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property centro {String}
+*/
+/**
+Una de las direcciones en que se extiende la vía contenida en este sector.
+En los cambios triples, habitualmente, define el lado que sale en curva a la derecha.
+Se usa en las celdas de [tipo](#property_tipo) `triple`.
+Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
+
+@property der {String}
+*/
+/**
+Define una de las vías que se cruzan en esta celda.
+Contendrá un objecto con propiedades [desde](#property_desde) y [hasta](#property_hacia) como un trampo de vía normal
+Se usa en las celdas de [tipo](#property_tipo) `cruce`.
+
+@property l1 {Object}
+*/
+/**
+Define una de las vías que se cruzan en esta celda.
+Contendrá un objecto con propiedades [desde](#property_desde) y [hasta](#property_hacia) como un trampo de vía normal
+Se usa en las celdas de [tipo](#property_tipo) `cruce`.
+
+@property l2 {Object}
+*/
+/**
+Define el conjunto de las señales contenidas en esta celda.
+Ver [ConfigSenal](ConfigSenal.html).
+Cada señal está indexada por la dirección del tramo de vía a cuyo lado se encuentra.
+
+@property senales {Object}
+*/

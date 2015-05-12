@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>virtual-DOM - ctc</title>
+    <title>js/senal.js - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -113,43 +113,145 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>virtual-DOM Module</h1>
-<div class="box clearfix meta">
+<h1 class="file-heading">File: js/senal.js</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+/* jshint node:true , esnext:true*/
 
-        <div class="foundat">
-            Defined in: <a href="../files/js_component_virtual-dom.js.html#l793"><code>js&#x2F;component&#x2F;virtual-dom.js:793</code></a>
-        </div>
+&quot;use strict&quot;;
+import Parcel from &#x27;./component/parcel.js&#x27;;
+var _ = require(&#x27;lodash&#x27;);
+import {ANCHO_CELDA, CENTRO_CELDA, ANG} from &#x27;./common.js&#x27;;
 
-</div>
+/**
+Maneja el mostrado de las señales en una celda
 
+@module CTC
+@submodule senal
+*/
+/**
+Maneja el mostrado de las señales en una celda
 
-<div class="box intro">
-    <p>Provides virtual dom functionality for other modules.</p>
+@class Senal
+@extends Parcel
+@constructor
+@param config {ConfigSenal} Configuración de la esta señal
+*/
+export default class Senal extends Parcel {
+	constructor (config) {
+		super();
+		this.containerType = &#x27;g&#x27;;
+		this.className = &#x27;senal&#x27;;
+		_.merge(this, config);
+	}
+	/**
+	Determina la dirección del ramal a la que está asociada la señal.
+	Puede ser uno de &#x60;N&#x60;, &#x60;NE&#x60;, &#x60;E&#x60;, &#x60;SE&#x60;, &#x60;S&#x60;, &#x60;SW&#x60;, &#x60;W&#x60;, &#x60;NW&#x60;
 
-</div>
+	@property dir {String}
+	*/
+	set dir (value) {
+		this._dir = value;
+		this.attributes = {
+			transform: &#x60;rotate(${ANG[value]}, ${CENTRO_CELDA}, ${CENTRO_CELDA})&#x60;
+		};
+	}
+	get dir () {
+		return this._dir;
+	}
+/*
 
+		&lt;g style=&quot;stroke-width:2&quot; transform=&quot;rotate(225,50,50)&quot;&gt;
+			&lt;line x1=&quot;97&quot; y1=&quot;38&quot; x2=&quot;83&quot; y2=&quot;38&quot; /&gt;
+			&lt;line x1=&quot;97&quot; y1=&quot;33&quot; x2=&quot;97&quot; y2=&quot;43&quot; /&gt;
+			&lt;circle cx=&quot;87&quot; cy=&quot;38&quot; r=&quot;5&quot; fill=&quot;green&quot;/&gt;
+			&lt;!--circle cx=&quot;87&quot; cy=&quot;33&quot; r=&quot;5&quot; fill=&quot;yellow&quot;/&gt; der
+			&lt;circle cx=&quot;87&quot; cy=&quot;43&quot; r=&quot;5&quot; fill=&quot;red&quot;/--&gt;
+		&lt;/g&gt;
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-            <p>This module provides the following classes:</p>
+		*/
 
-            <ul class="module-classes">
-                <li class="module-class">
-                    <a href="../classes/vDOM.html">
-                        vDOM
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/vNode.html">
-                        vNode
-                    </a>
-                </li>
-            </ul>
-    </div>
+	view (v) {
+		var r = 5,
+			y = 38,
+			xTope = 95,
+			x1 = xTope - 2 * r,
+			x2 = x1 -2* r + 2,
+			s = [
+				v(&#x27;line&#x27;, { x1:xTope, y1:y, x2:x2 + r,  y2:y}),
+				v(&#x27;line&#x27;, { x1:xTope, y1:y-r, x2:xTope,  y2:y+r})
+			];
+		if (this.izq || this.der) {
+			s.push(v(&#x27;circle.primaria&#x27;, { cx:x2,  cy:y, r:r, className:this.primaria.estado}));
+			if (this.izq) {
+				s.push(v(&#x27;circle.izq&#x27;, { cx:x1,  cy:y+r, r:r, className:this.izq.estado}));
+			}
+			if (this.der) {
+				s.push(v(&#x27;circle.der&#x27;, { cx:x1,  cy:y-r, r:r, className:this.der.estado}));
+			}
+		} else {
+			s.push(v(&#x27;circle.primaria&#x27;, { cx:x1,  cy:y, r:r, className:this.primaria.estado}));
+		}
+		return s;
+	}
 
-    <div class="yui3-u-1-2">
-    </div>
+	toJSON() {
+		return {
+			primaria:this.primaria,
+			izq: this.izq,
+			der: this.der
+		};
+	}
+}
+
+/**
+Describe las señales existentes en una celda.
+
+@module CTC
+@submodule configSenal
+*/
+
+/**
+Describe una señal.
+Cada señal puede tener hasta 3 luces, una principal y una a cada lado.
+Cada luz puede estar en varios estados (ver [estado](#property_estado)), que determinan su color.
+Por razones de espacio, aún cuando la señal real pudiera tener múltiples focos,
+uno de cada color, de las cuales una sóla está encendida en cada momento,
+en el mímico, se muestra como un único círculo que cambia de color.
+
+@class ConfigSenal
+@static
+*/
+
+/**
+Contiene información de la luz primaria de la señal.
+
+@property primaria {ConfigLuz}
+*/
+/**
+Contiene información de la luz secundaria que se muestra abajo a la derecha de la señal primaria.
+
+@property der {ConfigLuz}
+*/
+/**
+Contiene información de la luz secundaria que se muestra abajo a la izquierda de la señal primaria.
+
+@property izq {ConfigLuz}
+*/
+/**
+Contiene la definición de una luz dentro de una señal.
+
+@class ConfigLuz
+*/
+/**
+Indica el estado de la señal.
+
+Puede ser &#x60;verde&#x60;, &#x60;precaucion&#x60; o &#x60;alto&#x60;.
+@property estado {String}
+*/
+
+    </pre>
 </div>
                     </div>
                 </div>

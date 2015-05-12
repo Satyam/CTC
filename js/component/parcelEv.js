@@ -15,16 +15,16 @@ var EventEmitter = require('events').EventEmitter,
 
 var simpleEventListener = function (listener, ev) {
 		vDOM.redrawPending();
-		vDOM.redrawReady((typeof listener == 'string' ? this[listener] : listener).call(this, ev));
+		vDOM.redrawReady((typeof listener == 'string' ? this[listener] : listener).call(this, ev) === false);
 	},
 	pickyEventListener = function (cbOrSel, ev) {
 		var target = ev.target;
 		vDOM.redrawPending();
-		vDOM.redrawReady(!_.every(cbOrSel, (listener, cssSel) => {
+		vDOM.redrawReady(!_.all(cbOrSel, (listener, cssSel) => {
 			if (target.matches(cssSel)) {
-				return !(typeof listener == 'string' ? this[listener] : listener).call(this, ev);
+				return (typeof listener == 'string' ? this[listener] : listener).call(this, ev) === false;
 			}
-			return true; // Otherwise, cancel the redraw
+			return false; // Otherwise, cancel the redraw
 		}));
 	};
 
@@ -45,7 +45,7 @@ followed either by a listener function or a further object.
   This limits the kind of DOM element or elements whose events you want to listen to.
   The function will then be called only when the element generating it satisfies the condition.
 
-`ParcelEv` will queue a request to redraw the page unless any of the listeners cancels it by returning a **truish** value.
+`ParcelEv` will queue a request to redraw the page unless all of the listeners agree to cancel it by all returning exactly `false`.
 
 `ParcelEv` is also an `EventEmitter` thus, it will have methods to deal with custom events.
 See: [NodeJS EventEmitter](https://nodejs.org/docs/latest/api/events.html)

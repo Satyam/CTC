@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>virtual-DOM - ctc</title>
+    <title>js/sector.js - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -113,43 +113,205 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>virtual-DOM Module</h1>
-<div class="box clearfix meta">
+<h1 class="file-heading">File: js/sector.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/* jshint node:true, esnext:true */
+/* global window */
+
+/**
+@module CTC
+@submodule sector
+
+*/
 
 
-        <div class="foundat">
-            Defined in: <a href="../files/js_component_virtual-dom.js.html#l793"><code>js&#x2F;component&#x2F;virtual-dom.js:793</code></a>
-        </div>
 
-</div>
+&quot;use strict&quot;;
 
+import ParcelEv from &#x27;./component/parcelEv.js&#x27;;
+import EstadoFactory from &#x27;./estado.js&#x27;;
+import CeldaFactory from &#x27;./celda.js&#x27;;
+import EnclavamientoFactory from &#x27;./enclavamientos.js&#x27;;
 
-<div class="box intro">
-    <p>Provides virtual dom functionality for other modules.</p>
+var _ = require(&#x27;lodash&#x27;),
+	http = require(&#x27;./component/http.js&#x27;);
 
-</div>
+import {ANCHO_CELDA} from &#x27;./common.js&#x27;;
 
+/**
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-            <p>This module provides the following classes:</p>
+@class Sector
+@extends ParcelEv
+@constructor
+@param config {Object} Sector configuration file as described in [SectorConfig](SectorConfig.html)
+*/
+export default class Sector extends ParcelEv {
+	constructor (config) {
+		super();
 
-            <ul class="module-classes">
-                <li class="module-class">
-                    <a href="../classes/vDOM.html">
-                        vDOM
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/vNode.html">
-                        vNode
-                    </a>
-                </li>
-            </ul>
-    </div>
+		this.className = &quot;pure-g sector&quot;;
 
-    <div class="yui3-u-1-2">
-    </div>
+		this.ancho = 1;
+		this.alto = 1;
+		this.celdas = {};
+		this.enclavamientos = [];
+		this.seleccionada;
+		this.estado = &#x27;&#x27;;
+		this.name = config.sector;
+
+		http.get(&#x27;data/&#x27; + config.sector + &#x27;.json&#x27;)
+		.then(response =&gt; {
+			var body = response.body;
+
+			this.alto = body.alto;
+			this.ancho = body.ancho;
+			this.descr = body.descr;
+			_.forEach(body.celdas, (celda, coords) =&gt; {
+				this.celdas[coords] = new CeldaFactory(celda, coords).on(&#x27;click&#x27;, this.onClick.bind(this));
+			});
+			if (body.enclavamientos) {
+				body.enclavamientos.forEach((enclavamiento) =&gt; {
+					this.enclavamientos.push(new EnclavamientoFactory(enclavamiento, this));
+				});
+				let reintentos = 10;
+				while (reintentos--) {
+					if (this.enclavamientos.reduce((prevVal, enclavamiento) =&gt; {
+						return prevVal + enclavamiento.inicial()?1:0;
+					},0) === 0) break;
+				}
+				if (reintentos == -1) {
+					alert(&quot;El estado inicial de los enclavamientos no se ha estabilizado luego de varias iteraciones&quot;);
+				}
+			}
+			this.emit(&#x27;loaded&#x27;);
+		})
+		.catch(response =&gt; {
+			this.fail = response.message || (response.statusCode + &#x27;: &#x27; + response.body);
+			this.emit(&#x27;failed&#x27;, this.fail);
+		});
+	}
+	onClick (celda) {
+		if (this.seleccionada) {
+			this.seleccionada.seleccionada = false;
+		}
+		this.seleccionada = celda;
+		celda.seleccionada = true;
+
+		if (this.estado.destructor) {
+			this.estado.destructor();
+		}
+		this.estado = new EstadoFactory(this, celda);
+	}
+
+	view (v) {
+		if (this.fail) return v(&#x27;div.pure-u-1-1&#x27;,v(&#x27;.error&#x27;, this.fail));
+		return [
+			v(&#x27;div.pure-u-3-4&#x27;,
+			  	v(
+					&#x27;svg&#x27;, {
+						viewBox: &quot;0 0 &quot; + (this.ancho * ANCHO_CELDA) + &#x27; &#x27; + (this.alto * ANCHO_CELDA),
+						xmlns: &quot;http://www.w3.org/2000/svg&quot;,
+						version: 1.1
+					}, _.values(this.celdas)
+				)
+			 ),
+			 v(&#x27;div.pure-u-1-4&#x27;, v(&#x27;div.estado&#x27;, {style: {height: window.innerHeight + &#x27;px&#x27;}}, this.estado))
+		];
+	}
+
+	getCelda (x, y) {
+		var coord = arguments.length == 2?x + &#x27;,&#x27; + y:x;
+		return this.celdas[coord];
+	}
+
+	getSenal (x, y, dir) {
+		var partes = Array.prototype.slice.call(arguments, 0);
+		if (partes.length === 1) {
+			partes = partes[0].split(&#x27;,&#x27;);
+		}
+		var celda = this.celdas[[partes[0], partes[1]].join(&#x27;,&#x27;)];
+		if (celda) return celda.senales[partes[2]];
+		// otherwise, returns undefined
+	}
+
+	toJSON () {
+		return {
+			name: this.name,
+			ancho:this.ancho,
+			alto:this.alto,
+			descr: this.descr,
+			celdas: _.mapValues(this.celdas, (celda) =&gt; celda.toJSON()),
+			enclavamientos: _.map(this.enclavamientos, (enclavamiento) =&gt; enclavamiento.toJSON())
+		};
+
+	}
+	toString () {
+		return JSON.stringify(this.toJSON(), null, 2);
+	}
+
+	destructor () {
+		if (this.estado.destructor) {
+			this.estado.destructor();
+		}
+		_.each(this.enclavamientos,  enclavamiento =&gt; enclavamiento.destructor());
+		_.each(this.celdas, celda =&gt; celda.destructor());
+		super.destructor();
+	}
+}
+/**
+Provee la descripción de un sector.
+@module CTC
+@submodule configSector
+*/
+/**
+La clase ConfigSector es un objeto que describe todas las características del sector
+No tiene métodos ni eventos, simplemente datos.
+
+@class ConfigSector
+@static
+*/
+
+/**
+Una descripción textual del sector.  Se mostrará al usuario en la solapa por lo que debe ser breve.
+@property descr {String}
+*/
+/**
+El número de celdas a lo ancho que usa este sector
+@property ancho {Number}
+*/
+/**
+El número de celdas a lo alto que usa este sector
+@property alto {Number}
+*/
+/**
+Objeto conteniendo la configuración de cada celda del sector.
+Cada celda estará indexada por su coordenada X,Y y contendrá un objeto de clase [ConfigCelda](ConfigCelda.html).
+No es necesario proveer entradas para celdas que no contienen vías.
+Las celdas se puede enumerar en cualquier orden.
+
+@example
+    {
+      &quot;celdas&quot;: {
+        &quot;6,5&quot;: {
+          &quot;tipo&quot;: &quot;linea&quot;,
+          &quot;desde&quot;: &quot;W&quot;,
+          &quot;hacia&quot;: &quot;SE&quot;
+        },
+        ...
+      }
+    }
+@property celdas {Object}
+*/
+/**
+Lista de los enclavamientos entre los elementos del sector
+@property enclavamientos {Array}
+@optional
+
+*/
+
+    </pre>
 </div>
                     </div>
                 </div>

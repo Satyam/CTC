@@ -38,11 +38,23 @@
 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ConfigCelda.html">ConfigCelda</a></li>
+                                <li><a href="../classes/ConfigEnclavamiento.html">ConfigEnclavamiento</a></li>
+                                <li><a href="../classes/ConfigLuz.html">ConfigLuz</a></li>
+                                <li><a href="../classes/ConfigSector.html">ConfigSector</a></li>
+                                <li><a href="../classes/ConfigSenal.html">ConfigSenal</a></li>
+                                <li><a href="../classes/Enclavamiento.html">Enclavamiento</a></li>
+                                <li><a href="../classes/Enclavamiento.Apareados.html">Enclavamiento.Apareados</a></li>
+                                <li><a href="../classes/Enclavamiento.SenalCambio.html">Enclavamiento.SenalCambio</a></li>
+                                <li><a href="../classes/Enclavamiento.SenalTriple.html">Enclavamiento.SenalTriple</a></li>
+                                <li><a href="../classes/EnclavamientoFactory.html">EnclavamientoFactory</a></li>
                                 <li><a href="../classes/EventEmitter.html">EventEmitter</a></li>
                                 <li><a href="../classes/http.html">http</a></li>
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
+                                <li><a href="../classes/Sector.html">Sector</a></li>
+                                <li><a href="../classes/Senal.html">Senal</a></li>
                                 <li><a href="../classes/TabView.html">TabView</a></li>
                                 <li><a href="../classes/vDOM.html">vDOM</a></li>
                                 <li><a href="../classes/vNode.html">vNode</a></li>
@@ -51,12 +63,20 @@
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/Browserify.html">Browserify</a></li>
                                 <li><a href="../modules/Components.html">Components</a></li>
+                                <li><a href="../modules/configCelda.html">configCelda</a></li>
+                                <li><a href="../modules/configEnclavamiento.html">configEnclavamiento</a></li>
+                                <li><a href="../modules/configSector.html">configSector</a></li>
+                                <li><a href="../modules/configSenal.html">configSenal</a></li>
+                                <li><a href="../modules/CTC.html">CTC</a></li>
+                                <li><a href="../modules/enclavamientos.html">enclavamientos</a></li>
                                 <li><a href="../modules/Events.html">Events</a></li>
                                 <li><a href="../modules/http.html">http</a></li>
                                 <li><a href="../modules/parcel.html">parcel</a></li>
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
+                                <li><a href="../modules/sector.html">sector</a></li>
+                                <li><a href="../modules/senal.html">senal</a></li>
                                 <li><a href="../modules/TabView.html">TabView</a></li>
                                 <li><a href="../modules/utilities.html">utilities</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
@@ -110,6 +130,7 @@
 <div class="box intro">
     <p>Helper functions to generate standard HTTP requests using the
 <a href="https://www.npmjs.com/package/xhr">xhr</a> npm module.</p>
+<p>All methods return a Promise.</p>
 <p>It is integrated with the rendering engine so that upon completion of a request,
 a redraw is requested.</p>
 
@@ -204,7 +225,7 @@ a redraw is requested.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_http.js.html#l121"><code>js&#x2F;component&#x2F;http.js:121</code></a>
+        <a href="../files/js_component_http.js.html#l123"><code>js&#x2F;component&#x2F;http.js:123</code></a>
         </p>
 
 
@@ -220,7 +241,7 @@ It queues and resolves a redraw request.</p>
 <ul>
 <li><code>body</code>{Object} An object with the JSON response already parsed.</li>
 <li><code>statusCode</code> {Number} Values in the 2xx range will be considered successful, others, a rejection</li>
-<li><code>method</code> {String} The value <code>POST</code> </li>
+<li><code>method</code> {String} The value <code>POST</code></li>
 <li><code>headers</code> {Object} The XHR response headers</li>
 <li><code>url</code> {String} The URL requested</li>
 <li><code>rawRequest</code> {XMLHttpRequest} The XHR object for this request</li>
@@ -295,7 +316,7 @@ It queues and resolves a redraw request.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_http.js.html#l204"><code>js&#x2F;component&#x2F;http.js:204</code></a>
+        <a href="../files/js_component_http.js.html#l206"><code>js&#x2F;component&#x2F;http.js:206</code></a>
         </p>
 
 
@@ -310,7 +331,7 @@ It queues and resolves a redraw request.</p>
 <ul>
 <li><code>body</code>{Object} An object with the JSON response already parsed.</li>
 <li><code>statusCode</code> {Number} Values in the 2xx range will be considered successful, others, a rejection</li>
-<li><code>method</code> {String} The value <code>DEL</code> </li>
+<li><code>method</code> {String} The value <code>DEL</code></li>
 <li><code>headers</code> {Object} The XHR response headers</li>
 <li><code>url</code> {String} The URL requested</li>
 <li><code>rawRequest</code> {XMLHttpRequest} The XHR object for this request</li>
@@ -374,7 +395,7 @@ It queues and resolves a redraw request.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_http.js.html#l62"><code>js&#x2F;component&#x2F;http.js:62</code></a>
+        <a href="../files/js_component_http.js.html#l64"><code>js&#x2F;component&#x2F;http.js:64</code></a>
         </p>
 
 
@@ -389,7 +410,7 @@ It queues and resolves a redraw request.</p>
 <ul>
 <li><code>body</code>{Object} An object with the JSON response already parsed.</li>
 <li><code>statusCode</code> {Number} Values in the 2xx range will be considered successful, others, a rejection</li>
-<li><code>method</code> {String} The value <code>GET</code> </li>
+<li><code>method</code> {String} The value <code>GET</code></li>
 <li><code>headers</code> {Object} The XHR response headers</li>
 <li><code>url</code> {String} The URL requested</li>
 <li><code>rawRequest</code> {XMLHttpRequest} The XHR object for this request</li>
@@ -453,7 +474,7 @@ It queues and resolves a redraw request.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_http.js.html#l24"><code>js&#x2F;component&#x2F;http.js:24</code></a>
+        <a href="../files/js_component_http.js.html#l26"><code>js&#x2F;component&#x2F;http.js:26</code></a>
         </p>
 
 
@@ -461,13 +482,14 @@ It queues and resolves a redraw request.</p>
     </div>
 
     <div class="description">
-        <p>Generic entry point for HTTP requests.<br>It returns a Promise.
+        <p>Generic entry point for HTTP requests.
+It returns a Promise.
 It queues and resolves a redraw request.</p>
 <p>When resolved successfully, the response will contain:</p>
 <ul>
 <li><code>body</code>{Object||String} It the request was for JSON data, it will be returned as an object, otherwise, the plain XHR <code>responseText</code>.</li>
 <li><code>statusCode</code> {Number} Values in the 2xx range will be considered successful, others, a rejection</li>
-<li><code>method</code> {String} The HTTP method that had been requested </li>
+<li><code>method</code> {String} The HTTP method that had been requested</li>
 <li><code>headers</code> {Object} The XHR response headers</li>
 <li><code>url</code> {String} The URL requested</li>
 <li><code>rawRequest</code> {XMLHttpRequest} The XHR object for this request</li>
@@ -531,7 +553,7 @@ It queues and resolves a redraw request.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_http.js.html#l90"><code>js&#x2F;component&#x2F;http.js:90</code></a>
+        <a href="../files/js_component_http.js.html#l92"><code>js&#x2F;component&#x2F;http.js:92</code></a>
         </p>
 
 
@@ -546,7 +568,7 @@ It queues and resolves a redraw request.</p>
 <ul>
 <li><code>body</code>{Object} An object with the JSON response already parsed.</li>
 <li><code>statusCode</code> {Number} Values in the 2xx range will be considered successful, others, a rejection</li>
-<li><code>method</code> {String} The value <code>POST</code> </li>
+<li><code>method</code> {String} The value <code>POST</code></li>
 <li><code>headers</code> {Object} The XHR response headers</li>
 <li><code>url</code> {String} The URL requested</li>
 <li><code>rawRequest</code> {XMLHttpRequest} The XHR object for this request</li>
@@ -615,7 +637,7 @@ It queues and resolves a redraw request.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_http.js.html#l146"><code>js&#x2F;component&#x2F;http.js:146</code></a>
+        <a href="../files/js_component_http.js.html#l148"><code>js&#x2F;component&#x2F;http.js:148</code></a>
         </p>
 
 
@@ -630,7 +652,7 @@ It queues and resolves a redraw request.</p>
 <ul>
 <li><code>body</code>{Object} An object with the JSON response already parsed.</li>
 <li><code>statusCode</code> {Number} Values in the 2xx range will be considered successful, others, a rejection</li>
-<li><code>method</code> {String} The value <code>PUT</code> </li>
+<li><code>method</code> {String} The value <code>PUT</code></li>
 <li><code>headers</code> {Object} The XHR response headers</li>
 <li><code>url</code> {String} The URL requested</li>
 <li><code>rawRequest</code> {XMLHttpRequest} The XHR object for this request</li>
@@ -708,7 +730,7 @@ It queues and resolves a redraw request.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_http.js.html#l179"><code>js&#x2F;component&#x2F;http.js:179</code></a>
+        <a href="../files/js_component_http.js.html#l181"><code>js&#x2F;component&#x2F;http.js:181</code></a>
         </p>
 
 
@@ -724,7 +746,7 @@ It queues and resolves a redraw request.</p>
 <ul>
 <li><code>body</code>{Object} An object with the JSON response already parsed.</li>
 <li><code>statusCode</code> {Number} Values in the 2xx range will be considered successful, others, a rejection</li>
-<li><code>method</code> {String} The value <code>PUT</code> </li>
+<li><code>method</code> {String} The value <code>PUT</code></li>
 <li><code>headers</code> {Object} The XHR response headers</li>
 <li><code>url</code> {String} The URL requested</li>
 <li><code>rawRequest</code> {XMLHttpRequest} The XHR object for this request</li>

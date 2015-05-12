@@ -10,6 +10,8 @@
 Helper functions to generate standard HTTP requests using the
 [xhr](https://www.npmjs.com/package/xhr) npm module.
 
+All methods return a Promise.
+
 It is integrated with the rendering engine so that upon completion of a request,
 a redraw is requested.
 

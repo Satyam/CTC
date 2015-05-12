@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Parcel - ctc</title>
+    <title>Senal - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -113,42 +113,37 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Parcel Class</h1>
+<h1>Senal Class</h1>
 <div class="box meta">
 
-
-        <div class="foundat">
-            Defined in: <a href="../files/js_component_parcel.js.html#l11"><code>js&#x2F;component&#x2F;parcel.js:11</code></a>
+        <div class="extends">
+            Extends <a href="../classes/Parcel.html" class="crosslink">Parcel</a>
         </div>
 
-            Module: <a href="../modules/parcel.html">parcel</a><br>
-            Parent Module: <a href="../modules/Parcela.html">Parcela</a>
+        <div class="foundat">
+            Defined in: <a href="../files/js_senal.js.html#l14"><code>js&#x2F;senal.js:14</code></a>
+        </div>
+
+            Module: <a href="../modules/configSenal.html">configSenal</a><br>
+            Parent Module: <a href="../modules/CTC.html">CTC</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Represents a section of real state in the HTML page.</p>
-<p>All Parcela apps should inherit from this class.</p>
-<p>Several properties might be configured on instantiation:</p>
-<ul>
-<li><a href="#property_containerType">containerType</a></li>
-<li><a href="#property_className">className</a></li>
-<li><a href="#property_attributes">attributes</a></li>
-<li><a href="#property_text">text</a></li>
-</ul>
+    <p>Maneja el mostrado de las señales en una celda</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Parcel" class="method item">
-            <h3 class="name"><code>Parcel</code></h3>
+        <div id="method_Senal" class="method item">
+            <h3 class="name"><code>Senal</code></h3>
 
                 <div class="args">
                     <span class="paren">(</span><ul class="args-list inline commas">
                         <li class="arg">
-                                <code class="optional">[config]</code>
+                                <code>config</code>
                         </li>
                     </ul><span class="paren">)</span>
                 </div>
@@ -163,7 +158,7 @@
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/js_component_parcel.js.html#l11"><code>js&#x2F;component&#x2F;parcel.js:11</code></a>
+                <a href="../files/js_senal.js.html#l14"><code>js&#x2F;senal.js:14</code></a>
                 </p>
 
 
@@ -179,13 +174,12 @@
 
                     <ul class="params-list">
                         <li class="param">
-                                <code class="param-name optional">[config]</code>
-                                <span class="type">Object</span>
-                                <span class="flag optional" title="This parameter is optional.">optional</span>
+                                <code class="param-name">config</code>
+                                <span class="type"><a href="../classes/ConfigSenal.html" class="crosslink">ConfigSenal</a></span>
 
 
                             <div class="param-description">
-                                <p>Initial configuration.</p>
+                                <p>Configuración de la esta señal</p>
 
                             </div>
 
@@ -213,24 +207,24 @@
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
-                            <li class="index-item method">
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
                                 <a href="#method_destructor">destructor</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_postView">postView</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_preView">preView</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_stamp">stamp</a>
 
                             </li>
-                            <li class="index-item method">
+                            <li class="index-item method inherited">
                                 <a href="#method_view">view</a>
 
                             </li>
@@ -240,20 +234,24 @@
                 <div class="index-section properties">
                     <h3>Properties</h3>
 
-                    <ul class="index-list properties">
-                            <li class="index-item property">
+                    <ul class="index-list properties extends">
+                            <li class="index-item property inherited">
                                 <a href="#property_attributes">attributes</a>
 
                             </li>
-                            <li class="index-item property">
+                            <li class="index-item property inherited">
                                 <a href="#property_className">className</a>
 
                             </li>
-                            <li class="index-item property">
+                            <li class="index-item property inherited">
                                 <a href="#property_containerType">containerType</a>
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_dir">dir</a>
+
+                            </li>
+                            <li class="index-item property inherited">
                                 <a href="#property_text">text</a>
 
                             </li>
@@ -266,7 +264,7 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_destructor" class="method item">
+<div id="method_destructor" class="method item inherited">
     <h3 class="name"><code>destructor</code></h3>
 
         <span class="paren">()</span>
@@ -279,8 +277,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/Parcel.html#method_destructor">Parcel</a>:
         <a href="../files/js_component_parcel.js.html#l75"><code>js&#x2F;component&#x2F;parcel.js:75</code></a>
         </p>
 
@@ -297,7 +295,7 @@
 
 
 </div>
-<div id="method_postView" class="method item">
+<div id="method_postView" class="method item inherited">
     <h3 class="name"><code>postView</code></h3>
 
         <span class="paren">()</span>
@@ -310,8 +308,8 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/Parcel.html#method_postView">Parcel</a>:
         <a href="../files/js_component_parcel.js.html#l93"><code>js&#x2F;component&#x2F;parcel.js:93</code></a>
         </p>
 
@@ -331,7 +329,7 @@ parcel is visible such as animations.</p>
 
 
 </div>
-<div id="method_preView" class="method item">
+<div id="method_preView" class="method item inherited">
     <h3 class="name"><code>preView</code></h3>
 
         <span class="paren">()</span>
@@ -344,8 +342,8 @@ parcel is visible such as animations.</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/Parcel.html#method_preView">Parcel</a>:
         <a href="../files/js_component_parcel.js.html#l82"><code>js&#x2F;component&#x2F;parcel.js:82</code></a>
         </p>
 
@@ -365,7 +363,7 @@ parcel is visible such as animations.</p>
 
 
 </div>
-<div id="method_stamp" class="method item">
+<div id="method_stamp" class="method item inherited">
     <h3 class="name"><code>stamp</code></h3>
 
         <span class="paren">()</span>
@@ -381,8 +379,8 @@ parcel is visible such as animations.</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/Parcel.html#method_stamp">Parcel</a>:
         <a href="../files/js_component_parcel.js.html#l146"><code>js&#x2F;component&#x2F;parcel.js:146</code></a>
         </p>
 
@@ -412,7 +410,7 @@ It may be overriden for optimization purposes.</p>
 
 
 </div>
-<div id="method_view" class="method item">
+<div id="method_view" class="method item inherited">
     <h3 class="name"><code>view</code></h3>
 
         <div class="args">
@@ -434,8 +432,8 @@ It may be overriden for optimization purposes.</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
+                <p>Inherited from
+                <a href="../classes/Parcel.html#method_view">Parcel</a>:
         <a href="../files/js_component_parcel.js.html#l106"><code>js&#x2F;component&#x2F;parcel.js:106</code></a>
         </p>
 
@@ -516,7 +514,7 @@ view: function (v) {
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-                    <div id="property_attributes" class="property item">
+                    <div id="property_attributes" class="property item inherited">
                         <h3 class="name"><code>attributes</code></h3>
                         <span class="type">Object</span>
 
@@ -525,8 +523,8 @@ view: function (v) {
 
 
                         <div class="meta">
-                                    <p>
-                                    Defined in
+                                    <p>Inherited from
+                                    <a href="../classes/Parcel.html#property_attributes">Parcel</a>:
                             <a href="../files/js_component_parcel.js.html#l54"><code>js&#x2F;component&#x2F;parcel.js:54</code></a>
                             </p>
 
@@ -542,7 +540,7 @@ view: function (v) {
 
 
                     </div>
-                    <div id="property_className" class="property item">
+                    <div id="property_className" class="property item inherited">
                         <h3 class="name"><code>className</code></h3>
                         <span class="type">String</span>
 
@@ -551,8 +549,8 @@ view: function (v) {
 
 
                         <div class="meta">
-                                    <p>
-                                    Defined in
+                                    <p>Inherited from
+                                    <a href="../classes/Parcel.html#property_className">Parcel</a>:
                             <a href="../files/js_component_parcel.js.html#l43"><code>js&#x2F;component&#x2F;parcel.js:43</code></a>
                             </p>
 
@@ -570,7 +568,7 @@ view: function (v) {
 
 
                     </div>
-                    <div id="property_containerType" class="property item">
+                    <div id="property_containerType" class="property item inherited">
                         <h3 class="name"><code>containerType</code></h3>
                         <span class="type">String</span>
 
@@ -579,8 +577,8 @@ view: function (v) {
 
 
                         <div class="meta">
-                                    <p>
-                                    Defined in
+                                    <p>Inherited from
+                                    <a href="../classes/Parcel.html#property_containerType">Parcel</a>:
                             <a href="../files/js_component_parcel.js.html#l32"><code>js&#x2F;component&#x2F;parcel.js:32</code></a>
                             </p>
 
@@ -597,7 +595,34 @@ view: function (v) {
 
 
                     </div>
-                    <div id="property_text" class="property item">
+                    <div id="property_dir" class="property item">
+                        <h3 class="name"><code>dir</code></h3>
+                        <span class="type">String</span>
+
+
+
+
+
+                        <div class="meta">
+                                        <p>Provided by the <a href="../modules/senal.html">senal</a> module.</p>
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_senal.js.html#l29"><code>js&#x2F;senal.js:29</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Determina la dirección del ramal a la que está asociada la señal.
+                    Puede ser uno de <code>N</code>, <code>NE</code>, <code>E</code>, <code>SE</code>, <code>S</code>, <code>SW</code>, <code>W</code>, <code>NW</code></p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property_text" class="property item inherited">
                         <h3 class="name"><code>text</code></h3>
                         <span class="type">String</span>
 
@@ -606,8 +631,8 @@ view: function (v) {
 
 
                         <div class="meta">
-                                    <p>
-                                    Defined in
+                                    <p>Inherited from
+                                    <a href="../classes/Parcel.html#property_text">Parcel</a>:
                             <a href="../files/js_component_parcel.js.html#l63"><code>js&#x2F;component&#x2F;parcel.js:63</code></a>
                             </p>
 

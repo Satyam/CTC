@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Parcel - ctc</title>
+    <title>Enclavamiento.SenalCambio - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -113,42 +113,40 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Parcel Class</h1>
+<h1>Enclavamiento.SenalCambio Class</h1>
 <div class="box meta">
 
-
-        <div class="foundat">
-            Defined in: <a href="../files/js_component_parcel.js.html#l11"><code>js&#x2F;component&#x2F;parcel.js:11</code></a>
+        <div class="extends">
+            Extends <a href="../classes/Enclavamiento.html" class="crosslink">Enclavamiento</a>
         </div>
 
-            Module: <a href="../modules/parcel.html">parcel</a><br>
-            Parent Module: <a href="../modules/Parcela.html">Parcela</a>
+        <div class="foundat">
+            Defined in: <a href="../files/js_enclavamientos.js.html#l153"><code>js&#x2F;enclavamientos.js:153</code></a>
+        </div>
+
+            Module: <a href="../modules/enclavamientos.html">enclavamientos</a><br>
+            Parent Module: <a href="../modules/CTC.html">CTC</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Represents a section of real state in the HTML page.</p>
-<p>All Parcela apps should inherit from this class.</p>
-<p>Several properties might be configured on instantiation:</p>
-<ul>
-<li><a href="#property_containerType">containerType</a></li>
-<li><a href="#property_className">className</a></li>
-<li><a href="#property_attributes">attributes</a></li>
-<li><a href="#property_text">text</a></li>
-</ul>
+    <p>Modifica el estado de una señal en función del estado de un cambio.</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Parcel" class="method item">
-            <h3 class="name"><code>Parcel</code></h3>
+        <div id="method_Enclavamiento.SenalCambio" class="method item">
+            <h3 class="name"><code>Enclavamiento.SenalCambio</code></h3>
 
                 <div class="args">
                     <span class="paren">(</span><ul class="args-list inline commas">
                         <li class="arg">
-                                <code class="optional">[config]</code>
+                                <code>config</code>
+                        </li>
+                        <li class="arg">
+                                <code>sector</code>
                         </li>
                     </ul><span class="paren">)</span>
                 </div>
@@ -163,7 +161,7 @@
             <div class="meta">
                         <p>
                         Defined in
-                <a href="../files/js_component_parcel.js.html#l11"><code>js&#x2F;component&#x2F;parcel.js:11</code></a>
+                <a href="../files/js_enclavamientos.js.html#l153"><code>js&#x2F;enclavamientos.js:153</code></a>
                 </p>
 
 
@@ -179,13 +177,23 @@
 
                     <ul class="params-list">
                         <li class="param">
-                                <code class="param-name optional">[config]</code>
-                                <span class="type">Object</span>
-                                <span class="flag optional" title="This parameter is optional.">optional</span>
+                                <code class="param-name">config</code>
+                                <span class="type"><a href="../classes/ConfigEnclavamiento.html" class="crosslink">ConfigEnclavamiento</a></span>
 
 
                             <div class="param-description">
-                                <p>Initial configuration.</p>
+                                <p>Datos de configuración de cada enclavamiento.</p>
+
+                            </div>
+
+                        </li>
+                        <li class="param">
+                                <code class="param-name">sector</code>
+                                <span class="type"><a href="../classes/Sector.html" class="crosslink">Sector</a></span>
+
+
+                            <div class="param-description">
+                                <p>Instancia del sector en que se encuentran los elementos enclavados.</p>
 
                             </div>
 
@@ -195,6 +203,26 @@
 
 
 
+                <div class="example">
+                    <h4>Example:</h4>
+
+                    <div class="example-content">
+                        <pre class="code prettyprint"><code>{
+            &quot;tipo&quot;: &quot;senalCambio&quot;,
+            &quot;senal&quot;: &quot;8,3,SE&quot;,
+            &quot;celda&quot;: &quot;8,3&quot;,
+            &quot;normal&quot;: {
+                &quot;primaria&quot;: &quot;verde&quot;,
+                &quot;izq&quot;: &quot;alto&quot;
+            },
+            &quot;desviado&quot;: {
+                &quot;primaria&quot;: &quot;alto&quot;,
+                &quot;izq&quot;: &quot;precaucion&quot;
+            }
+        },
+        </code></pre>
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -213,25 +241,25 @@
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
-                            <li class="index-item method">
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
                                 <a href="#method_destructor">destructor</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_postView">postView</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_inicial">inicial</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_preView">preView</a>
+                                <a href="#method_onCambio">onCambio</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_stamp">stamp</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_toJSON">toJSON</a>
 
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_view">view</a>
+                            <li class="index-item method inherited">
+                                <a href="#method_toString">toString</a>
 
                             </li>
                     </ul>
@@ -240,21 +268,25 @@
                 <div class="index-section properties">
                     <h3>Properties</h3>
 
-                    <ul class="index-list properties">
+                    <ul class="index-list properties extends">
                             <li class="index-item property">
-                                <a href="#property_attributes">attributes</a>
+                                <a href="#property_celda">celda</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_className">className</a>
+                                <a href="#property_desviado">desviado</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_containerType">containerType</a>
+                                <a href="#property_normal">normal</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_sector">sector</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_text">text</a>
+                                <a href="#property_senal">senal</a>
 
                             </li>
                     </ul>
@@ -266,7 +298,7 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_destructor" class="method item">
+<div id="method_destructor" class="method item inherited">
     <h3 class="name"><code>destructor</code></h3>
 
         <span class="paren">()</span>
@@ -279,9 +311,9 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/js_component_parcel.js.html#l75"><code>js&#x2F;component&#x2F;parcel.js:75</code></a>
+                <p>Inherited from
+                <a href="../classes/Enclavamiento.html#method_destructor">Enclavamiento</a>:
+        <a href="../files/js_enclavamientos.js.html#l63"><code>js&#x2F;enclavamientos.js:63</code></a>
         </p>
 
 
@@ -289,7 +321,7 @@
     </div>
 
     <div class="description">
-        <p>Destructor.  The existing implementation does nothing.</p>
+        <p>Libera los recursos tomados, en este caso, la referencia al sector.</p>
 
     </div>
 
@@ -297,81 +329,13 @@
 
 
 </div>
-<div id="method_postView" class="method item">
-    <h3 class="name"><code>postView</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/js_component_parcel.js.html#l93"><code>js&#x2F;component&#x2F;parcel.js:93</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Called by the renderer after this Parcel is hidden.</p>
-<p>It is a good place to deactivate resources that are only usefull while the
-parcel is visible such as animations.</p>
-<p>The provided method is empty, it can be overriden by each Parcela app.</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_preView" class="method item">
-    <h3 class="name"><code>preView</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/js_component_parcel.js.html#l82"><code>js&#x2F;component&#x2F;parcel.js:82</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Called by the renderer before this Parcel is shown for the first time.
-It is a good place to activate resources that are only usefull while the
-parcel is visible such as animations.</p>
-<p>The provided method is empty, it can be overriden by each Parcela app.</p>
-
-    </div>
-
-
-
-
-</div>
-<div id="method_stamp" class="method item">
-    <h3 class="name"><code>stamp</code></h3>
+<div id="method_inicial" class="method item inherited">
+    <h3 class="name"><code>inicial</code></h3>
 
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">Value</span>
+            <span class="type">Boolean</span>
         </span>
 
 
@@ -381,9 +345,9 @@ parcel is visible such as animations.</p>
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/js_component_parcel.js.html#l146"><code>js&#x2F;component&#x2F;parcel.js:146</code></a>
+                <p>Inherited from
+                <a href="../classes/Enclavamiento.html#method_inicial">Enclavamiento</a>:
+        <a href="../files/js_enclavamientos.js.html#l36"><code>js&#x2F;enclavamientos.js:36</code></a>
         </p>
 
 
@@ -391,11 +355,7 @@ parcel is visible such as animations.</p>
     </div>
 
     <div class="description">
-        <p>Returns a value representative of the state of this parcel.
-The system will compare it with the previous state and if they match,
-it will assume the view has not changed.</p>
-<p>The default function returns <code>NaN</code> which is always different than itself.
-It may be overriden for optimization purposes.</p>
+        <p>Asegura que los elementos enclavados se encuentran en estados iniciales válidos.</p>
 
     </div>
 
@@ -404,28 +364,28 @@ It may be overriden for optimization purposes.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Value</span>:
-                    <p>any simple value (no objects or such) that reflects the state of this view</p>
+                        <span class="type">Boolean</span>:
+                    <p>Indica que al verificar el estado, ha debido hacer alguna modificación.</p>
 
             </div>
         </div>
 
 
 </div>
-<div id="method_view" class="method item">
-    <h3 class="name"><code>view</code></h3>
+<div id="method_onCambio" class="method item">
+    <h3 class="name"><code>onCambio</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>v</code>
+                        <code>celda</code>
+                </li>
+                <li class="arg">
+                        <code>desviado</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type">VNode</span>
-        </span>
 
 
 
@@ -436,7 +396,7 @@ It may be overriden for optimization purposes.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/js_component_parcel.js.html#l106"><code>js&#x2F;component&#x2F;parcel.js:106</code></a>
+        <a href="../files/js_enclavamientos.js.html#l209"><code>js&#x2F;enclavamientos.js:209</code></a>
         </p>
 
 
@@ -444,17 +404,8 @@ It may be overriden for optimization purposes.</p>
     </div>
 
     <div class="description">
-        <p>Returns the virtual DOM for this parcel.</p>
-<p>Must be overriden by each Parcela app.  By default, it returns the value of the <a href="#property_text">text</a> property.</p>
-<p>A virtual DOM node is composed of the following elements:</p>
-<ul>
-<li><code>tag</code> {String}:  Name of the HTML tag for the node to be created.</li>
-<li><code>attrs</code> {Object}: Collection of HTML attributes to be added to the node.</li>
-<li><code>children</code> {Array}: Array of virtual DOM nodes that will become children of the created node.</li>
-</ul>
-<p>As a convenience, this method receives a reference to the <a href="vDOM.html#method_vNode"><code>vDOM.vNode</code></a>
-helper function to produce the virtual DOM node, however it may be ignored as long as a
-virtual DOM node is somehow returned.</p>
+        <p>Responde al evento <a href="Celda.html#event_cambio">cambio</a> de la <a href="#property_celda">celda</a> que afecta
+a esta señal.</p>
 
     </div>
 
@@ -463,12 +414,23 @@ virtual DOM node is somehow returned.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">v</code>
-                        <span class="type">Function</span>
+                        <code class="param-name">celda</code>
+                        <span class="type">Celda</span>
 
 
                     <div class="param-description">
-                        <p>Reference to the <a href="vDOM.html#method_vNode"><code>vDOM.vNode</code></a> helper function.</p>
+                        <p>instancia de la celda que originó el cambio.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">desviado</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>Indica si el cambio está en su posición alternativa.</p>
 
                     </div>
 
@@ -476,48 +438,125 @@ virtual DOM node is somehow returned.</p>
             </ul>
         </div>
 
+
+
+</div>
+<div id="method_toJSON" class="method item inherited">
+    <h3 class="name"><code>toJSON</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Object</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Enclavamiento.html#method_toJSON">Enclavamiento</a>:
+        <a href="../files/js_enclavamientos.js.html#l43"><code>js&#x2F;enclavamientos.js:43</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Devuelve la configuración instantánea del enclavamiento.</p>
+
+    </div>
+
+
         <div class="returns">
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">VNode</span>:
-                    <p>The expected virtual DOM node for this parcel.</p>
+                        <span class="type">Object</span>:
+                    <p>Descripción del enclavamiento</p>
 
             </div>
         </div>
 
 
-        <div class="example">
-            <h4>Example:</h4>
+</div>
+<div id="method_toString" class="method item inherited">
+    <h3 class="name"><code>toString</code></h3>
 
-            <div class="example-content">
-                <pre class="code prettyprint"><code>view: function (v) {
-    return v(&#39;div&#39;, [
-        v(&#39;p.joyful&#39;,&#39;Hello Workd!&#39;),
-        v(&#39;hr&#39;),
-        v(&#39;p&#39;,&#39;(Not very original, really)&#39;)
-    ]);
-}
+        <span class="paren">()</span>
 
-// Equivalent to:
-view: function (v) {
-    return {tag:&#39;div&#39;, attrs:{},children: [
-        {tag:&#39;p&#39;, attrs:{className:&#39;joyful&#39;}, children:[&#39;Hellow World!&#39;]},
-        {tag:&#39;hr&#39;, attrs: {}, children: []},
-        {tag:&#39;p&#39;, attrs:{}, children:[&#39;(Not very original, really)&#39;]}
-    ]};
-}
-</code></pre>
+        <span class="returns-inline">
+            <span class="type">String</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Enclavamiento.html#method_toString">Enclavamiento</a>:
+        <a href="../files/js_enclavamientos.js.html#l54"><code>js&#x2F;enclavamientos.js:54</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Versión formateada de la configuración instantánea del enclavamiento.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">String</span>:
             </div>
         </div>
+
+
 </div>
             </div>
 
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-                    <div id="property_attributes" class="property item">
-                        <h3 class="name"><code>attributes</code></h3>
+                    <div id="property_celda" class="property item">
+                        <h3 class="name"><code>celda</code></h3>
+                        <span class="type">String</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_enclavamientos.js.html#l176"><code>js&#x2F;enclavamientos.js:176</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Coordenada de la celda que contiene el cambio que afecta la señal.</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property_desviado" class="property item">
+                        <h3 class="name"><code>desviado</code></h3>
                         <span class="type">Object</span>
 
 
@@ -527,23 +566,76 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_parcel.js.html#l54"><code>js&#x2F;component&#x2F;parcel.js:54</code></a>
+                            <a href="../files/js_enclavamientos.js.html#l194"><code>js&#x2F;enclavamientos.js:194</code></a>
                             </p>
 
 
                         </div>
 
                         <div class="description">
-                            <p>Hash map of attributes for the container element</p>
+                            <p>Configuración de las señales cuando el cambio está en su posición desviada.</p>
+                    <p>Contiene una tabla indicando cada una de las luces (<code>primaria</code>, <code>izq</code> o <code>der</code>)
+                    y el estado en que han de estar (<code>verde</code>, <code>precaucion</code> o <code>alto</code>).</p>
 
                         </div>
 
-                            <p><strong>Default:</strong> :null</p>
 
 
                     </div>
-                    <div id="property_className" class="property item">
-                        <h3 class="name"><code>className</code></h3>
+                    <div id="property_normal" class="property item">
+                        <h3 class="name"><code>normal</code></h3>
+                        <span class="type">Object</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_enclavamientos.js.html#l186"><code>js&#x2F;enclavamientos.js:186</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Configuración de las señales cuando el cambio está en su posición normal.</p>
+                    <p>Contiene una tabla indicando cada una de las luces (<code>primaria</code>, <code>izq</code> o <code>der</code>)
+                    y el estado en que han de estar (<code>verde</code>, <code>precaucion</code> o <code>alto</code>).</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property_sector" class="property item inherited">
+                        <h3 class="name"><code>sector</code></h3>
+                        <span class="type"><a href="../classes/Sector.html" class="crosslink">Sector</a></span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/Enclavamiento.html#property_sector">Enclavamiento</a>:
+                            <a href="../files/js_enclavamientos.js.html#l28"><code>js&#x2F;enclavamientos.js:28</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Referencia al sector en que se encuentran los elementos enclavados.</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property_senal" class="property item">
+                        <h3 class="name"><code>senal</code></h3>
                         <span class="type">String</span>
 
 
@@ -553,72 +645,14 @@ view: function (v) {
                         <div class="meta">
                                     <p>
                                     Defined in
-                            <a href="../files/js_component_parcel.js.html#l43"><code>js&#x2F;component&#x2F;parcel.js:43</code></a>
+                            <a href="../files/js_enclavamientos.js.html#l181"><code>js&#x2F;enclavamientos.js:181</code></a>
                             </p>
 
 
                         </div>
 
                         <div class="description">
-                            <p>CSS className to add to the container for this parcel.
-                    This is in addition to the className of <code>parcel</code> which is
-                    automatically added to all Parcel containers.</p>
-
-                        </div>
-
-                            <p><strong>Default:</strong> &#x27;&#x27;</p>
-
-
-                    </div>
-                    <div id="property_containerType" class="property item">
-                        <h3 class="name"><code>containerType</code></h3>
-                        <span class="type">String</span>
-
-
-
-
-
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/js_component_parcel.js.html#l32"><code>js&#x2F;component&#x2F;parcel.js:32</code></a>
-                            </p>
-
-
-                        </div>
-
-                        <div class="description">
-                            <p>Type of DOM element that will be created to serve as a container for this Parcel.
-                    Defaults to a <code>DIV</code></p>
-
-                        </div>
-
-                            <p><strong>Default:</strong> DIV</p>
-
-
-                    </div>
-                    <div id="property_text" class="property item">
-                        <h3 class="name"><code>text</code></h3>
-                        <span class="type">String</span>
-
-
-
-
-
-                        <div class="meta">
-                                    <p>
-                                    Defined in
-                            <a href="../files/js_component_parcel.js.html#l63"><code>js&#x2F;component&#x2F;parcel.js:63</code></a>
-                            </p>
-
-
-                        </div>
-
-                        <div class="description">
-                            <p>String to be shown within the container.</p>
-                    <p>This is used, mostly, for initial testing of layouts,
-                    to have something to show within the parcel.
-                    It is rarely used in the final product.</p>
+                            <p>Coordenada de la señal que responde al estado del cambio.</p>
 
                         </div>
 

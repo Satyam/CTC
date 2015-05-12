@@ -5,6 +5,20 @@ import Parcel from './component/parcel.js';
 var _ = require('lodash');
 import {ANCHO_CELDA, CENTRO_CELDA, ANG} from './common.js';
 
+/**
+Maneja el mostrado de las señales en una celda
+
+@module CTC
+@submodule senal
+*/
+/**
+Maneja el mostrado de las señales en una celda
+
+@class Senal
+@extends Parcel
+@constructor
+@param config {ConfigSenal} Configuración de la esta señal
+*/
 export default class Senal extends Parcel {
 	constructor (config) {
 		super();
@@ -12,7 +26,12 @@ export default class Senal extends Parcel {
 		this.className = 'senal';
 		_.merge(this, config);
 	}
+	/**
+	Determina la dirección del ramal a la que está asociada la señal.
+	Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
+	@property dir {String}
+	*/
 	set dir (value) {
 		this._dir = value;
 		this.attributes = {
@@ -66,3 +85,49 @@ export default class Senal extends Parcel {
 		};
 	}
 }
+
+/**
+Describe las señales existentes en una celda.
+
+@module CTC
+@submodule configSenal
+*/
+
+/**
+Describe una señal.
+Cada señal puede tener hasta 3 luces, una principal y una a cada lado.
+Cada luz puede estar en varios estados (ver [estado](#property_estado)), que determinan su color.
+Por razones de espacio, aún cuando la señal real pudiera tener múltiples focos,
+uno de cada color, de las cuales una sóla está encendida en cada momento,
+en el mímico, se muestra como un único círculo que cambia de color.
+
+@class ConfigSenal
+@static
+*/
+
+/**
+Contiene información de la luz primaria de la señal.
+
+@property primaria {ConfigLuz}
+*/
+/**
+Contiene información de la luz secundaria que se muestra abajo a la derecha de la señal primaria.
+
+@property der {ConfigLuz}
+*/
+/**
+Contiene información de la luz secundaria que se muestra abajo a la izquierda de la señal primaria.
+
+@property izq {ConfigLuz}
+*/
+/**
+Contiene la definición de una luz dentro de una señal.
+
+@class ConfigLuz
+*/
+/**
+Indica el estado de la señal.
+
+Puede ser `verde`, `precaucion` o `alto`.
+@property estado {String}
+*/

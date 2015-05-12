@@ -38,11 +38,23 @@
 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ConfigCelda.html">ConfigCelda</a></li>
+                                <li><a href="../classes/ConfigEnclavamiento.html">ConfigEnclavamiento</a></li>
+                                <li><a href="../classes/ConfigLuz.html">ConfigLuz</a></li>
+                                <li><a href="../classes/ConfigSector.html">ConfigSector</a></li>
+                                <li><a href="../classes/ConfigSenal.html">ConfigSenal</a></li>
+                                <li><a href="../classes/Enclavamiento.html">Enclavamiento</a></li>
+                                <li><a href="../classes/Enclavamiento.Apareados.html">Enclavamiento.Apareados</a></li>
+                                <li><a href="../classes/Enclavamiento.SenalCambio.html">Enclavamiento.SenalCambio</a></li>
+                                <li><a href="../classes/Enclavamiento.SenalTriple.html">Enclavamiento.SenalTriple</a></li>
+                                <li><a href="../classes/EnclavamientoFactory.html">EnclavamientoFactory</a></li>
                                 <li><a href="../classes/EventEmitter.html">EventEmitter</a></li>
                                 <li><a href="../classes/http.html">http</a></li>
                                 <li><a href="../classes/Parcel.html">Parcel</a></li>
                                 <li><a href="../classes/ParcelEv.html">ParcelEv</a></li>
                                 <li><a href="../classes/Radio.html">Radio</a></li>
+                                <li><a href="../classes/Sector.html">Sector</a></li>
+                                <li><a href="../classes/Senal.html">Senal</a></li>
                                 <li><a href="../classes/TabView.html">TabView</a></li>
                                 <li><a href="../classes/vDOM.html">vDOM</a></li>
                                 <li><a href="../classes/vNode.html">vNode</a></li>
@@ -51,12 +63,20 @@
                             <ul id="api-modules" class="apis modules">
                                 <li><a href="../modules/Browserify.html">Browserify</a></li>
                                 <li><a href="../modules/Components.html">Components</a></li>
+                                <li><a href="../modules/configCelda.html">configCelda</a></li>
+                                <li><a href="../modules/configEnclavamiento.html">configEnclavamiento</a></li>
+                                <li><a href="../modules/configSector.html">configSector</a></li>
+                                <li><a href="../modules/configSenal.html">configSenal</a></li>
+                                <li><a href="../modules/CTC.html">CTC</a></li>
+                                <li><a href="../modules/enclavamientos.html">enclavamientos</a></li>
                                 <li><a href="../modules/Events.html">Events</a></li>
                                 <li><a href="../modules/http.html">http</a></li>
                                 <li><a href="../modules/parcel.html">parcel</a></li>
                                 <li><a href="../modules/Parcela.html">Parcela</a></li>
                                 <li><a href="../modules/parcelEv.html">parcelEv</a></li>
                                 <li><a href="../modules/radio.html">radio</a></li>
+                                <li><a href="../modules/sector.html">sector</a></li>
+                                <li><a href="../modules/senal.html">senal</a></li>
                                 <li><a href="../modules/TabView.html">TabView</a></li>
                                 <li><a href="../modules/utilities.html">utilities</a></li>
                                 <li><a href="../modules/virtual-DOM.html">virtual-DOM</a></li>
@@ -172,36 +192,11 @@ export default class Parcel {
 		if (config.text) this._text = config.text;
 	}
 	/**
-	Destructor.
-
-	The provided method checks all the instance properties and if any of them are
-	instances of Parcel or arrays of Parcel instances,
-	it will call the &#x60;destructor&#x60; method on each of the child parcels.
-
-	It is a last-resort tactic to avoid leaving stuff behind.
-	In practice, it should be overriden to destroy only what each parcel has created.
+	Destructor.  The existing implementation does nothing.
 
 	@method destructor
 	*/
-	destructor () {
-		_.each(this, (member) =&gt; {
-			if (member instanceof Parcel) member.destructor();
-			if (_.isArray(member)) {
-				_.some(member, item =&gt; {
-					if (item) {
-						if (item instanceof Parcel) {
-							item.destructor();
-						} else {
-							// If the first non-emtpy item is not a Parcel instance,
-							// it doesn&#x27;t bother checking the rest.
-							return true;
-						}
-					}
-				});
-			}
-
-		});
-	}
+	destructor () {}
 
 	/**
 	Called by the renderer before this Parcel is shown for the first time.

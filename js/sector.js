@@ -1,6 +1,14 @@
 /* jshint node:true, esnext:true */
 /* global window */
 
+/**
+@module CTC
+@submodule sector
+
+*/
+
+
+
 "use strict";
 
 import ParcelEv from './component/parcelEv.js';
@@ -13,6 +21,13 @@ var _ = require('lodash'),
 
 import {ANCHO_CELDA} from './common.js';
 
+/**
+
+@class Sector
+@extends ParcelEv
+@constructor
+@param config {Object} Sector configuration file as described in [SectorConfig](SectorConfig.html)
+*/
 export default class Sector extends ParcelEv {
 	constructor (config) {
 		super();
@@ -126,3 +141,53 @@ export default class Sector extends ParcelEv {
 		super.destructor();
 	}
 }
+/**
+Provee la descripción de un sector.
+@module CTC
+@submodule configSector
+*/
+/**
+La clase ConfigSector es un objeto que describe todas las características del sector
+No tiene métodos ni eventos, simplemente datos.
+
+@class ConfigSector
+@static
+*/
+
+/**
+Una descripción textual del sector.  Se mostrará al usuario en la solapa por lo que debe ser breve.
+@property descr {String}
+*/
+/**
+El número de celdas a lo ancho que usa este sector
+@property ancho {Number}
+*/
+/**
+El número de celdas a lo alto que usa este sector
+@property alto {Number}
+*/
+/**
+Objeto conteniendo la configuración de cada celda del sector.
+Cada celda estará indexada por su coordenada X,Y y contendrá un objeto de clase [ConfigCelda](ConfigCelda.html).
+No es necesario proveer entradas para celdas que no contienen vías.
+Las celdas se puede enumerar en cualquier orden.
+
+@example
+    {
+      "celdas": {
+        "6,5": {
+          "tipo": "linea",
+          "desde": "W",
+          "hacia": "SE"
+        },
+        ...
+      }
+    }
+@property celdas {Object}
+*/
+/**
+Lista de los enclavamientos entre los elementos del sector
+@property enclavamientos {Array}
+@optional
+
+*/

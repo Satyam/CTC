@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>virtual-DOM - ctc</title>
+    <title>ConfigSector - ctc</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -113,42 +113,221 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>virtual-DOM Module</h1>
-<div class="box clearfix meta">
+<h1>ConfigSector Class</h1>
+<div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/js_component_virtual-dom.js.html#l793"><code>js&#x2F;component&#x2F;virtual-dom.js:793</code></a>
+            Defined in: <a href="../files/js_sector.js.html#l149"><code>js&#x2F;sector.js:149</code></a>
         </div>
+
+            Module: <a href="../modules/configSector.html">configSector</a><br>
+            Parent Module: <a href="../modules/CTC.html">CTC</a>
 
 </div>
 
 
 <div class="box intro">
-    <p>Provides virtual dom functionality for other modules.</p>
+    <p>La clase ConfigSector es un objeto que describe todas las características del sector
+No tiene métodos ni eventos, simplemente datos.</p>
 
 </div>
 
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-            <p>This module provides the following classes:</p>
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-            <ul class="module-classes">
-                <li class="module-class">
-                    <a href="../classes/vDOM.html">
-                        vDOM
-                    </a>
-                </li>
-                <li class="module-class">
-                    <a href="../classes/vNode.html">
-                        vNode
-                    </a>
-                </li>
-            </ul>
-    </div>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
 
-    <div class="yui3-u-1-2">
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_alto">alto</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_ancho">ancho</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_celdas">celdas</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_descr">descr</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_enclavamientos">enclavamientos</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                    <div id="property_alto" class="property item">
+                        <h3 class="name"><code>alto</code></h3>
+                        <span class="type">Number</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_sector.js.html#l165"><code>js&#x2F;sector.js:165</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>El número de celdas a lo alto que usa este sector</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property_ancho" class="property item">
+                        <h3 class="name"><code>ancho</code></h3>
+                        <span class="type">Number</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_sector.js.html#l161"><code>js&#x2F;sector.js:161</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>El número de celdas a lo ancho que usa este sector</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property_celdas" class="property item">
+                        <h3 class="name"><code>celdas</code></h3>
+                        <span class="type">Object</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_sector.js.html#l169"><code>js&#x2F;sector.js:169</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Objeto conteniendo la configuración de cada celda del sector.
+                    Cada celda estará indexada por su coordenada X,Y y contendrá un objeto de clase <a href="ConfigCelda.html">ConfigCelda</a>.
+                    No es necesario proveer entradas para celdas que no contienen vías.
+                    Las celdas se puede enumerar en cualquier orden.</p>
+
+                        </div>
+
+
+                            <div class="example">
+                                <h4>Example:</h4>
+
+                                <div class="example-content">
+                                    <pre class="code prettyprint"><code>{
+                      &quot;celdas&quot;: {
+                        &quot;6,5&quot;: {
+                          &quot;tipo&quot;: &quot;linea&quot;,
+                          &quot;desde&quot;: &quot;W&quot;,
+                          &quot;hacia&quot;: &quot;SE&quot;
+                        },
+                        ...
+                      }
+                    }
+                    </code></pre>
+                                </div>
+                            </div>
+
+                    </div>
+                    <div id="property_descr" class="property item">
+                        <h3 class="name"><code>descr</code></h3>
+                        <span class="type">String</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_sector.js.html#l157"><code>js&#x2F;sector.js:157</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Una descripción textual del sector.  Se mostrará al usuario en la solapa por lo que debe ser breve.</p>
+
+                        </div>
+
+
+
+                    </div>
+                    <div id="property_enclavamientos" class="property item">
+                        <h3 class="name"><code>enclavamientos</code></h3>
+                        <span class="type">Array</span>
+
+
+
+
+
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/js_sector.js.html#l188"><code>js&#x2F;sector.js:188</code></a>
+                            </p>
+
+
+                        </div>
+
+                        <div class="description">
+                            <p>Lista de los enclavamientos entre los elementos del sector</p>
+
+                        </div>
+
+
+
+                    </div>
+            </div>
+
+
     </div>
 </div>
                     </div>

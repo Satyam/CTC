@@ -18,14 +18,17 @@ var simpleEventListener = function (listener, ev) {
 		vDOM.redrawReady((typeof listener == 'string' ? this[listener] : listener).call(this, ev) === false);
 	},
 	pickyEventListener = function (cbOrSel, ev) {
-		var target = ev.target;
+		var target = ev.target, cancel = true;
 		vDOM.redrawPending();
-		vDOM.redrawReady(!_.all(cbOrSel, (listener, cssSel) => {
+
+		_.each(cbOrSel, (listener, cssSel) => {
 			if (target.matches(cssSel)) {
-				return (typeof listener == 'string' ? this[listener] : listener).call(this, ev) === false;
+				if ((typeof listener == 'string' ? this[listener] : listener).call(this, ev) !== false) {
+					cancel = false;
+				}
 			}
-			return false; // Otherwise, cancel the redraw
-		}));
+		});
+		vDOM.redrawReady(cancel);
 	};
 
 

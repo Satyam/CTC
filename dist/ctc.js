@@ -936,14 +936,18 @@ var simpleEventListener = function simpleEventListener(listener, ev) {
     pickyEventListener = function pickyEventListener(cbOrSel, ev) {
 	var _this = this;
 
-	var target = ev.target;
+	var target = ev.target,
+	    cancel = true;
 	vDOM.redrawPending();
-	vDOM.redrawReady(!_.all(cbOrSel, function (listener, cssSel) {
+
+	_.each(cbOrSel, function (listener, cssSel) {
 		if (target.matches(cssSel)) {
-			return (typeof listener == 'string' ? _this[listener] : listener).call(_this, ev) === false;
+			if ((typeof listener == 'string' ? _this[listener] : listener).call(_this, ev) !== false) {
+				cancel = false;
+			}
 		}
-		return false; // Otherwise, cancel the redraw
-	}));
+	});
+	vDOM.redrawReady(cancel);
 };
 
 /**
@@ -2514,8 +2518,7 @@ var Enclavamiento = (function () {
 
 		/**
   Referencia al sector en que se encuentran los elementos enclavados.
-
-  @property sector {Sector}
+  	@property sector {Sector}
   */
 		this.sector = sector;
 		_.merge(this, config);
@@ -2526,15 +2529,13 @@ var Enclavamiento = (function () {
 
 		/**
   Asegura que los elementos enclavados se encuentran en estados iniciales válidos.
-
-  @method inicial
+  	@method inicial
   @returns {Boolean} Indica que al verificar el estado, ha debido hacer alguna modificación.
   */
 		// Este método debe ser redefinido en cada uno de los enclavamientos.
 		/**
   Devuelve la configuración instantánea del enclavamiento.
-
-  @method toJSON
+  	@method toJSON
   @return {Object} Descripción del enclavamiento
   */
 		value: function toJSON() {
@@ -2547,8 +2548,7 @@ var Enclavamiento = (function () {
 
 		/**
   Versión formateada de la configuración instantánea del enclavamiento.
-
-  @method toString
+  	@method toString
   @return {String}
   */
 		value: function toString() {
@@ -2559,8 +2559,7 @@ var Enclavamiento = (function () {
 
 		/**
   Libera los recursos tomados, en este caso, la referencia al sector.
-
-  @method destructor
+  	@method destructor
   */
 		value: function destructor() {
 			this.sector = null;
@@ -2573,14 +2572,12 @@ var Enclavamiento = (function () {
 var Enclavamientos = {
 	/**
  Asegura que los cambios en dos o más celdas se mueven a la par. Si uno cambia, el otro también.
-
- @example
+ 	@example
  	{
  		"tipo": "apareados",
  		"celdas": ["4,4", "5,5"]
  	},
-
- @class Enclavamiento.Apareados
+ 	@class Enclavamiento.Apareados
  @extends Enclavamiento
  @constructor
  @param config {ConfigEnclavamiento} Datos de configuración de cada enclavamiento.
@@ -2588,8 +2585,7 @@ var Enclavamientos = {
  */
 	/**
  Lista las coordenadas de las celdas cuyos cambios han de estar apareados.
-
- @property celdas {Array}
+ 	@property celdas {Array}
  */
 
 	apareados: (function (_Enclavamiento) {
@@ -2613,8 +2609,7 @@ var Enclavamientos = {
 			/**
    Responde al evento [cambio](Celda.html#event_cambio) de cualquiera de las celdas apareadas
    para actuar sobre las apareadas
-
-   @method onCambio
+   	@method onCambio
    @param celda {Celda} instancia de la celda que originó el cambio.
    @param desviado {Boolean} Indica si el cambio está en su posición alternativa.
    */
@@ -2689,8 +2684,7 @@ var Enclavamientos = {
  			"izq": "precaucion"
  		}
  	},
-
- @class Enclavamiento.SenalCambio
+ 	@class Enclavamiento.SenalCambio
  @extends Enclavamiento
  @constructor
  @param config {ConfigEnclavamiento} Datos de configuración de cada enclavamiento.
@@ -2698,29 +2692,23 @@ var Enclavamientos = {
  */
 	/**
  Coordenada de la celda que contiene el cambio que afecta la señal.
-
- @property celda {String}
+ 	@property celda {String}
  */
 	/**
  Coordenada de la señal que responde al estado del cambio.
-
- @property senal {String}
+ 	@property senal {String}
  */
 	/**
  Configuración de las señales cuando el cambio está en su posición normal.
-
- Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ 	Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
  y el estado en que han de estar (`verde`, `precaucion` o `alto`).
-
- @property normal {Object}
+ 	@property normal {Object}
  */
 	/**
  Configuración de las señales cuando el cambio está en su posición desviada.
-
- Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ 	Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
  y el estado en que han de estar (`verde`, `precaucion` o `alto`).
-
- @property desviado {Object}
+ 	@property desviado {Object}
  */
 
 	senalCambio: (function (_Enclavamiento2) {
@@ -2740,8 +2728,7 @@ var Enclavamientos = {
 			/**
    Responde al evento [cambio](Celda.html#event_cambio) de la [celda](#property_celda) que afecta
    a esta señal.
-
-   @method onCambio
+   	@method onCambio
    @param celda {Celda} instancia de la celda que originó el cambio.
    @param desviado {Boolean} Indica si el cambio está en su posición alternativa.
    */
@@ -2785,8 +2772,7 @@ var Enclavamientos = {
 	})(Enclavamiento),
 	/**
  Modifica el estado de una señal en función del estado de un triple.
-
- @example
+ 	@example
  	{
  		"tipo": "senalTriple",
  		"senal": "2,4,W",
@@ -2807,8 +2793,7 @@ var Enclavamientos = {
  			"der": "verde"
  		}
  	}
-
- @class Enclavamiento.SenalTriple
+ 	@class Enclavamiento.SenalTriple
  @extends Enclavamiento
  @constructor
  @param config {ConfigEnclavamiento} Datos de configuración de cada enclavamiento.
@@ -2816,37 +2801,29 @@ var Enclavamientos = {
  */
 	/**
  Coordenada de la celda que contiene el cambio que afecta la señal.
-
- @property celda {String}
+ 	@property celda {String}
  */
 	/**
  Coordenada de la señal que responde al estado del cambio.
-
- @property senal {String}
+ 	@property senal {String}
  */
 	/**
  Configuración de las señales cuando el cambio está en su posición izquierda.
-
- Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ 	Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
  y el estado en que han de estar (`verde`, `precaucion` o `alto`).
-
- @property izq {Object}
+ 	@property izq {Object}
  */
 	/**
  Configuración de las señales cuando el cambio está en su posición central.
-
- Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ 	Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
  y el estado en que han de estar (`verde`, `precaucion` o `alto`).
-
- @property centro {Object}
+ 	@property centro {Object}
  */
 	/**
  Configuración de las señales cuando el cambio está en su posición derecha.
-
- Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
+ 	Contiene una tabla indicando cada una de las luces (`primaria`, `izq` o `der`)
  y el estado en que han de estar (`verde`, `precaucion` o `alto`).
-
- @property der {Object}
+ 	@property der {Object}
  */
 	senalTriple: (function (_Enclavamiento3) {
 		function SenalTriple(config, sector) {
@@ -2865,8 +2842,7 @@ var Enclavamientos = {
 			/**
    Responde al evento [cambio](Celda.html#event_cambio) de la celda que contiene el cambio
    triple que afecta a esta señal.
-
-   @method onCambio
+   	@method onCambio
    @param celda {Celda} instancia de la celda que originó el cambio.
    @param posicion {Boolean} Indica la posición del cambio.
    */
@@ -3823,8 +3799,7 @@ var Senal = (function (_Parcel) {
 		/**
   Determina la dirección del ramal a la que está asociada la señal.
   Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
-
-  @property dir {String}
+  	@property dir {String}
   */
 		set: function (value) {
 			this._dir = value;

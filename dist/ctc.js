@@ -2496,7 +2496,6 @@ Object.defineProperty(exports, '__esModule', {
 
 var _ = require('lodash');
 
-var prioridades = ['verde', 'precaucion', 'alto'];
 /**
 Clases cuyas instancias manejan cada tipo de enclavamiento disponible.
 
@@ -2718,6 +2717,7 @@ var Enclavamientos = {
 			_get(Object.getPrototypeOf(SenalCambio.prototype), 'constructor', this).call(this, config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
 			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this._uid = _.uniqueId('sc');
 		}
 
 		_inherits(SenalCambio, _Enclavamiento2);
@@ -2733,15 +2733,12 @@ var Enclavamientos = {
    @param desviado {Boolean} Indica si el cambio está en su posición alternativa.
    */
 			value: function onCambio(celda, desviado) {
+				var _this4 = this;
+
 				var senal = this.sector.getSenal(this.senal),
 				    cambiosEfectuados = 0;
 				_.each(this[desviado ? 'desviado' : 'normal'], function (color, luz) {
-					//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					if (senal[luz].estado != color) {
-						senal[luz].estado = color;
-						cambiosEfectuados++;
-					}
-					//}
+					if (senal.votaPor(luz, color, _this4._uid)) cambiosEfectuados++;
 				});
 				return cambiosEfectuados;
 			}
@@ -2832,6 +2829,7 @@ var Enclavamientos = {
 			_get(Object.getPrototypeOf(SenalTriple.prototype), 'constructor', this).call(this, config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
 			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this._uid = _.uniqueId('st');
 		}
 
 		_inherits(SenalTriple, _Enclavamiento3);
@@ -2847,16 +2845,13 @@ var Enclavamientos = {
    @param posicion {Boolean} Indica la posición del cambio.
    */
 			value: function onCambio(celda, posicion) {
+				var _this5 = this;
+
 				var senal = this.sector.getSenal(this.senal),
 				    cambiosEfectuados = 0;
 
 				_.each(this[['izq', 'centro', 'der'][posicion + 1]], function (color, luz) {
-					//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					if (senal[luz].estado != color) {
-						senal[luz].estado = color;
-						cambiosEfectuados++;
-					}
-					//}
+					if (senal.votaPor(luz, color, _this5._uid)) cambiosEfectuados++;
 				});
 				return cambiosEfectuados;
 			}
@@ -3766,6 +3761,7 @@ var _ANCHO_CELDA$CENTRO_CELDA$ANG = require('./common.js');
 
 var _ = require('lodash');
 
+var prioridades = ['verde', 'precaucion', 'alto'];
 /**
 Maneja el mostrado de las señales en una celda
 
@@ -3789,6 +3785,11 @@ var Senal = (function (_Parcel) {
 		this.containerType = 'g';
 		this.className = 'senal';
 		_.merge(this, config);
+		this._votos = {
+			primaria: {},
+			izq: {},
+			der: {}
+		};
 	}
 
 	_inherits(Senal, _Parcel);
@@ -3809,6 +3810,32 @@ var Senal = (function (_Parcel) {
 		},
 		get: function () {
 			return this._dir;
+		}
+	}, {
+		key: 'votaPor',
+
+		/**
+  Recibe la opinión de un enclavamientos de cómo debería estar una señal.
+  Registra el voto de ese enclavamiento y luego determina de entre todas las opiniones
+  la más restrictiva y cambia el estado de la señal según corresponda.
+  Devuelve `true` si hubo cambio.
+
+  @method votaPor
+  @param luz {String} Uno de `'primaria'`, `'izq'` o `'der'`.
+  @param estado {String} Uno de `'verde'`, `'precaucion'` o `'alto'`
+  @param quien {String} Identificador del votante
+  @returns {Boolean} `true` si ha habido cambio.
+  */
+		value: function votaPor(luz, estado, quien) {
+			this._votos[luz][quien] = estado;
+			var nuevoEstado = prioridades[_.reduce(this._votos[luz], function (pri, value) {
+				return Math.max(prioridades.indexOf(value), pri);
+			}, 0)];
+			if (nuevoEstado != this[luz].estado) {
+				this[luz].estado = nuevoEstado;
+				return true;
+			}
+			return false;
 		}
 	}, {
 		key: 'view',

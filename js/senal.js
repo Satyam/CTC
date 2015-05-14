@@ -5,6 +5,11 @@ import Parcel from './component/parcel.js';
 var _ = require('lodash');
 import {ANCHO_CELDA, CENTRO_CELDA, ANG} from './common.js';
 
+var prioridades = [
+	'verde',
+	'precaucion',
+	'alto'
+];
 /**
 Maneja el mostrado de las señales en una celda
 
@@ -25,6 +30,11 @@ export default class Senal extends Parcel {
 		this.containerType = 'g';
 		this.className = 'senal';
 		_.merge(this, config);
+		this._votos = {
+			primaria:{},
+			izq: {},
+			der: {}
+		};
 	}
 	/**
 	Determina la dirección del ramal a la que está asociada la señal.
@@ -40,6 +50,30 @@ export default class Senal extends Parcel {
 	}
 	get dir () {
 		return this._dir;
+	}
+	/**
+	Recibe la opinión de un enclavamientos de cómo debería estar una señal.
+	Registra el voto de ese enclavamiento y luego determina de entre todas las opiniones
+	la más restrictiva y cambia el estado de la señal según corresponda.
+	Devuelve `true` si hubo cambio.
+
+	@method votaPor
+	@param luz {String} Uno de `'primaria'`, `'izq'` o `'der'`.
+	@param estado {String} Uno de `'verde'`, `'precaucion'` o `'alto'`
+	@param quien {String} Identificador del votante
+	@returns {Boolean} `true` si ha habido cambio.
+	*/
+	votaPor (luz, estado, quien) {
+		this._votos[luz][quien] = estado;
+		var nuevoEstado = prioridades[_.reduce(this._votos[luz], (pri, value) => {
+			return Math.max(prioridades.indexOf(value), pri);
+		},0)];
+		if (nuevoEstado != this[luz].estado) {
+			this[luz].estado = nuevoEstado;
+			return true;
+		}
+		return false;
+
 	}
 /*
 

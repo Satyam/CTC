@@ -4,11 +4,7 @@
 
 var _ = require('lodash');
 
-var prioridades = [
-	'verde',
-	'precaucion',
-	'alto'
-];
+
 /**
 Clases cuyas instancias manejan cada tipo de enclavamiento disponible.
 
@@ -205,6 +201,7 @@ var Enclavamientos = {
 			super(config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
 			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this._uid = _.uniqueId('sc');
 		}
 		/**
 		Responde al evento [cambio](Celda.html#event_cambio) de la [celda](#property_celda) que afecta
@@ -218,12 +215,7 @@ var Enclavamientos = {
 			var senal = this.sector.getSenal(this.senal),
 				cambiosEfectuados = 0;
 			_.each(this[desviado ? 'desviado' : 'normal'], (color, luz) => {
-				//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					if (senal[luz].estado != color) {
-						senal[luz].estado = color;
-						cambiosEfectuados++;
-					}
-				//}
+				if (senal.votaPor(luz, color, this._uid)) cambiosEfectuados++;
 			});
 			return cambiosEfectuados;
 		}
@@ -315,6 +307,7 @@ var Enclavamientos = {
 			super(config, sector);
 			this._boundCambioListener = this.onCambio.bind(this);
 			this.celda = sector.getCelda(config.celda).on('cambio', this._boundCambioListener);
+			this._uid = _.uniqueId('st');
 		}
 		/**
 		Responde al evento [cambio](Celda.html#event_cambio) de la celda que contiene el cambio
@@ -329,12 +322,7 @@ var Enclavamientos = {
 				cambiosEfectuados = 0;
 
 			_.each(this[['izq' , 'centro', 'der'][posicion+1]], (color, luz) => {
-				//if (prioridades.indexOf(color) > prioridades.indexOf(senal[luz])) {
-					if (senal[luz].estado != color) {
-						senal[luz].estado = color;
-						cambiosEfectuados++;
-					}
-				//}
+				if (senal.votaPor(luz, color, this._uid)) cambiosEfectuados++;
 			});
 			return cambiosEfectuados;
 		}

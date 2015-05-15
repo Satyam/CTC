@@ -10,6 +10,91 @@ var prioridades = [
 	'precaucion',
 	'alto'
 ];
+var luces = [
+	'primaria',
+	'izq',
+	'der'
+];
+
+/**
+Gestiona una luz dentro de una señal.
+
+@class Luz
+@constructor
+@param config {Object} Configuración de la luz
+*/
+class Luz {
+	constructor (config) {
+		_.merge(this, config);
+		this._votos = {};
+	}
+
+	/**
+	Permite forzar el estado de la luz manualmente, ignorando todo enclavamiento.
+
+	Si la señal se saca de manual, al volver a automático, se determina el estado
+	en función de los votos sobre su estado que hubieran sido emitidos aún
+	cuando estaba en `manual`
+
+	@property manual {Boolean}
+	*/
+	get manual () {
+		return this._manual;
+	}
+	set manual (value) {
+		this._manual = !!value;
+		if (!value) return this._cuentaVotos();
+	}
+
+	/**
+	Recibe la opinión de un enclavamientos de cómo debería estar una luz dentro de una señal.
+	Registra el voto de ese enclavamiento y luego determina de entre todas las opiniones
+	la más restrictiva y cambia el estado de la luz según corresponda.
+
+	Si la luz está en [manual](#property_manual) registra las opiniones pero no cambia la luz.
+	Al volver una luz a automática (`manual=false`) establece el estado en función de los
+	votos registrados.
+
+	Devuelve `true` si hubo cambio.
+
+	@method votaPor
+	@param estado {String} Uno de `'verde'`, `'precaucion'` o `'alto'`
+	@param quien {String} Identificador del votante
+	@returns {Boolean} `true` si ha habido cambio.
+	*/
+	votaPor (estado, quien) {
+		this._votos[quien] = estado;
+		if (this._manual) return false;
+		return this._cuentaVotos();
+	}
+	/**
+	Controla los votos emitidos sobre el estado que debiera tener la luz
+	y pone la luz en el más restrictivo que encuentre.
+	Devuelve `true` si hubiera cambiado el estado.
+
+	@method _cuentaVotos Establece el estado de la luz en función de los votos.
+	@returns {Boolean} verdadero su ha habido cambio
+	@private
+	*/
+	_cuentaVotos () {
+		var nuevoEstado = prioridades[_.reduce(this._votos, (pri, value) => {
+			return Math.max(prioridades.indexOf(value), pri);
+		},0)];
+		if (nuevoEstado != this.estado) {
+			this.estado = nuevoEstado;
+			return true;
+		}
+		return false;
+
+	}
+
+	toJSON () {
+		return {
+			estado: this.estado,
+			manual: this.manual
+		};
+	}
+}
 /**
 Maneja el mostrado de las señales en una celda
 
@@ -29,12 +114,10 @@ export default class Senal extends Parcel {
 		super();
 		this.containerType = 'g';
 		this.className = 'senal';
-		_.merge(this, config);
-		this._votos = {
-			primaria:{},
-			izq: {},
-			der: {}
-		};
+		this.dir = config.dir;
+		luces.forEach(luz => {
+			if (config[luz]) this[luz] = new Luz(config[luz]);
+		});
 	}
 	/**
 	Determina la dirección del ramal a la que está asociada la señal.
@@ -50,30 +133,6 @@ export default class Senal extends Parcel {
 	}
 	get dir () {
 		return this._dir;
-	}
-	/**
-	Recibe la opinión de un enclavamientos de cómo debería estar una señal.
-	Registra el voto de ese enclavamiento y luego determina de entre todas las opiniones
-	la más restrictiva y cambia el estado de la señal según corresponda.
-	Devuelve `true` si hubo cambio.
-
-	@method votaPor
-	@param luz {String} Uno de `'primaria'`, `'izq'` o `'der'`.
-	@param estado {String} Uno de `'verde'`, `'precaucion'` o `'alto'`
-	@param quien {String} Identificador del votante
-	@returns {Boolean} `true` si ha habido cambio.
-	*/
-	votaPor (luz, estado, quien) {
-		this._votos[luz][quien] = estado;
-		var nuevoEstado = prioridades[_.reduce(this._votos[luz], (pri, value) => {
-			return Math.max(prioridades.indexOf(value), pri);
-		},0)];
-		if (nuevoEstado != this[luz].estado) {
-			this[luz].estado = nuevoEstado;
-			return true;
-		}
-		return false;
-
 	}
 /*
 
@@ -112,11 +171,11 @@ export default class Senal extends Parcel {
 	}
 
 	toJSON() {
-		return {
-			primaria:this.primaria,
-			izq: this.izq,
-			der: this.der
-		};
+		var ret = {};
+		luces.forEach(luz => {
+			if (this[luz]) ret[luz] = this[luz].toJSON();
+		});
+		return ret;
 	}
 }
 

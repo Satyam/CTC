@@ -215,7 +215,7 @@ var Enclavamientos = {
 			var senal = this.sector.getSenal(this.senal),
 				cambiosEfectuados = 0;
 			_.each(this[desviado ? 'desviado' : 'normal'], (color, luz) => {
-				if (senal.votaPor(luz, color, this._uid)) cambiosEfectuados++;
+				if (senal[luz].votaPor(color, this._uid)) cambiosEfectuados++;
 			});
 			return cambiosEfectuados;
 		}
@@ -322,7 +322,7 @@ var Enclavamientos = {
 				cambiosEfectuados = 0;
 
 			_.each(this[['izq' , 'centro', 'der'][posicion+1]], (color, luz) => {
-				if (senal.votaPor(luz, color, this._uid)) cambiosEfectuados++;
+				if (senal[luz].votaPor(color, this._uid)) cambiosEfectuados++;
 			});
 			return cambiosEfectuados;
 		}

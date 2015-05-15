@@ -2738,7 +2738,7 @@ var Enclavamientos = {
 				var senal = this.sector.getSenal(this.senal),
 				    cambiosEfectuados = 0;
 				_.each(this[desviado ? 'desviado' : 'normal'], function (color, luz) {
-					if (senal.votaPor(luz, color, _this4._uid)) cambiosEfectuados++;
+					if (senal[luz].votaPor(color, _this4._uid)) cambiosEfectuados++;
 				});
 				return cambiosEfectuados;
 			}
@@ -2851,7 +2851,7 @@ var Enclavamientos = {
 				    cambiosEfectuados = 0;
 
 				_.each(this[['izq', 'centro', 'der'][posicion + 1]], function (color, luz) {
-					if (senal.votaPor(luz, color, _this5._uid)) cambiosEfectuados++;
+					if (senal[luz].votaPor(color, _this5._uid)) cambiosEfectuados++;
 				});
 				return cambiosEfectuados;
 			}
@@ -3737,13 +3737,13 @@ Lista de los enclavamientos entre los elementos del sector
 
 var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
 
-var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
 var _inherits = function (subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
+
+var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } };
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 Object.defineProperty(exports, '__esModule', {
 	value: true
@@ -3762,6 +3762,97 @@ var _ANCHO_CELDA$CENTRO_CELDA$ANG = require('./common.js');
 var _ = require('lodash');
 
 var prioridades = ['verde', 'precaucion', 'alto'];
+var luces = ['primaria', 'izq', 'der'];
+
+/**
+Gestiona una luz dentro de una señal.
+
+@class Luz
+@constructor
+@param config {Object} Configuración de la luz
+*/
+
+var Luz = (function () {
+	function Luz(config) {
+		_classCallCheck(this, Luz);
+
+		_.merge(this, config);
+		this._votos = {};
+	}
+
+	_createClass(Luz, [{
+		key: 'manual',
+
+		/**
+  Permite forzar el estado de la luz manualmente, ignorando todo enclavamiento.
+  	Si la señal se saca de manual, al volver a automático, se determina el estado
+  en función de los votos sobre su estado que hubieran sido emitidos aún
+  cuando estaba en `manual`
+  	@property manual {Boolean}
+  */
+		get: function () {
+			return this._manual;
+		},
+		set: function (value) {
+			this._manual = !!value;
+			if (!value) return this._cuentaVotos();
+		}
+	}, {
+		key: 'votaPor',
+
+		/**
+  Recibe la opinión de un enclavamientos de cómo debería estar una luz dentro de una señal.
+  Registra el voto de ese enclavamiento y luego determina de entre todas las opiniones
+  la más restrictiva y cambia el estado de la luz según corresponda.
+  	Si la luz está en [manual](#property_manual) registra las opiniones pero no cambia la luz.
+  Al volver una luz a automática (`manual=false`) establece el estado en función de los
+  votos registrados.
+  	Devuelve `true` si hubo cambio.
+  	@method votaPor
+  @param estado {String} Uno de `'verde'`, `'precaucion'` o `'alto'`
+  @param quien {String} Identificador del votante
+  @returns {Boolean} `true` si ha habido cambio.
+  */
+		value: function votaPor(estado, quien) {
+			this._votos[quien] = estado;
+			if (this._manual) {
+				return false;
+			}return this._cuentaVotos();
+		}
+	}, {
+		key: '_cuentaVotos',
+
+		/**
+  Controla los votos emitidos sobre el estado que debiera tener la luz
+  y pone la luz en el más restrictivo que encuentre.
+  Devuelve `true` si hubiera cambiado el estado.
+  	@method _cuentaVotos Establece el estado de la luz en función de los votos.
+  @returns {Boolean} verdadero su ha habido cambio
+  @private
+  */
+		value: function _cuentaVotos() {
+			var nuevoEstado = prioridades[_.reduce(this._votos, function (pri, value) {
+				return Math.max(prioridades.indexOf(value), pri);
+			}, 0)];
+			if (nuevoEstado != this.estado) {
+				this.estado = nuevoEstado;
+				return true;
+			}
+			return false;
+		}
+	}, {
+		key: 'toJSON',
+		value: function toJSON() {
+			return {
+				estado: this.estado,
+				manual: this.manual
+			};
+		}
+	}]);
+
+	return Luz;
+})();
+
 /**
 Maneja el mostrado de las señales en una celda
 
@@ -3779,17 +3870,17 @@ Maneja el mostrado de las señales en una celda
 
 var Senal = (function (_Parcel) {
 	function Senal(config) {
+		var _this = this;
+
 		_classCallCheck(this, Senal);
 
 		_get(Object.getPrototypeOf(Senal.prototype), 'constructor', this).call(this);
 		this.containerType = 'g';
 		this.className = 'senal';
-		_.merge(this, config);
-		this._votos = {
-			primaria: {},
-			izq: {},
-			der: {}
-		};
+		this.dir = config.dir;
+		luces.forEach(function (luz) {
+			if (config[luz]) _this[luz] = new Luz(config[luz]);
+		});
 	}
 
 	_inherits(Senal, _Parcel);
@@ -3810,32 +3901,6 @@ var Senal = (function (_Parcel) {
 		},
 		get: function () {
 			return this._dir;
-		}
-	}, {
-		key: 'votaPor',
-
-		/**
-  Recibe la opinión de un enclavamientos de cómo debería estar una señal.
-  Registra el voto de ese enclavamiento y luego determina de entre todas las opiniones
-  la más restrictiva y cambia el estado de la señal según corresponda.
-  Devuelve `true` si hubo cambio.
-
-  @method votaPor
-  @param luz {String} Uno de `'primaria'`, `'izq'` o `'der'`.
-  @param estado {String} Uno de `'verde'`, `'precaucion'` o `'alto'`
-  @param quien {String} Identificador del votante
-  @returns {Boolean} `true` si ha habido cambio.
-  */
-		value: function votaPor(luz, estado, quien) {
-			this._votos[luz][quien] = estado;
-			var nuevoEstado = prioridades[_.reduce(this._votos[luz], function (pri, value) {
-				return Math.max(prioridades.indexOf(value), pri);
-			}, 0)];
-			if (nuevoEstado != this[luz].estado) {
-				this[luz].estado = nuevoEstado;
-				return true;
-			}
-			return false;
 		}
 	}, {
 		key: 'view',
@@ -3875,11 +3940,13 @@ var Senal = (function (_Parcel) {
 	}, {
 		key: 'toJSON',
 		value: function toJSON() {
-			return {
-				primaria: this.primaria,
-				izq: this.izq,
-				der: this.der
-			};
+			var _this2 = this;
+
+			var ret = {};
+			luces.forEach(function (luz) {
+				if (_this2[luz]) ret[luz] = _this2[luz].toJSON();
+			});
+			return ret;
 		}
 	}]);
 

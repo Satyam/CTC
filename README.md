@@ -13,8 +13,28 @@ estas solapas con dar clic en el icono con una `x` a la derecha del nombre del s
 A la derecha, una solapa llamada `Teletipo` permite visualizar alertas y avisos del sistema.  
 Esta solapa es fija no puede cambiarse de posición o cerrarse.
 
+El operador puede manipular ciertos elementos dentro de cada sector, por ejemplo, efectuar cambios.
+Para ello, basta hacer click sobre la celda y las opciones disponibles en esa celda se mostrarán
+en el panel a la derecha.  
+
+----
 La configuración de los diversos sectores está dada por archivos en formato JSON. 
 Estos archivos se encuentran en la carpeta `data` de la aplicación.
+
+* [Lista de sectores](#lista-de-sectores)
+* [Descripción de un sector](#descripci%C3%B3n-de-un-sector)
+	* [Encabezado](#encabezado)
+	* [Celdas](#celdas)
+		* [Línea](#linea)
+		* [Cambio](#cambio)
+		* [Paragolpe](#paragolpe)
+		* [Cruce](#cruce)
+		* [Triple](#triple)
+	* [Señales](#se%C3%B1ales)
+	* [Enclavamientos](#enclavamientos)
+		* [Apareados](#apareados)
+		* [Cambio a señal](#cambio-a-se%C3%B1al)
+		* [Triple a señal](#triple-a-se%C3%B1al)
 
 ## Lista de sectores
 

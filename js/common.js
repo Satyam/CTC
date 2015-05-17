@@ -34,5 +34,6 @@ export const X = {
 		SW: 135,
 		W: 180,
 		NW: 225
-	};
+	},
+	 DIR = ['N','NE','E','SE','S','SW','W','NW'];
 

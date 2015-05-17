@@ -7,7 +7,7 @@ var _ = require('lodash');
 import {ANCHO_CELDA, CENTRO_CELDA, X,  Y} from './common.js';
 
 class Celda extends ParcelEv {
-	constructor (config, coords) {
+	constructor (config, coords, props) {
 		super({
 			EVENTS: {
 				click: (ev) => this.emit('click',this)
@@ -18,15 +18,19 @@ class Celda extends ParcelEv {
 		this.x = parseInt(coords[0], 10);
 		this.y = parseInt(coords[1], 10);
 
-		this.senales = {};
-		this.containerType = 'g';
-		_.merge(this, config);
+		this.descr = config.descr;
+		this.tipo = config.tipo;
+		_.merge(this, _.mapValues(config, (value, key) => {
+			if (props.indexOf(key) >= -1) return value;
+		}));
 
+		this.containerType = 'g';
 		this.attributes = {
 			transform: `translate(${this.x * ANCHO_CELDA},${this.y * ANCHO_CELDA})`
 		};
 
-		_.each(this.senales, (config, dir) => {
+		this.senales = {};
+		_.each(config.senales, (config, dir) => {
 			config.dir = dir;
 			this.senales[dir] = new Senal(config);
 		});
@@ -44,7 +48,7 @@ class Celda extends ParcelEv {
 			v('text', {
 				x: 5,
 				y: 95
-			}, this.x + ',' + this.y),
+			}, this.descr || (this.x + ',' + this.y)),
 			_.values(this.senales)
 		);
 	}
@@ -84,7 +88,7 @@ var lineaA = function (v, dest, estilo) {
 var Celdas =  {
 	linea: class Linea extends Celda {
 		constructor(config, coords) {
-			super(config, coords);
+			super(config, coords,['desde','hacia']);
 		}
 		view (v) {
 			return super.view(v,[
@@ -101,7 +105,7 @@ var Celdas =  {
 	},
 	cambio: class Cambio extends Celda {
 		constructor(config, coords) {
-			super(config, coords);
+			super(config, coords,['punta','normal','invertido','desviado','manual']);
 		}
 
 		get desviado () {
@@ -135,7 +139,7 @@ var Celdas =  {
 	},
 	paragolpe: class Paragolpe extends Celda {
 		constructor(config, coords) {
-			super(config, coords);
+			super(config, coords,['desde']);
 		}
 		view (v) {
 			return super.view(v, [
@@ -155,7 +159,7 @@ var Celdas =  {
 	},
 	triple: class Triple extends Celda {
 		constructor(config, coords) {
-			super(config, coords);
+			super(config, coords, ['punta','centro','der','izq','posicion','manual']);
 		}
 		view (v) {
 			return super.view(v,[
@@ -194,7 +198,7 @@ var Celdas =  {
 	},
 	cruce: class Cruce extends Celda {
 		constructor(config, coords) {
-			super(config, coords);
+			super(config, coords, ['l1','l2']);
 		}
 		view (v) {
 			return super.view(v, [

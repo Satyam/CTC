@@ -32,7 +32,7 @@ var _ANCHO_CELDA$CENTRO_CELDA$X$Y = require('./common.js');
 var _ = require('lodash');
 
 var Celda = (function (_ParcelEv) {
-	function Celda(config, coords) {
+	function Celda(config, coords, props) {
 		var _this = this;
 
 		_classCallCheck(this, Celda);
@@ -49,15 +49,19 @@ var Celda = (function (_ParcelEv) {
 		this.x = parseInt(coords[0], 10);
 		this.y = parseInt(coords[1], 10);
 
-		this.senales = {};
-		this.containerType = 'g';
-		_.merge(this, config);
+		this.descr = config.descr;
+		this.tipo = config.tipo;
+		_.merge(this, _.mapValues(config, function (value, key) {
+			if (props.indexOf(key) >= -1) return value;
+		}));
 
+		this.containerType = 'g';
 		this.attributes = {
 			transform: 'translate(' + this.x * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ',' + this.y * _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA + ')'
 		};
 
-		_.each(this.senales, function (config, dir) {
+		this.senales = {};
+		_.each(config.senales, function (config, dir) {
 			config.dir = dir;
 			_this.senales[dir] = new _Senal2['default'](config);
 		});
@@ -77,7 +81,7 @@ var Celda = (function (_ParcelEv) {
 			}), content, v('text', {
 				x: 5,
 				y: 95
-			}, this.x + ',' + this.y), _.values(this.senales));
+			}, this.descr || this.x + ',' + this.y), _.values(this.senales));
 		}
 	}, {
 		key: 'toJSON',
@@ -130,7 +134,7 @@ var Celdas = {
 		function Linea(config, coords) {
 			_classCallCheck(this, Linea);
 
-			_get(Object.getPrototypeOf(Linea.prototype), 'constructor', this).call(this, config, coords);
+			_get(Object.getPrototypeOf(Linea.prototype), 'constructor', this).call(this, config, coords, ['desde', 'hacia']);
 		}
 
 		_inherits(Linea, _Celda);
@@ -156,7 +160,7 @@ var Celdas = {
 		function Cambio(config, coords) {
 			_classCallCheck(this, Cambio);
 
-			_get(Object.getPrototypeOf(Cambio.prototype), 'constructor', this).call(this, config, coords);
+			_get(Object.getPrototypeOf(Cambio.prototype), 'constructor', this).call(this, config, coords, ['punta', 'normal', 'invertido', 'desviado', 'manual']);
 		}
 
 		_inherits(Cambio, _Celda2);
@@ -198,7 +202,7 @@ var Celdas = {
 		function Paragolpe(config, coords) {
 			_classCallCheck(this, Paragolpe);
 
-			_get(Object.getPrototypeOf(Paragolpe.prototype), 'constructor', this).call(this, config, coords);
+			_get(Object.getPrototypeOf(Paragolpe.prototype), 'constructor', this).call(this, config, coords, ['desde']);
 		}
 
 		_inherits(Paragolpe, _Celda3);
@@ -227,7 +231,7 @@ var Celdas = {
 		function Triple(config, coords) {
 			_classCallCheck(this, Triple);
 
-			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, config, coords);
+			_get(Object.getPrototypeOf(Triple.prototype), 'constructor', this).call(this, config, coords, ['punta', 'centro', 'der', 'izq', 'posicion', 'manual']);
 		}
 
 		_inherits(Triple, _Celda4);
@@ -271,7 +275,7 @@ var Celdas = {
 		function Cruce(config, coords) {
 			_classCallCheck(this, Cruce);
 
-			_get(Object.getPrototypeOf(Cruce.prototype), 'constructor', this).call(this, config, coords);
+			_get(Object.getPrototypeOf(Cruce.prototype), 'constructor', this).call(this, config, coords, ['l1', 'l2']);
 		}
 
 		_inherits(Cruce, _Celda5);
@@ -431,14 +435,14 @@ Cada señal está indexada por la dirección del tramo de vía a cuyo lado se en
 */
 
 },{"./common.js":2,"./component/parcelEv.js":5,"./senal.js":15,"lodash":23}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
-Object.defineProperty(exports, "__esModule", {
+Object.defineProperty(exports, '__esModule', {
 	value: true
 });
 /* jshint node:true , esnext:true*/
 
-"use strict";
+'use strict';
 
 var ANCHO_CELDA = 100,
     CENTRO_CELDA = ANCHO_CELDA / 2;
@@ -474,10 +478,12 @@ var X = {
 	SW: 135,
 	W: 180,
 	NW: 225
-};
+},
+    DIR = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 exports.X = X;
 exports.Y = Y;
 exports.ANG = ANG;
+exports.DIR = DIR;
 
 },{}],3:[function(require,module,exports){
 (function (global){
@@ -2751,7 +2757,7 @@ var Enclavamientos = {
 			key: 'toJSON',
 			value: function toJSON() {
 				return _.merge(_get(Object.getPrototypeOf(SenalCambio.prototype), 'toJSON', this).call(this), {
-					celda: this.celda,
+					celda: this.celda.coords,
 					senal: this.senal,
 					normal: this.normal,
 					desviado: this.desviado
@@ -2864,7 +2870,7 @@ var Enclavamientos = {
 			key: 'toJSON',
 			value: function toJSON() {
 				return _.merge(_get(Object.getPrototypeOf(SenalTriple.prototype), 'toJSON', this).call(this), {
-					celda: this.celda,
+					celda: this.celda.coords,
 					senal: this.senal,
 					izq: this.izq,
 					centro: this.centro,
@@ -3588,6 +3594,7 @@ var Sector = (function (_ParcelEv) {
 			_this.emit('loaded');
 		})['catch'](function (response) {
 			_this.fail = response.message || response.statusCode + ': ' + response.body;
+			console.error(response.message, response.stack);
 			_this.emit('failed', _this.fail);
 		});
 	}

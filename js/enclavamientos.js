@@ -225,7 +225,7 @@ var Enclavamientos = {
 		}
 		toJSON () {
 			return _.merge(super.toJSON(), {
-				celda: this.celda,
+				celda: this.celda.coords,
 				senal: this.senal,
 				normal: this.normal,
 				desviado: this.desviado
@@ -332,7 +332,7 @@ var Enclavamientos = {
 		}
 		toJSON () {
 			return _.merge(super.toJSON(), {
-				celda: this.celda,
+				celda: this.celda.coords,
 				senal: this.senal,
 				izq: this.izq,
 				centro: this.centro,

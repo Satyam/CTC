@@ -70,6 +70,7 @@ export default class Sector extends ParcelEv {
 		})
 		.catch(response => {
 			this.fail = response.message || (response.statusCode + ': ' + response.body);
+			console.error(response.message, response.stack);
 			this.emit('failed', this.fail);
 		});
 	}

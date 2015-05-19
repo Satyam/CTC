@@ -142,7 +142,7 @@ var Celdas = {
 		_createClass(Linea, [{
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Linea.prototype), 'view', this).call(this, v, [lineaA(v, this.desde), lineaA(v, this.hacia)]);
+				return _get(Object.getPrototypeOf(Linea.prototype), 'view', this).call(this, v, [lineaA(v, this.desde.dir), lineaA(v, this.hacia.dir)]);
 			}
 		}, {
 			key: 'toJSON',
@@ -180,7 +180,7 @@ var Celdas = {
 		}, {
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Cambio.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.normal, this._desviado ? 'off' : null), lineaA(v, this.invertido, !this._desviado ? 'off' : null)]);
+				return _get(Object.getPrototypeOf(Cambio.prototype), 'view', this).call(this, v, [lineaA(v, this.punta.dir), lineaA(v, this.normal.dir, this._desviado ? 'off' : null), lineaA(v, this.invertido.dir, !this._desviado ? 'off' : null)]);
 			}
 		}, {
 			key: 'toJSON',
@@ -210,7 +210,7 @@ var Celdas = {
 		_createClass(Paragolpe, [{
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Paragolpe.prototype), 'view', this).call(this, v, [lineaA(v, this.desde), v('circle', {
+				return _get(Object.getPrototypeOf(Paragolpe.prototype), 'view', this).call(this, v, [lineaA(v, this.desde.dir), v('circle', {
 					cx: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
 					cy: _ANCHO_CELDA$CENTRO_CELDA$X$Y.CENTRO_CELDA,
 					r: _ANCHO_CELDA$CENTRO_CELDA$X$Y.ANCHO_CELDA / 10
@@ -239,7 +239,7 @@ var Celdas = {
 		_createClass(Triple, [{
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v, [lineaA(v, this.punta), lineaA(v, this.centro, this._posicion ? 'off' : null), lineaA(v, this.izq, this._posicion != -1 ? 'off' : null), lineaA(v, this.der, this._posicion != 1 ? 'off' : null)]);
+				return _get(Object.getPrototypeOf(Triple.prototype), 'view', this).call(this, v, [lineaA(v, this.punta.dir), lineaA(v, this.centro.dir, this._posicion ? 'off' : null), lineaA(v, this.izq.dir, this._posicion != -1 ? 'off' : null), lineaA(v, this.der.dir, this._posicion != 1 ? 'off' : null)]);
 			}
 		}, {
 			key: 'posicion',
@@ -283,7 +283,7 @@ var Celdas = {
 		_createClass(Cruce, [{
 			key: 'view',
 			value: function view(v) {
-				return _get(Object.getPrototypeOf(Cruce.prototype), 'view', this).call(this, v, [lineaA(v, this.l1.desde), lineaA(v, this.l1.hacia), lineaA(v, this.l2.desde), lineaA(v, this.l2.hacia)]);
+				return _get(Object.getPrototypeOf(Cruce.prototype), 'view', this).call(this, v, [lineaA(v, this.l1.desde.dir), lineaA(v, this.l1.hacia.dir), lineaA(v, this.l2.desde.dir), lineaA(v, this.l2.hacia.dir)]);
 			}
 		}, {
 			key: 'toJSON',

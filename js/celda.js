@@ -92,8 +92,8 @@ var Celdas =  {
 		}
 		view (v) {
 			return super.view(v,[
-				lineaA(v, this.desde),
-				lineaA(v, this.hacia)
+				lineaA(v, this.desde.dir),
+				lineaA(v, this.hacia.dir)
 			]);
 		}
 		toJSON () {
@@ -121,9 +121,9 @@ var Celdas =  {
 		}
 		view (v) {
 			return super.view(v,[
-				lineaA(v, this.punta),
-				lineaA(v, this.normal, this._desviado ? 'off' : null),
-				lineaA(v, this.invertido, !this._desviado ? 'off' : null)
+				lineaA(v, this.punta.dir),
+				lineaA(v, this.normal.dir, this._desviado ? 'off' : null),
+				lineaA(v, this.invertido.dir, !this._desviado ? 'off' : null)
 			]);
 		}
 		toJSON () {
@@ -143,7 +143,7 @@ var Celdas =  {
 		}
 		view (v) {
 			return super.view(v, [
-				lineaA(v, this.desde),
+				lineaA(v, this.desde.dir),
 				v('circle', {
 					cx: CENTRO_CELDA,
 					cy: CENTRO_CELDA,
@@ -163,10 +163,10 @@ var Celdas =  {
 		}
 		view (v) {
 			return super.view(v,[
-				lineaA(v, this.punta),
-				lineaA(v, this.centro, this._posicion ?'off':null),
-				lineaA(v, this.izq, this._posicion != -1 ?'off':null),
-				lineaA(v, this.der, this._posicion != 1 ?'off':null)
+				lineaA(v, this.punta.dir),
+				lineaA(v, this.centro.dir, this._posicion ?'off':null),
+				lineaA(v, this.izq.dir, this._posicion != -1 ?'off':null),
+				lineaA(v, this.der.dir, this._posicion != 1 ?'off':null)
 			]);
 		}
 
@@ -202,10 +202,10 @@ var Celdas =  {
 		}
 		view (v) {
 			return super.view(v, [
-				lineaA(v, this.l1.desde),
-				lineaA(v, this.l1.hacia),
-				lineaA(v, this.l2.desde),
-				lineaA(v, this.l2.hacia)
+				lineaA(v, this.l1.desde.dir),
+				lineaA(v, this.l1.hacia.dir),
+				lineaA(v, this.l2.desde.dir),
+				lineaA(v, this.l2.hacia.dir)
 			]);
 		}
 		toJSON () {
@@ -267,66 +267,99 @@ Define el tipo de vías que contiene esta celda.  Puede ser uno de:
 @property tipo {String}
 */
 /**
+Leyenda para ser mostrada en una esquina de la celda.  Si no se indica se mostrará la coordenada de la celda.
+
+@property descr {String}
+*/
+/**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 Se usa en las celdas de [tipo](#property_tipo) `linea`, `cruce` y `paragolpe`.
 Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property desde {String}
+@property desde {Object}
 */
 /**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 Se usa en las celdas de [tipo](#property_tipo) `linea` y `cruce`.
-Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property hasta {String}
+Contiene propiedades:
+* `dir`: puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`. Debe indicarse.
+* `max`: velocidad máxima permitida en ese segmento, en m/seg, por defecto infinita.
+* `largo`: largo de ese segmento, en metros, por defecto 0.
+
+@property hasta {Object}
 */
 /**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 En los cambios, define el tronco común del que se abren las alternativas.
 Se usa en las celdas de [tipo](#property_tipo) `cambio` y `triple`.
-Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property punta {String}
+Contiene propiedades:
+* `dir`: puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`. Debe indicarse.
+* `max`: velocidad máxima permitida en ese segmento, en m/seg, por defecto infinita.
+* `largo`: largo de ese segmento, en metros, por defecto 0.
+
+@property punta {Object}
 */
 /**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 En los cambios, habitualmente, define el lado que sale recto.
 Se usa en las celdas de [tipo](#property_tipo) `cambio`.
-Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property normal {String}
+Contiene propiedades:
+* `dir`: puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`. Debe indicarse.
+* `max`: velocidad máxima permitida en ese segmento, en m/seg, por defecto infinita.
+* `largo`: largo de ese segmento, en metros, por defecto 0.
+
+@property normal {Object}
 */
 /**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 En los cambios, habitualmente, define el lado que sale en curva.
 Se usa en las celdas de [tipo](#property_tipo) `cambio`.
-Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property invertido {String}
+Contiene propiedades:
+* `dir`: puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`. Debe indicarse.
+* `max`: velocidad máxima permitida en ese segmento, en m/seg, por defecto infinita.
+* `largo`: largo de ese segmento, en metros, por defecto 0.
+
+@property invertido {Object}
 */
 /**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 En los cambios triples, habitualmente, define el lado que sale en curva a la izquierda.
 Se usa en las celdas de [tipo](#property_tipo) `triple`.
-Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property izq {String}
+Contiene propiedades:
+* `dir`: puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`. Debe indicarse.
+* `max`: velocidad máxima permitida en ese segmento, en m/seg, por defecto infinita.
+* `largo`: largo de ese segmento, en metros, por defecto 0.
+
+@property izq {Object}
 */
 /**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 En los cambios triples, habitualmente, define el lado que sale recto opuesto a la [punta](#property_punta).
 Se usa en las celdas de [tipo](#property_tipo) `triple`.
-Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property centro {String}
+Contiene propiedades:
+* `dir`: puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`. Debe indicarse.
+* `max`: velocidad máxima permitida en ese segmento, en m/seg, por defecto infinita.
+* `largo`: largo de ese segmento, en metros, por defecto 0.
+
+@property centro {Object}
 */
 /**
 Una de las direcciones en que se extiende la vía contenida en este sector.
 En los cambios triples, habitualmente, define el lado que sale en curva a la derecha.
 Se usa en las celdas de [tipo](#property_tipo) `triple`.
-Puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`
 
-@property der {String}
+Contiene propiedades:
+* `dir`: puede ser uno de `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW`. Debe indicarse.
+* `max`: velocidad máxima permitida en ese segmento, en m/seg, por defecto infinita.
+* `largo`: largo de ese segmento, en metros, por defecto 0.
+
+@property der {Object}
 */
 /**
 Define una de las vías que se cruzan en esta celda.

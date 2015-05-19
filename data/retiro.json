@@ -5,18 +5,18 @@
 	"celdas": {
 		"0,0": {
 			"tipo":"linea",
-			"desde":"E",
-			"hacia":"W"
+			"desde":{"dir":"E"},
+			"hacia":{"dir":"W"}
 		},
 		"1,0": {
 			"tipo":"linea",
-			"desde":"E",
-			"hacia":"W"
+			"desde":{"dir":"E"},
+			"hacia":{"dir":"W"}
 		},
 		"2,0": {
 			"tipo":"linea",
-			"desde":"E",
-			"hacia":"W"
+			"desde":{"dir":"E"},
+			"hacia":{"dir":"W"}
 		}
 
 

@@ -107,12 +107,19 @@ Las configuración de las celdas está formada por la propiedad `celdas` que apu
 		...,
 		"5,0": {
 			"tipo": "linea",
-			"desde": "N",
-			"hacia": "S"
+			"descr": "XVI-b",
+			"desde": {
+				"dir":"N",
+				"largo":200,
+				"max":11.11
+			},
+			"hacia": {
+				"dir":"S"
+			}
 		},
 		...
 
-Dentro de la lista de `celdas` la que se encuentra en la coordenada `5,0` (las coordenadas cuentan a partir de cero), contiene un tramo de vía simple que va de norte `N` a sur `S`.  
+Dentro de la lista de `celdas` la que se encuentra en la coordenada `5,0` (las coordenadas cuentan a partir de cero), contiene un tramo de vía simple que va de norte `N` a sur `S`.  La leyenda `XVI-b` se mostrará en una esquina de la celda.  Cada tramo de vía se define con al menos la propiedad `dir` (direción) que señala a alguno de los puntos cardinales.  Opcionalmente puede llevar indicación de longitud `largo` en metros y la velocidad máxima permitida en el tramo, en metros sobre segundo, en este caso 11.11 que equivalen a 40kph.  Las propiedades de `largo` y `max` son opcionales y si se omiten, se supone longitud cero y velocidad ilimitada.  En el caso de esta celda, entonces, el largo total de ambos segmentos es de 200 metros (200 + 0) y la velocidad 40kph.  En el segundo tramo, siendo la longitud cero, la velocidad máxima se hace irrelevante dado que, en cualquier caso, sería recorrido instantáneamente.
 
 Todas las celdas son más o menos cuadradas.  Todos los segmentos de vías que contienen irradian del centro de ese cuadrado hacia una de 8 posibles direcciones, las cuatro esquinas y los puntos intermedios de los lados.  Estos extremos se los denomina por su coordenada geográfica.   Aún así, todas las líneas pasan por el centro del cuadrado.  Es obvio que una línea de norte a sur como la del ejemplo cruzará por el centro del cuadrado, pero también lo hará una que vaya de norte a este.  En lugar de hacer un simple trazo en diagonal uniendo estos lados, la celda se graficará con dos segmentos, uno desde el arriba (*norte*) hasta el centro y otro del centro a la derecha (*este*).
 
@@ -132,8 +139,8 @@ Ej.:
 
 	"5,0": {
 		"tipo": "linea",
-		"desde": "N",
-		"hacia": "S"
+		"desde": {"dir":"N"},
+		"hacia": {"dir":"S"}
 	}
 
 #### Cambio
@@ -144,10 +151,20 @@ Ej:
 
 	"8,3": {
 		"tipo": "cambio",
-		"punta": "SE",
-		"normal": "NW",
-		"invertido": "W",
+		"punta": {"dir":"SE"},
+		"normal": {
+			"dir":"NW",
+			"max":11.11,
+			"largo":10
+		},
+		"invertido": {
+			"dir":"W",
+			"max":3,
+			"largo":10
+		},
 	}
+
+En los cambios, tanto la longitud de los segmentos como la velocidad máxima en cada tramo cobra más importancia pues el tramo de vía que sale en curva suele tener un límite de velocidad menor que el que sale recto.
 
 La propiedad Booleana `desviado` indica si el cambio está en la posición normal (`desviado: false`) o invertida (`desviado: true`).  Si no se especifica, se supone `false`.   Nótese que las palabras `true` o `false`, no deben ir entrecomilladas pues representan los valores Booleanos *verdadero*  o *falso*.  Si se entrecomillaran, representarían cadenas de caracteres con palabras que no significan nada.
 
@@ -161,7 +178,7 @@ Ej:
 
 	"0,4": {
 		"tipo": "paragolpe",
-		"desde": "E"
+		"desde": {"dir":"E"}
 	}
 	
 #### Cruce
@@ -173,13 +190,13 @@ Ej:
 	"3,4": {
 		"tipo": "cruce",
 		"l1": {
-			"desde": "SW",
-			"hacia": "NE",
+			"desde": {"dir":"SW"},
+			"hacia": {"dir":"NE"},
 			"nivel":1
 		},
 		"l2": {
-			"desde": "W",
-			"hacia": "E"
+			"desde": {"dir":"W"},
+			"hacia": {"dir":"E"}
 		}
 	}
 	
@@ -193,10 +210,10 @@ Ej:
 
 	"2,4": {
 		"tipo": "triple",
-		"punta": "W",
-		"centro": "E",
-		"izq": "NE",
-		"der": "SE"
+		"punta": {"dir":"W"},
+		"centro": {"dir":"E"},
+		"izq": {"dir":"NE"},
+		"der": {"dir":"SE"}
 	}
 
 La configuración admite la propiedad opcional `"posicion"` con valores `-1`, `0` o `1` que indican la posición del cambio triple, *izquierda*, *centro* o *derecha* respectivamente.  Si no se indica, se supone `0` (*centro*).  Al igual que los Booleanos los valores numéricos no deben entrecomillarse, o sea, `"posicion": 0`.
